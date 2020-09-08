@@ -1,0 +1,32 @@
+@import "../../variable";
+
+.preview-modal{
+  position: absolute;
+  z-index: 999;
+  top: 100px;
+  left: 50%;
+  width: 960px;
+  padding: 0 20px;
+  margin-left: -500px;
+  background: #fff;
+  border: 1px solid $lineColor;
+  border-radius: 4px;
+  box-shadow: 1px 1px 10px $darkFontColor;
+  &-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 80px;
+  }
+  &-content{
+    border: 1px solid $lineColor;
+    padding: 20px;
+  }
+  &-footer{
+    padding: 10px 0;
+    text-align: right;
+    button{
+      cursor: pointer;
+    }
+  }
+}

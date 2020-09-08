@@ -1,0 +1,31 @@
+@import "../../variable";
+
+.pagination{
+  &-box{
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
+    padding-top: 20px;
+    text-align: right;
+    &-btn{
+      display:inline-block;
+      width: 30px;
+      height: 30px;
+      border: 1px solid $lineColor;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 30px;
+      margin: 0 6px;
+      font-size: 12px;
+      cursor: pointer;
+      &:nth-of-type(1){
+        background: $lineColor;
+        cursor: not-allowed;
+      }
+      &:nth-of-type(2){
+        background: $primaryColor;
+        cursor: not-allowed;
+        color: #fff;
+      }
+    }
+  }
+}

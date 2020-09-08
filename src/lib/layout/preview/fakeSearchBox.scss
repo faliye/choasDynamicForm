@@ -1,0 +1,30 @@
+@import "../../variable";
+
+.search{
+  &-box{
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid $lineColor;
+    &>div{
+      position: relative;
+    }
+    &-item{
+      display: inline-block;
+      margin: 6px 0;
+      width: 25%;
+      text-align: right;
+      &>span{
+        width: 30%;
+        vertical-align: middle;
+        font-size: 12px;
+        display: inline-block;
+        text-align: center;
+      }
+      &>input{
+        width: 60%;
+        height: 20px;
+        vertical-align: middle;
+      }
+    }
+  }
+}

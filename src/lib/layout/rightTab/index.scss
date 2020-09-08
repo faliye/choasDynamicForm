@@ -1,0 +1,120 @@
+@import "../../../../src/lib/variable.scss";
+
+.border-box{
+  width: 220px;
+  padding: 10px;
+  color: $darkFontColor;
+  .title-box{
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid $darkFontColor;
+    color: $darkestFontColor;
+  }
+  .content-box{
+    margin-top: 10px;
+    .border-control-box,
+    .border-style-box,
+    .border-color-box,
+    .key-name-box,
+    .date-validate-box{
+      margin-top: 6px;
+      height: 32px;
+      line-height: 32px;
+      input{
+        text-align: left !important;
+      }
+      >span{
+        &:nth-of-type(1){
+          font-size: 14px;
+          margin-right: 10px;
+          display: inline-block;
+          width: 60px;
+          text-align: right;
+        }
+        &:nth-of-type(2){
+          color: #606266;
+          margin-left: 20px;
+        }
+      }
+
+      .datepicker-box{
+        display: inline-block;
+        height: 33px;
+        border: none !important;
+
+        .datepicker-input{
+          border: none;
+          outline: none;
+          border-bottom: 1px solid $darkFontColor;
+        }
+        .datepicker-drop-box{
+          right: 0 !important;
+        }
+      }
+    }
+    // 控制边框线
+    .border-control-box,.key-name-box,.date-validate-box,.public-category-item{
+      >input{
+        width: 60px;
+        border-top: none;
+        border-right: none;
+        border-bottom: 1px solid $darkFontColor;
+        border-left: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        &:focus{
+          border-bottom: 1px solid $primaryColor;
+        }
+      }
+    }
+    // 控制边框样式
+    .border-style-box{
+      >select{
+        width: 100px;
+        height: 24px;
+        line-height: 24px;
+        .solid-line{
+          display: inline-block;
+          width: 100%;
+          vertical-align: middle;
+          border-bottom: 1px solid #ccc;
+
+        }
+      }
+    }
+    .key-name-box{
+      >b{
+        color: $errorColor;
+      }
+      >input{
+        width: 100px;
+        text-align: left;
+        &[type='checkbox']{
+          width: 18px;
+        }
+      }
+    }
+    .date-validate-box{
+      >input{
+        width: 140px;
+      }
+    }
+  }
+}
+.validate-add-box{
+  text-align: right;
+  .validate-add-btn{
+    font-size: 10px;
+    padding: 6px 8px;
+    background: rgb(23, 128, 227);
+    color: #fff;
+    i{
+      font-size: 10px;
+    }
+  }
+}
+
+
