@@ -4,10 +4,6 @@ import '../index.scss'
 
 const optionsSetting = [
   {
-    key: '',
-    name: ''
-  },
-  {
     key: 'string',
     name: '字符串'
   },

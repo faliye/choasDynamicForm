@@ -50,8 +50,9 @@ export class ChildrenProps {
         tagName = '',
         keyName = '',
         cnName = '',
-        isSearch = 1,
+        isSearch = 0,
         value = '',
+        dataType = 'string',
         placeholder = '',
         style = {},
         dataListId = '',
@@ -68,6 +69,7 @@ export class ChildrenProps {
     this.placeholder = placeholder;
     this.style = style;
     this.dataListId = dataListId;
+    this.dataType = dataType;
     this.isMultiple = isMultiple;
     this.validate = validate;
     this.timeValidate = timeValidate;
