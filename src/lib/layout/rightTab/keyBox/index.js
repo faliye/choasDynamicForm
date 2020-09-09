@@ -2,14 +2,6 @@ import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
 import '../index.scss'
 
-const keyBoxConfig = [
-  {
-    key: 'keyName',
-    name: '字段名',
-    className: 'key-name-box'
-  },
-];
-
 export const createKeyBox = (data) => {
   return h('div',
       {
@@ -63,7 +55,6 @@ export const createKeyBox = (data) => {
                           },
                           on: {
                             change: (e) => {
-                              console.log(data.childrenProps.isSearch)
                               data.childrenProps.isSearch = Number(e.target.checked);
                               mainEvent.emit('dataChange', mainEvent.store.data);
                             }
