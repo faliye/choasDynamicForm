@@ -207,7 +207,7 @@ class DynamicForm {
         if (!this.checkData(data)) {
           return
         }
-        this.saveFileHandle(JSON.stringify(data));
+        this.saveFileHandle(data);
       }
     });
     // 存草稿
@@ -218,7 +218,7 @@ class DynamicForm {
         if (!this.checkData(data)) {
           return
         }
-        this.saveDraftHandle(JSON.stringify(data));
+        this.saveDraftHandle(data);
       }
     });
   }
@@ -624,7 +624,7 @@ class DynamicForm {
 
   // 检测数据
   checkData(data) {
-    const {data: storeData} = eventBus.store
+    const {data: storeData} = eventBus.store;
     for (let j = 0; j < data.length; j++) {
       for (let i = 0; i < data[j].length; i++) {
         const targetData = storeData[j][i];
