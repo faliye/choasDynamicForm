@@ -698,7 +698,7 @@ class DynamicForm {
   }
 
   // 获取表格的 可选项
-  getDataList(data, reflectKey ={key: 'key', value:'value'}) {
+  getDataList(data=[], reflectKey ={key: 'key', value:'value'}) {
     eventBus.store.reflectKey = reflectKey;
     const key = reflectKey.key || 'key';
     const value = reflectKey.value || 'value';
@@ -707,10 +707,11 @@ class DynamicForm {
         [key]: item[key],
         [value]: item[value],
       }
-    })
-    console.log(dataList)
+    });
     if(!dataList.length){
-      datalist.unshift({key: '暂无数据', value: ''})
+      dataList.unshift({key: '暂无数据', value: ''})
+    }else{
+      dataList.unshift({key: '', value: ''})
     }
     eventBus.store.datalist =dataList;
   }

@@ -30,6 +30,9 @@ export const selectSourceBox = (data) => {
                     h('select',
                         {
                           className: ['public-category-select'],
+                          props:{
+                            value: data.childrenProps.dataListId,
+                          },
                           on: {
                             change(e) {
                               data.childrenProps.dataListId = e.target.value;
