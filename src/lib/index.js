@@ -698,11 +698,22 @@ class DynamicForm {
   }
 
   // 获取表格的 可选项
-  getDataList(data) {
-    eventBus.store.datalist = data;
-    eventBus.store.datalist.unshift({key: '暂无数据', value: ''})
+  getDataList(data, reflectKey ={key: 'key', value:'value'}) {
+    eventBus.store.reflectKey = reflectKey;
+    const key = reflectKey.key || 'key';
+    const value = reflectKey.value || 'value';
+    const dataList =  data.map(item=>{
+      return {
+        [key]: item[key],
+        [value]: item[value],
+      }
+    })
+    console.log(dataList)
+    if(!dataList.length){
+      datalist.unshift({key: '暂无数据', value: ''})
+    }
+    eventBus.store.datalist =dataList;
   }
-
   // 预览
   previewHandle() {
     eventBus.emit('preview')

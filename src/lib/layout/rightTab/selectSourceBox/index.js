@@ -2,15 +2,8 @@ import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
 import '../index.scss'
 
-const keyBoxConfig = [
-  {
-    key: 'publicCategory',
-    name: '公共分类',
-    className: 'public-category-item'
-  },
-];
-
 export const selectSourceBox = (data) => {
+  const {key= 'key', value='value'} = mainEvent.store.reflectKey || {};
   return h('div',
       {
         className: ['border-box']
@@ -44,17 +37,17 @@ export const selectSourceBox = (data) => {
                             }
                           }
                         }, [
-                            ...mainEvent.store.datalist.map(item=>{
-                              return h('option',
-                                  {
-                                    props:{
-                                      value: item.value,
-                                      selected: item.value === data.childrenProps.dataListId
-                                    }
-                                  },
-                                  [item.key]
-                                  )
-                            })
+                          ...mainEvent.store.datalist.map(item=>{
+                            return h('option',
+                                {
+                                  props:{
+                                    value: item[value],
+                                    selected: item.value === data.childrenProps.dataListId
+                                  }
+                                },
+                                [item[key]]
+                            )
+                          })
                         ]
                     )
                   ])
