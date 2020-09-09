@@ -709,9 +709,9 @@ class DynamicForm {
       }
     });
     if(!dataList.length){
-      dataList.unshift({key: '暂无数据', value: ''})
+      dataList.unshift({[key]: '暂无数据', [value]: ''})
     }else{
-      dataList.unshift({key: '', value: ''})
+      dataList.unshift({[key]: '', [value]: ''})
     }
     eventBus.store.datalist =dataList;
   }
