@@ -1,5 +1,4 @@
 import {$createElement as h} from '../../utils/$createElement'
-import EventBus from "../../utils/eventBus";
 import mainEvent from "../../mainEvent";
 
 /**

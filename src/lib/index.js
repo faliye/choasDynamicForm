@@ -509,16 +509,23 @@ class DynamicForm {
         {
           className: ['iconfont', 'icon-shanchu', 'td-controllers', 'td-controllers-del'],
           on: {
-            click: () => {
+            click: (e) => {
               const {data} = eventBus.store;
               deleteFn(data, location);
               eventBus.emit('dataChange', data);
+              e.stopPropagation();
+              e.preventDefault();
+              return false
+            },
+            mousedown: (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              return false
             }
           }
         }
     );
-
-    return h('td',
+    const td = h('td',
         {
           id: 'td-' + location.join('-'),
           rowSpan,
@@ -565,7 +572,8 @@ class DynamicForm {
               ]
           )
         ]
-    )
+    );
+    return td;
   }
 
   // 右侧选项卡
@@ -698,23 +706,24 @@ class DynamicForm {
   }
 
   // 获取表格的 可选项
-  getDataList(data=[], reflectKey ={key: 'key', value:'value'}) {
+  getDataList(data = [], reflectKey = {key: 'key', value: 'value'}) {
     eventBus.store.reflectKey = reflectKey;
     const key = reflectKey.key || 'key';
     const value = reflectKey.value || 'value';
-    const dataList =  data.map(item=>{
+    const dataList = data.map(item => {
       return {
         [key]: item[key],
         [value]: item[value],
       }
     });
-    if(!dataList.length){
+    if (!dataList.length) {
       dataList.unshift({[key]: '暂无数据', [value]: ''})
-    }else{
+    } else {
       dataList.unshift({[key]: '', [value]: ''})
     }
-    eventBus.store.datalist =dataList;
+    eventBus.store.datalist = dataList;
   }
+
   // 预览
   previewHandle() {
     eventBus.emit('preview')

@@ -58,13 +58,13 @@ export const createKeyBox = (data) => {
                     h('input',
                         {
                           props: {
-                            value: data.childrenProps.isSearch || 0,
                             type: 'checkbox',
                             checked: Boolean(data.childrenProps.isSearch)
                           },
                           on: {
                             change: (e) => {
-                              data.childrenProps.isSearch = Number(e.target.value);
+                              console.log(data.childrenProps.isSearch)
+                              data.childrenProps.isSearch = Number(e.target.checked);
                               mainEvent.emit('dataChange', mainEvent.store.data);
                             }
                           }
