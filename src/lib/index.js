@@ -193,29 +193,32 @@ class DynamicForm {
     // 预览
     eventBus.on('preview', () => {
       const {data: storeData} = eventBus.store;
-      if (!this.checkData(storeData)) {
+      const data = this.simpleData(storeData);
+      if (!this.checkData(data)) {
         return
       }
-      previewModal(this.mountDOM, this.simpleData(storeData), this.checkData, this.themeConfig); // 右侧选项卡
+      previewModal(this.mountDOM, data, this.themeConfig); // 右侧选项卡
     });
     // 保存
     eventBus.on('saveFileHandle', () => {
       if (judgeDataType(this.saveFileHandle) === 'function') {
         const {data: storeData} = eventBus.store;
-        if (!this.checkData(storeData)) {
+        const data = this.simpleData(storeData);
+        if (!this.checkData(data)) {
           return
         }
-        this.saveFileHandle(JSON.stringify(this.simpleData(storeData)));
+        this.saveFileHandle(JSON.stringify(data));
       }
     });
     // 存草稿
     eventBus.on('saveDraftHandle', () => {
       if (judgeDataType(this.saveDraftHandle) === 'function') {
         const {data: storeData} = eventBus.store;
-        if (!this.checkData(storeData)) {
+        const data = this.simpleData(storeData);
+        if (!this.checkData(data)) {
           return
         }
-        this.saveDraftHandle(JSON.stringify(this.simpleData(storeData)));
+        this.saveDraftHandle(JSON.stringify(data));
       }
     });
   }
@@ -621,29 +624,30 @@ class DynamicForm {
 
   // 检测数据
   checkData(data) {
+    const {data: storeData} = eventBus.store
     for (let j = 0; j < data.length; j++) {
       for (let i = 0; i < data[j].length; i++) {
-        const targetData = data[j][i];
+        const targetData = storeData[j][i];
         if (targetData.childrenTdNode.length) {
           if (!targetData.childrenProps.keyName) {
             targetData.isError = 1;
             new Modal('请注意!', '关联字段名只能为英文字母及下划线!').show();
-            eventBus.emit('dataChange', data);
+            eventBus.emit('dataChange', storeData);
             eventBus.emit('selectStartChange', targetData.location);
             return false;
           } else if (!targetData.childrenProps.cnName) {
             targetData.isError = 1;
             new Modal('请注意!', '字段标题不能为空!').show();
-            eventBus.emit('dataChange', data);
+            eventBus.emit('dataChange', storeData);
             eventBus.emit('selectStartChange', targetData.location);
             return false;
           }
           const childrenData = data[targetData.childrenTdNode[0]][targetData.childrenTdNode[1]];
           childrenData.isError = 1;
           if (['Select', 'Radio', 'Checkbox'].includes(childrenData.childrenProps.tagName)) {
-            if (!childrenData.childrenProps.dataList) {
-              new Modal('请注意!', '被选列表不能为空!').show();
-              eventBus.emit('dataChange', data);
+            if (!childrenData.childrenProps.dataListId) {
+              new Modal('请注意!', '选列表不能为空!').show();
+              eventBus.emit('dataChange', storeData);
               eventBus.emit('selectStartChange', targetData.location);
               return false;
             }
@@ -651,25 +655,25 @@ class DynamicForm {
           if (['Input'].includes(childrenData.childrenProps.tagName)) {
             if (!childrenData.childrenProps.dataType) {
               new Modal('请注意!', '未选择数据类型!').show();
-              eventBus.emit('dataChange', data);
+              eventBus.emit('dataChange', storeData);
               eventBus.emit('selectStartChange', targetData.location);
               return false;
             }
           }
           childrenData.isError = 0;
-          eventBus.emit('dataChange', data);
+          eventBus.emit('dataChange', storeData);
         }
         if (!targetData.isEmpty && !targetData.childrenTdNode.length && !targetData.parentTdNode.length) {
           if (!targetData.childrenProps.cnName) {
             new Modal('请注意!', '标题不能为空!').show();
-            eventBus.emit('dataChange', data);
+            eventBus.emit('dataChange', storeData);
             eventBus.emit('selectStartChange', targetData.location);
             targetData.isError = 1;
             return false;
           }
         }
         targetData.isError = 0;
-        eventBus.emit('dataChange', data);
+        eventBus.emit('dataChange', storeData);
       }
     }
 
