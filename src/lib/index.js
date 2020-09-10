@@ -207,7 +207,7 @@ class DynamicForm {
         if (!this.checkData(data)) {
           return
         }
-        this.saveFileHandle(data);
+        this.saveFileHandle(JSON.stringify(data));
       }
     });
     // 存草稿
@@ -218,7 +218,7 @@ class DynamicForm {
         if (!this.checkData(data)) {
           return
         }
-        this.saveDraftHandle(data);
+        this.saveDraftHandle(JSON.stringify(data));
       }
     });
   }
