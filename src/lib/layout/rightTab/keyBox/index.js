@@ -45,7 +45,7 @@ export const createKeyBox = (data) => {
                   {
                     className: ['key-name-box']
                   }, [
-                    h('b', {}, ['*']),
+                    h('b', {}, ['']),
                     h('span', {}, ['支持搜索:']),
                     h('input',
                         {

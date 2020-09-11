@@ -1,14 +1,8 @@
-import {$getEle, deepClone, addEvent, getHeight, getWidth, judgeDataType, deleteFn} from './utils';
+import {$getEle, addEvent, deepClone, deleteFn, getHeight, getWidth, judgeDataType} from './utils';
 import {$createElement as h} from './utils/$createElement';
 import eventBus from './mainEvent';
-import {
-  defaultValidate,
-  defaultTimeValidate,
-  ChildrenProps,
-  TdBoxClass,
-} from "./config/componentApiConfig";
+import {ChildrenProps, defaultTimeValidate, defaultValidate, TdBoxClass,} from "./config/componentApiConfig";
 import {Modal} from "./components/modal";
-
 // TODO 字段  搜索框类型
 import createLeftNav from './layout/leftNav';
 import mountMidBox from './layout/midBox';
@@ -525,7 +519,7 @@ class DynamicForm {
           }
         }
     );
-    const td = h('td',
+    return h('td',
         {
           id: 'td-' + location.join('-'),
           rowSpan,
@@ -573,7 +567,6 @@ class DynamicForm {
           )
         ]
     );
-    return td;
   }
 
   // 右侧选项卡
@@ -717,7 +710,7 @@ class DynamicForm {
       }
     });
     if (!dataList.length) {
-      dataList.unshift({[key]: '暂无数据', [value]: ''})
+      dataList.unshift({[key]: '暂无数据', [value]: ''});
     } else {
       dataList.unshift({[key]: '', [value]: ''})
     }
