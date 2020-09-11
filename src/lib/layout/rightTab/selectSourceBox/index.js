@@ -36,7 +36,6 @@ export const selectSourceBox = (data) => {
                           on: {
                             change(e) {
                               data.childrenProps.dataListId = e.target.value;
-                              console.log(e.target.value);
                               mainEvent.emit('dataChange', mainEvent.store.data);
                             }
                           }
