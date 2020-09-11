@@ -82,7 +82,6 @@ export class ChildrenProps {
       delete this.keyName;
       delete this.cnName;
       delete this.isSearch;
-      delete this.dataListId;
     }
     if (!['Radio', 'Checkbox', 'Select'].includes(this.tagName)) {
       delete this.dataListId;
