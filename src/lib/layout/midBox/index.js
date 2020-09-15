@@ -194,7 +194,7 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                   [
                     h('table',
                         {
-                          className: ['edit-table'],
+                          id:'edit-table',
                         },
                         []
                     ),

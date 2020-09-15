@@ -1,4 +1,5 @@
 import {$getEle} from '../../utils';
+import $ from 'jquery'
 import {$createElement as h} from '../../utils/$createElement';
 import eventBus from "../../mainEvent";
 import leftNavConfig from "../../config/leftNavConfig";
@@ -31,7 +32,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
                 className: ['left-nav-item'],
                 on: {
                   mouseenter:()=>{
-                    const childrenArr = $getEle('.type-check-box');
+                    const childrenArr = $('.type-check-box');
                     let len = childrenArr.length;
                     for ( let i = 0;i<len;++i){
                       childrenArr[i].style.display = 'none';
@@ -39,7 +40,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
                     childrenArr[index].style.display = 'block'
                   },
                   mouseleave:()=>{
-                    const childrenArr = $getEle('.type-check-box');
+                    const childrenArr = $('.type-check-box');
                     let len = childrenArr.length;
                     for ( let i = 0;i<len;++i){
                       childrenArr[i].style.display = 'none';
@@ -77,7 +78,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
                             className: ['type-rows'],
                             on:{
                               click: ()=>{
-                                const childrenArr = $getEle('.type-check-box');
+                                const childrenArr = $('.type-check-box');
                                 childrenArr[index].style.display = 'none';
                                 eventBus.emit('addElement',{componentName: leftNav.componentName, type: 'row'})
                               }
@@ -90,7 +91,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
                             className: ['type-rows'],
                             on:{
                               click: ()=>{
-                                const childrenArr = $getEle('.type-check-box');
+                                const childrenArr = $('.type-check-box');
                                 childrenArr[index].style.display = 'none';
                                 eventBus.emit('addElement',{componentName: leftNav.componentName, type: 'col'})
 

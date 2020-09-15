@@ -1,4 +1,14 @@
-import {$getEle, addEvent, deepClone, deleteFn, getHeight, getWidth, judgeDataType} from './utils';
+import $ from 'jquery';
+import {
+  addEvent,
+  calcSelectHeight,
+  calcSelectWidth,
+  deepClone,
+  deleteFn,
+  getHeight,
+  getWidth,
+  judgeDataType
+} from './utils';
 import {$createElement as h} from './utils/$createElement';
 import eventBus from './mainEvent';
 import {ChildrenProps, defaultTimeValidate, defaultValidate, TdBoxClass,} from "./config/componentApiConfig";
@@ -18,7 +28,6 @@ import {createDatepicker} from './layout/rightTab/datepickerBox';
 
 import './assets/iconFont/iconFont.scss';
 import './index.scss';
-
 import sizeConfig from './config/size.config';
 // const midTopHeight = sizeConfig.midTop.height;
 // const midLeftPaddingLeft = sizeConfig.midLeft.paddingLeft;
@@ -56,29 +65,27 @@ class DynamicForm {
 
   // 向DOM节点添加事件
   addDOMEvent() {
-    this.table = $getEle('.edit-table')[0];
-    addEvent(this.table, 'mousedown', (e) => {
+    this.table = $('#edit-table');
+    this.table.on('mousedown', (e) => {
       if (e.which === 1) {
         this.isSelectArea = true;
       }
-    });
-    addEvent(this.table, 'mouseup', () => {
+    }).on('mouseup', () => {
       this.isSelectArea = false;
       this.isAddSelectedArea = false;
-      this.table.style.cursor = 'default';
-    });
-    addEvent(this.table, 'mouseleave', () => {
+      this.table.css({cursor: 'default'});
+    }).on('mouseleave', () => {
       this.isSelectArea = false;
-      this.table.style.cursor = 'default';
+      this.table.css({cursor: 'default'});
       this.isAddSelectedArea = false;
     });
     // 左下角拖动点
-    this.addSelectedArea = $getEle('.add-selected-area')[0];
+    this.addSelectedArea = $('.add-selected-area')[0];
     addEvent(this.addSelectedArea, 'mousedown', () => {
       this.isAddSelectedArea = true;
     });
     // 右侧切换区域
-    this.tabBox = $getEle('.tab-box')[0];
+    this.tabBox = $('.tab-box')[0];
   }
 
   // 注册事件
@@ -224,10 +231,10 @@ class DynamicForm {
     const formData = data || [];
     // 未获取到表单数据时初始化空白表单
     let col = Math.floor(
-        (getWidth(this.table) - tablePaddingLeft * 2) / (tdWidth + 2)
+        (this.table.width() - tablePaddingLeft * 2) / (tdWidth + 2)
     );
     let row = Math.floor(
-        (getHeight(this.table) - tablePaddingTop * 2) / (tdHeight + 2)
+        (this.table.height() - tablePaddingTop * 2) / (tdHeight + 2)
     );
     if (col < dataCol) {
       col = dataCol;
@@ -235,12 +242,15 @@ class DynamicForm {
     if (row < dataRow) {
       row = dataRow;
     }
-    this.table.style.width = col * (tdWidth + 2) + 'px';
-    this.table.style.height = row * (tdHeight + 2) + 'px';
-    this.table.border = '1';
-    this.table.cellSpacing = '0';
-    this.table.cellPadding = '0';
-    this.table.borderSpacing = '0';
+    this.table.css({
+      width: col * (tdWidth + 2) + 'px',
+      height: row * (tdHeight + 2) + 'px',
+    }).attr({
+      border: 1,
+      cellSpacing: 0,
+      cellPadding: 0,
+      borderSpacing: 0,
+    });
     eventBus.store.row = row;
     eventBus.store.col = col;
     for (let j = 0; formData.length < row; ++j) {
@@ -259,22 +269,24 @@ class DynamicForm {
   // 更新表单视图
   upDateTable() {
     const {data, col, row} = eventBus.store;
-    const mid = $getEle('.mid-box-bottom-left-box')[0];
-    const addCol = $getEle('.add-col')[0];
-    const addRow = $getEle('.add-row')[0];
-    this.table.innerHTML = '';
-    this.table.style.width = col * (tdWidth + 2) + 'px';
-    this.table.style.height = row * (tdHeight + 2) + 'px';
+    const mid = $('.mid-box-bottom-left-box')[0];
+    const addCol = $('.add-col')[0];
+    const addRow = $('.add-row')[0];
+    this.table.html('');
+    this.table.css({
+      width: col * (tdWidth + 2),
+      height: row * (tdHeight + 2),
+    });
     mid.style.width = col * (tdWidth + 2) + tablePaddingLeft + 'px';
     mid.style.height = row * (tdHeight + 2) + tablePaddingTop + 'px';
     addCol.style.right = 0;
     addRow.style.bottom = 0;
     data.forEach((trData, j) => {
-      const tr = document.createElement('tr');
-      trData.map((tdData, i) => {
-        tr.appendChild(this.renderTd(tdData, j, i));
+      const tr = $('<tr></tr>');
+      trData.forEach((tdData, i) => {
+        tr.append(this.renderTd(tdData, j, i));
       });
-      this.table.appendChild(tr);
+      this.table.append(tr);
     });
   }
 
@@ -284,38 +296,22 @@ class DynamicForm {
     if (selectEnd[1] < selectStart[1] || selectEnd[0] < selectEnd[0]) {
       return;
     }
-    let width = 0;
-    let height = 0;
-    // 起始坐标
-    const startEle = $getEle('#td-' + selectStart.join('-'));
-    // 获取左边距与宽度
-    let left = tablePaddingLeft + startEle.offsetLeft;
-    let top = tablePaddingTop + startEle.offsetTop;
-    for (let i = selectStart[1]; i <= selectEnd[1]; ++i) {
-      const ele = $getEle('#td-' + selectEnd[0] + '-' + i);
-      if (ele) {
-        let itemWidth = parseInt(getWidth(ele), 10);
-        width += itemWidth;
-      }
-    }
-
-    for (let i = selectStart[0]; i <= selectEnd[0]; ++i) {
-      const ele = $getEle('#td-' + i + '-' + selectEnd[1]);
-      if (ele) {
-        let itemHeight = parseInt(getHeight(ele), 10);
-        height += itemHeight;
-      }
-    }
-    width -= 4;
-    height -= 4;
-    const selectedArea = $getEle('.selected-div')[0];
-    this.addSelectedArea = this.addSelectedArea || $getEle('.add-selected-area')[0];
-    selectedArea.style.width = width + 'px';
-    selectedArea.style.height = height + 'px';
-    selectedArea.style.top = top + 'px';
-    selectedArea.style.left = left + 'px';
-    this.addSelectedArea.style.top = top + height + 'px';
-    this.addSelectedArea.style.left = left + width + 'px';
+    const startEle = $('#td-' + selectStart.join('-'));
+    let {left, top} = startEle.position();
+    let width = calcSelectWidth(selectStart, selectEnd);
+    let height = calcSelectHeight(selectStart, selectEnd);
+    const selectedArea = $('.selected-div').eq(0);
+    this.addSelectedArea = $('.add-selected-area').eq(0);
+    selectedArea.css({
+      width,
+      height,
+      top: top + tablePaddingTop,
+      left: left + tablePaddingLeft,
+    });
+    this.addSelectedArea.css({
+      top: top + tablePaddingTop+height-4,
+      left: left + tablePaddingLeft+width-4,
+    });
   }
 
   // 合并单元格
@@ -507,6 +503,7 @@ class DynamicForm {
               const {data} = eventBus.store;
               deleteFn(data, location);
               eventBus.emit('dataChange', data);
+              eventBus.emit('backupData', data);
               e.stopPropagation();
               e.preventDefault();
               return false
@@ -519,7 +516,7 @@ class DynamicForm {
           }
         }
     );
-    return h('td',
+    const td = h('td',
         {
           id: 'td-' + location.join('-'),
           rowSpan,
@@ -540,7 +537,9 @@ class DynamicForm {
             },
             mouseenter: () => {
               if (this.isSelectArea || this.isAddSelectedArea) {
-                this.table.style.cursor = 'cell';
+                this.table.css({
+                  cursor: 'cell'
+                });
                 eventBus.emit('selectEndChange', location);
               } else {
                 // 显示图标
@@ -567,11 +566,12 @@ class DynamicForm {
           )
         ]
     );
+    return td;
   }
 
   // 右侧选项卡
   renderTabBox(index) {
-    const rightBtn = $getEle('.right-tab-btn');
+    const rightBtn = $('.right-tab-btn');
     const rightBtnLen = rightBtn.length;
     for (let i = 0; i < rightBtnLen; ++i) {
       rightBtn[i].className = 'right-tab-btn'

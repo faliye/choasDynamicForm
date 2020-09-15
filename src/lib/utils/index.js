@@ -1,3 +1,4 @@
+import $ from 'jquery'
 /**
  * @name     judgeDataType     判断数据类型
  * @param    target     any    数据源
@@ -102,40 +103,6 @@ export function assign(target, source) {
       }
       return target;
     }
-  }
-}
-
-/**
- * @name     $getEle           获取元素
- * @param    element     string     获取元素
- * @param    parent     string     获取元素范围（父元素）
- * */
-
-export function $getEle(element, parent) {
-  parent = parent || document;
-  let type = element.slice(0, 1);
-  if (type === '#') {
-    return parent.getElementById(element.slice(1));
-  } else if (type === '.') {
-    let classArr = [],
-        elements = parent.getElementsByTagName('*');
-    if (!document.getElementsByClassName) {
-      let i = 0,
-          l = elements.length;
-      for (; i < l; i++) {
-        let classNames = elements[i].className.split(' ');
-        for (let j in classNames) {
-          if (classNames[j] === element.slice(1)) {
-            classArr.push(elements[i]);
-          }
-        }
-      }
-      return classArr;
-    } else {
-      return parent.getElementsByClassName(element.slice(1));
-    }
-  } else {
-    return parent.getElementsByTagName(element);
   }
 }
 
@@ -254,4 +221,66 @@ export const deleteFn= (data, location)=>{
 
 export const addZero = (value) => {
   return value >9?value+'': '0'+value;
+};
+
+
+/**
+ * @name calcSelectWidth 计算选区宽度
+ * */
+export const calcSelectWidth=(start,end)=>{
+  let hasCollapsed = false;
+  let width = 0;
+  let displayCount = 0;
+
+  for (let i = start[1]; i <= end[1]; ++i) {
+    const ele = $('#td-' + end[0] + '-' + i);
+    if(ele.attr('colSpan')>1){
+      hasCollapsed = true;
+    }
+  }
+  for (let i = start[1]; i <= end[1]; ++i) {
+    const ele = $('#td-' + end[0] + '-' + i);
+    let itemWidth = parseInt(ele.outerWidth(), 10);
+    if(hasCollapsed){
+      if (ele.css('display')!=='none') {
+        width += itemWidth;
+      }else{
+        displayCount++;
+      }
+    }else{
+      width += itemWidth;
+    }
+  }
+  return width-end[1]+start[1]+displayCount;
+};
+
+
+/**
+ * @name calcSelectHeight 计算选区高度
+ * */
+export const calcSelectHeight=(start,end)=>{
+  let hasCollapsed = false;
+  let height = 0;
+  let displayCount = 0;
+
+  for (let i = start[0]; i <= end[0]; ++i) {
+    const ele = $('#td-' + i + '-' + end[1]);
+    if(ele.attr('rowSpan')>1){
+      hasCollapsed = true;
+    }
+  }
+  for (let i = start[0]; i <= end[0]; ++i) {
+    const ele = $('#td-' + i + '-' + end[1]);
+    let itemHeight = parseInt(ele.outerHeight(), 10);
+    if(hasCollapsed){
+      if (ele.css('display')!=='none') {
+        height += itemHeight;
+      }else{
+        displayCount++;
+      }
+    }else{
+      height += itemHeight;
+    }
+  }
+  return height-end[0]+start[0] +displayCount;
 };
