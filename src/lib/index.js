@@ -5,8 +5,6 @@ import {
   calcSelectWidth,
   deepClone,
   deleteFn,
-  getHeight,
-  getWidth,
   judgeDataType
 } from './utils';
 import {$createElement as h} from './utils/$createElement';
@@ -545,6 +543,12 @@ class DynamicForm {
                   cursor: 'cell'
                 });
                 eventBus.emit('selectEndChange', location);
+                const ele = $(td);
+                if($(this.mountDOM).width() - ele.offset().left<380){
+                  const midBoxBottom =$('.mid-box-bottom').eq(0);
+                  const scrollLeft = midBoxBottom.scrollLeft();
+                  midBoxBottom.scrollLeft(scrollLeft+50)
+                }
               } else {
                 // 显示图标
                 if (!isEmpty) {
