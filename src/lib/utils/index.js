@@ -251,7 +251,10 @@ export const calcSelectWidth=(start,end)=>{
       width += itemWidth;
     }
   }
-  return width-end[1]+start[1]+displayCount;
+  if(hasCollapsed) {
+    return width - end[1] + start[1] + displayCount * 2;
+  }
+  return width - end[1] + start[1] + 2;
 };
 
 
@@ -282,5 +285,8 @@ export const calcSelectHeight=(start,end)=>{
       height += itemHeight;
     }
   }
-  return height-end[0]+start[0] +displayCount;
+  if(hasCollapsed){
+    return height-end[0]+start[0] +displayCount*2;
+  }
+  return height-end[0]+start[0] + 2;
 };

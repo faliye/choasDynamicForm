@@ -337,10 +337,14 @@ class DynamicForm {
           delete data[j][i].isHidden;
         } else {
           // 逐行移除数据
-          data[j][i].children = [];
+          data[j][i].childrenProps = [];
+          data[j][i].isEmpty = 1;
+          data[j][i].isError = 0;
           data[j][i].colSpan = 1;
           data[j][i].rowSpan = 1;
           data[j][i].isHidden = 1;
+          data[j][i].parentTdNode = [];
+          data[j][i].childrenTdNode = [];
         }
       }
     }
