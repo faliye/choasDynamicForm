@@ -5,10 +5,10 @@ import {$createElement as h} from '../../utils/$createElement'
  * */
 
 export class Radio {
-  constructor({props, style}) {
+  constructor({props}) {
     this.$el = null;
     this.props = props;
-    this.style = style;
+    this.style = props.style;
     this.render();
   }
 

@@ -295,3 +295,39 @@ export const calcSelectHeight=(start,end)=>{
   }
   return height-end[0]+start[0] + 2;
 };
+
+/**
+ * @name createContentBoxStyle 计算选区高度
+ * @param styleProps 样式属性
+ * */
+
+export const createContentBoxStyle=(styleProps)=>{
+  const {
+    alignItems,
+    textAlign,
+    color,
+    background,
+    borderTopWidth,
+    borderTopStyle,
+    borderTopColor,
+    borderRightWidth,
+    borderRightStyle,
+    borderRightColor,
+    borderBottomWidth,
+    borderBottomStyle,
+    borderBottomColor,
+    borderLeftWidth,
+    borderLeftStyle,
+    borderLeftColor,
+  } = styleProps;
+  return {
+    alignItems,
+    textAlign,
+    color,
+    background,
+    borderTop: `${borderTopWidth}'px '${borderTopStyle} ${borderTopColor}`,
+    borderRight: `${borderRightWidth}'px '${borderRightStyle} ${borderRightColor}`,
+    borderBottom: `${borderBottomWidth}'px '${borderBottomStyle} ${borderBottomColor}`,
+    borderLeft: `${borderLeftWidth}'px '${borderLeftStyle} ${borderLeftColor}`,
+  };
+};

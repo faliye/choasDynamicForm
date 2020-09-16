@@ -54,11 +54,11 @@ export class ChildrenProps {
         value = '',
         dataType = 'string',
         placeholder = '',
-        style = {},
         dataListId = '',
         isMultiple = 0,
         validate = [],
-        timeValidate = []
+        timeValidate = [],
+          style={}
       }
   ) {
     this.tagName = tagName;
@@ -66,8 +66,21 @@ export class ChildrenProps {
     this.cnName = cnName;
     this.isSearch = isSearch;
     this.value = value;
+    this.style = {
+      borderTopWidth:'1',
+      borderTopStyle:'solid',
+      borderTopColor:'#000',
+      borderRightWidth:'1',
+      borderRightStyle:'solid',
+      borderRightColor:'#000',
+      borderBottomWidth:'1',
+      borderBottomStyle:'solid',
+      borderBottomColor:'#000',
+      borderLeftWidth:'1',
+      borderLeftStyle:'solid',
+      borderLeftColor:'#000',
+    };
     this.placeholder = placeholder;
-    this.style = style;
     this.dataListId = dataListId;
     this.dataType = dataType;
     this.isMultiple = isMultiple;
@@ -114,7 +127,6 @@ export class TdBoxClass {
         isHidden = 0, // hidden情况下必为empty
         isEmpty = 1, // 是否为空
         isError = 0, // 是否报错
-        style = {},
         parentTdNode = [],
         childrenTdNode = [],
         childrenProps = {},
@@ -128,7 +140,6 @@ export class TdBoxClass {
     this.isHidden = isHidden;
     this.isEmpty = isEmpty;
     this.isError = isError;
-    this.style = style;
     this.parentTdNode = parentTdNode;
     this.childrenTdNode = childrenTdNode;
     this.childrenProps = childrenProps;

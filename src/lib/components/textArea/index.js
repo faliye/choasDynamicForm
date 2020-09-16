@@ -8,11 +8,13 @@ import mainEvent from "../../mainEvent";
  * */
 
 export class TextArea {
-  constructor({props, style}) {
+  constructor({props}) {
     this.$el = null;
     this.parentNodes = null;
     this.props = props;
-    this.style = style;
+    this.style = {
+      ...props.style,
+    };
     this.eventBus = new EventBus({...this.proto});
     this.render(this.eventBus.store);
   }

@@ -7,10 +7,12 @@ import mainEvent from "../../mainEvent";
  * */
 
 export class Select {
-  constructor({props, style}) {
+  constructor({props}) {
     this.$el = null;
     this.props = props;
-    this.style = style;
+    this.style = {
+      ...props.style,
+    };
     this.render();
   }
 

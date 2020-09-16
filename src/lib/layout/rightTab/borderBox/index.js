@@ -1,46 +1,32 @@
 import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
+import './index.scss';
 
 const borderConfig = [
   {
-    key: 'borderTopWidth',
+    key: 'borderTop',
     name: '上边框',
     className: 'border-control-box'
   },
   {
-    key: 'borderTopWidth',
+    key: 'borderRight',
     name: '右边框',
     className: 'border-control-box'
   },
   {
-    key: 'borderBottomWidth',
+    key: 'borderBottom',
     name: '下边框',
     className: 'border-control-box'
   },
   {
-    key: 'borderLeftWidth',
+    key: 'borderLeft',
     name: '左边框',
     className: 'border-control-box'
   },
-  {
-    key: 'borderStyle',
-    name: '线型',
-    className: 'border-style-box'
-  },
-  {
-    key: 'borderColor',
-    name: '边框颜色',
-    className: 'border-color-box'
-  },
-
 ];
 
 export const createBorderBox = (data) => {
-  const {childrenTdNode} = data;
-  let childrenTd = null
-  if(childrenTdNode.length){
-    childrenTd = mainEvent.store.data[childrenTdNode[0]][childrenTdNode[1]];
-  }
+  console.log(data)
   return h('div',
       {
         className: ['border-box']
@@ -59,109 +45,94 @@ export const createBorderBox = (data) => {
             },
             [
               ...borderConfig.map(item => {
-                if (item.className === 'border-control-box') {
-                  return h('div',
-                      {
-                        className: ['border-control-box']
-                      }, [
-                        h('span', {}, [item.name + ':']),
-                        h('input',
-                            {
-                              props: {
-                                value: '1'
+                    return h('div',
+                        {
+                          className: ['border-control-box']
+                        },
+                        [
+                          h('span',
+                              {
+                                className: ['border-control-title']
                               },
-                              on: {
-                                change: (e) => {
-                                  data.style[item.key] = e.target.value + 'px';
-                                  childrenTd && (childrenTd.style[item.key] = e.target.value + 'px');
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
+                              [item.name + ':']
+                          ),
+                          h('input',
+                              {
+                                props: {
+                                  value: _.get(data, `childrenProps.style.${item.key + 'Width'}`, 1),
+                                  className: ['border-width-input']
+                                },
+                                on: {
+                                  change: (e) => {
+                                    data.childrenProps.style[item.key + 'Width'] = e.target.value + 'px';
+                                    mainEvent.emit('dataChange', mainEvent.store.data);
+                                  }
                                 }
-                              }
-                            },
-                        ),
-                        h('span', {}, ['px']),
-                      ]
-                  );
-                }
-                // 边线类型
-                if (item.className === 'border-style-box') {
-                  return h('div',
-                      {
-                        className: ['border-style-box']
-                      },
-                      [
-                        h('span', {}, [item.name + ':']),
-                        h('select',
-                            {
-                              props: {
-                                value: 'solid'
                               },
-                              on: {
-                                change: (e) => {
-                                  data.style[item.key] = e.target.value;
-                                  childrenTd && (childrenTd.style[item.key] = e.target.value);
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
+                          ),
+                          h('span', {}, ['px']),
+                          h('select',
+                              {
+                                on: {
+                                  change: (e) => {
+                                    data.childrenProps.style[item.key + 'Style'] = e.target.value;
+                                    mainEvent.emit('dataChange', mainEvent.store.data);
+                                  }
+                                }
+                              },
+                              [
+                                h('option',
+                                    {
+                                      value: 'solid',
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                    },
+                                    [
+                                      h('span', {
+                                        className: ['solid-line']
+                                      }, ['实线'])
+                                    ]
+                                ),
+                                h('option',
+                                    {
+                                      value: 'dotted',
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                    },
+                                    [
+                                      h('span', {
+                                        className: ['dotted-line']
+                                      }, ['点线'])
+                                    ]
+                                ),
+                                h('option',
+                                    {
+                                      value: 'dash',
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                    },
+                                    [
+                                      h('span', {
+                                        className: ['dash-line']
+                                      }, ['虚线'])
+                                    ]
+                                )
+                              ]
+                          ),
+                          h('input', {
+                                type: 'color',
+                                props: {
+                                  value: data.childrenProps.style[item.key + 'Color']
+                                },
+                                on: {
+                                  change: (e) => {
+                                    data.childrenProps.style[item.key + 'Color'] = e.target.value;
+                                    mainEvent.emit('dataChange', mainEvent.store.data);
+                                  }
                                 }
                               }
-                            },
-                            [
-                              h('option',
-                                  {
-                                    value: 'solid'
-                                  },
-                                  [
-                                    h('span', {
-                                      className: ['solid-line']
-                                    }, ['实线'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'dotted'
-                                  },
-                                  [
-                                    h('span', {
-                                      className: ['dotted-line']
-                                    }, ['点线'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'dash'
-                                  },
-                                  [
-                                    h('span', {
-                                      className: ['dash-line']
-                                    }, ['虚线'])
-                                  ]
-                              )
-                            ]
-                        ),
-                      ]
-                  )
-                }
-                if (item.className === 'border-color-box') {
-                  return h('div',
-                      {
-                        className: ['border-color-box']
-                      },
-                      [
-                        h('span', {}, [item.name + ':']),
-                        h('input', {
-                              type: 'color',
-                              on: {
-                                change: (e) => {
-                                  data.style[item.key] = e.target.value;
-                                  childrenTd && (childrenTd.style[item.key] = e.target.value);
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                }
-                              }
-                            }
-                        ),
-                      ]
-                  )
-                }
-              })
+                          ),
+                        ]
+                    );
+                  }
+              )
             ]
         )
       ]

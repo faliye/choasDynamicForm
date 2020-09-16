@@ -1,24 +1,18 @@
-import $ from 'jquery'
-import {$createElement as h} from '../../utils/$createElement'
+import $ from 'jquery';
+import {$createElement as h} from '../../utils/$createElement';
+import {createContentBoxStyle} from "../../utils";
 import mainEvent from "../../mainEvent";
 
 /**
  * TitleBox
  * */
 export class TitleBox {
-  constructor({props, style}) {
+  constructor({props}) {
     this.$el = null;
     this.contentBox = null;
     this.inputBox = null;
     this.props = props;
     this.style = {
-      flex: 1,
-      maxHeight: '35px',
-      width: '100%',
-      wordBreak: 'break-all',
-      whiteSpace: 'break-spaces',
-      alignItems: 'center',
-      textAlign: 'center',
       ...props.style,
     };
     this.render();
@@ -29,7 +23,12 @@ export class TitleBox {
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
-          style:this.style,
+          style:{
+            lineHeight: '35px',
+            width: '100%',
+            wordBreak: 'break-all',
+            whiteSpace: 'break-spaces',
+          },
           on: {
             click: () => {
               $(this.inputBox).css({
@@ -84,6 +83,7 @@ export class TitleBox {
     this.$el = h('div',
         {
           className: ['component-box'],
+          style:createContentBoxStyle(this.style)
         }, [
           this.contentBox,
           this.inputBox,

@@ -563,10 +563,7 @@ class DynamicForm {
               } else {
                 // 显示图标
                 if (!isEmpty) {
-                  // .style.display = 'inline-block';
-                  $(deleteI).css({
-                    display: 'inline-block'
-                  })
+                  $(td).append($(deleteI))
                 }
               }
             },
@@ -583,13 +580,11 @@ class DynamicForm {
               }
             },
             mouseleave: () => {
-              // 隐藏图标
-              deleteI.style.display = 'none';
+              $(td).children('.td-controllers').remove();
             }
           }
         },
         [
-          deleteI,
           tdChildren,
         ]
     );

@@ -22,10 +22,13 @@ export const fakeTableBox = (storeData) => {
                     ...item.map(td => {
                       const {
                         location = [],
-                        isEmpty = 1,
+                        isEmpty = 0,
                         parentTdNode = [],
                         childrenTdNode = [],
                         childrenProps = {},
+                        isHidden = 0,
+                        colSpan = 1,
+                        rowSpan = 1,
                         style,
                       } = td;
                       let tdStyle = {
@@ -38,8 +41,12 @@ export const fakeTableBox = (storeData) => {
                           props: {
                             parentTdNode,
                             location,
-                            childrenTdNode, ...childrenProps
-                          }, style
+                            childrenTdNode,
+                            ...childrenProps
+                          }, style: {
+                            ...tdStyle,
+                            ...style,
+                          }
                         });
                         if (childrenProps.tagName === 'TitleBox') {
                           tdStyle = {
@@ -51,9 +58,10 @@ export const fakeTableBox = (storeData) => {
                           }
                         }
                       }
-
                       return h('td', {
-                        style: tdStyle
+                        style: tdStyle,
+                        colSpan,
+                        rowSpan,
                       }, [
                         tdChildren
                       ])
@@ -81,7 +89,7 @@ export const fakeTableBox = (storeData) => {
               on: {
                 click: () => {
                   const tr = h('tr', {}, [
-                    ...data[data.length-1].map(td => {
+                    ...data[data.length - 1].map(td => {
                       const {
                         location = [],
                         isEmpty = 1,

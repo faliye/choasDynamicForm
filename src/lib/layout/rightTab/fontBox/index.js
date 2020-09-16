@@ -28,7 +28,6 @@ const fontConfig = [
 export const createFontSizeBox = (data) => {
   const textAlign = _.get(data,'childrenProps.style.textAlign','');
   const alignItems = _.get(data,'childrenProps.style.alignItems','');
-
   return h('div',
       {
         className: ['border-box']
@@ -145,8 +144,8 @@ export const createFontSizeBox = (data) => {
                             [
                               h('option',
                                   {
-                                    value: 'top',
-                                    selected: alignItems === 'top'
+                                    value: 'flex-start',
+                                    selected: alignItems === 'flex-start'
                                   },
                                   [
                                     h('span', {
@@ -155,8 +154,8 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'middle',
-                                    selected: alignItems === 'middle'
+                                    value: 'center',
+                                    selected: alignItems === 'center'
                                   },
                                   [
                                     h('span', {
@@ -165,8 +164,8 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'bottom',
-                                    selected: alignItems === 'bottom'
+                                    value: 'flex-end',
+                                    selected: alignItems === 'flex-end'
                                   },
                                   [
                                     h('span', {

@@ -1,18 +1,124 @@
 import DynamicForm from './lib';
+
 export default DynamicForm;
-const save1 =(data)=>{
+const save1 = (data) => {
   console.log(data)
 };
-const save2 =(data)=>{
+const save2 = (data) => {
   console.log(data)
 };
-const dynamicForm = new DynamicForm('app',save1,save2);
+const dynamicForm = new DynamicForm('app', save1, save2);
 
-// const data = [[{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,0],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[1,0],"childrenProps":{"tagName":"TitleBox","keyName":"name","cnName":"姓名","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,1],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[1,1],"childrenProps":{"tagName":"TitleBox","keyName":"age","cnName":"年龄","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,2],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[1,2],"childrenProps":{"tagName":"TitleBox","keyName":"adress","cnName":"地址","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,3],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[1,3],"childrenProps":{"tagName":"TitleBox","keyName":"tel","cnName":"电话","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,4],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[1,4],"childrenProps":{"tagName":"TitleBox","keyName":"prefession","cnName":"职业","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}}],[{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[1,0],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[0,0],"childrenTdNode":[],"childrenProps":{"tagName":"Input","keyName":"","cnName":"","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[{"key":"isRequire","value":false,"name":"是否必选","event":["change"]},{"key":"max","value":-1,"name":"最大长度","event":["change"]},{"key":"min","value":-1,"name":"最小长度","event":["change"]}],"dataType":"string"}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[1,1],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[0,1],"childrenTdNode":[],"childrenProps":{"tagName":"Input","keyName":"","cnName":"","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[{"key":"isRequire","value":false,"name":"是否必选","event":["change"]},{"key":"max","value":-1,"name":"最大长度","event":["change"]},{"key":"min","value":-1,"name":"最小长度","event":["change"]}],"dataType":"int"}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[1,2],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[0,2],"childrenTdNode":[],"childrenProps":{"tagName":"TextArea","keyName":"","cnName":"","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[{"key":"isRequire","value":false,"name":"是否必选","event":["change"]},{"key":"max","value":-1,"name":"最大长度","event":["change"]},{"key":"min","value":-1,"name":"最小长度","event":["change"]}]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[1,3],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[0,3],"childrenTdNode":[],"childrenProps":{"tagName":"TextArea","keyName":"","cnName":"","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[{"key":"isRequire","value":false,"name":"是否必选","event":["change"]},{"key":"max","value":-1,"name":"最大长度","event":["change"]},{"key":"min","value":-1,"name":"最小长度","event":["change"]}]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[1,4],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[0,4],"childrenTdNode":[],"childrenProps":{"tagName":"TextArea","keyName":"","cnName":"","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[{"key":"isRequire","value":false,"name":"是否必选","event":["change"]},{"key":"max","value":-1,"name":"最大长度","event":["change"]},{"key":"min","value":-1,"name":"最小长度","event":["change"]}]}}]]
 
-const data =   [[{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,0],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[],"childrenProps":{"tagName":"TitleBox","keyName":"","cnName":"A","isSearch":1,"value":"","placeholder":"","style":{textAlign: 'right', alignItems: 'top'},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,1],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[],"childrenProps":{"tagName":"TitleBox","keyName":"","cnName":"A","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,2],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[],"childrenProps":{"tagName":"TitleBox","keyName":"","cnName":"A","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}},{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"location":[0,3],"isHidden":0,"isEmpty":0,"isError":0,"style":{},"parentTdNode":[],"childrenTdNode":[],"childrenProps":{"tagName":"TitleBox","keyName":"","cnName":"B","isSearch":1,"value":"","placeholder":"","style":{},"dataListId":"","isMultiple":0,"validate":[]}}]];
+const data = [
+  [
+    {
+      "tag": "td",
+      "insertType": "col",
+      "colSpan": 1,
+      "rowSpan": 1,
+      "location": [0, 0],
+      "isHidden": 0,
+      "isEmpty": 0,
+      "isError": 0,
+      "style": {},
+      "parentTdNode": [],
+      "childrenTdNode": [],
+      "childrenProps": {
+        "tagName": "TitleBox",
+        "keyName": "",
+        "cnName": "A",
+        "isSearch": 1,
+        "value": "",
+        "placeholder": "",
+        "style": {
+          textAlign: 'center',
+          alignItems: 'center'
+        },
+        "dataListId": "",
+        "isMultiple": 0,
+        "validate": []
+      }
+    },
+    {
+      "tag": "td",
+      "insertType": "col",
+      "colSpan": 1,
+      "rowSpan": 1,
+      "location": [0, 1],
+      "isHidden": 0,
+      "isEmpty": 0,
+      "isError": 0,
+      "style": {},
+      "parentTdNode": [],
+      "childrenTdNode": [],
+      "childrenProps": {
+        "tagName": "TitleBox",
+        "keyName": "",
+        "cnName": "A",
+        "isSearch": 1,
+        "value": "",
+        "placeholder": "",
+        "style": {},
+        "dataListId": ""
+        , "isMultiple": 0,
+        "validate": []
+      }
+    },
+    {
+      "tag": "td",
+      "insertType": "col",
+      "colSpan": 1,
+      "rowSpan": 1,
+      "location": [0, 2],
+      "isHidden": 0,
+      "isEmpty": 0,
+      "isError": 0,
+      "style": {},
+      "parentTdNode": [],
+      "childrenTdNode": [],
+      "childrenProps": {
+        "tagName": "TitleBox",
+        "keyName": "",
+        "cnName": "A",
+        "isSearch": 1,
+        "value": "",
+        "placeholder": "",
+        "style": {},
+        "dataListId": "",
+        "isMultiple": 0,
+        "validate": []
+      }
+    },
+    {
+      "tag": "td",
+      "insertType": "col",
+      "colSpan": 1,
+      "rowSpan": 1,
+      "location": [0, 3],
+      "isHidden": 0,
+      "isEmpty": 0,
+      "isError": 0,
+      "style": {},
+      "parentTdNode": [],
+      "childrenTdNode": [],
+      "childrenProps": {
+        "tagName": "TitleBox",
+        "keyName": "",
+        "cnName": "B",
+        "isSearch": 1,
+        "value": "",
+        "placeholder": "",
+        "style": {},
+        "dataListId": "",
+        "isMultiple": 0,
+        "validate": []
+      }
+    }
+  ]
+];
 // 获取值后设置值
-setTimeout(()=>{
+setTimeout(() => {
   dynamicForm.getTableData(data);
   // dynamicForm.previewHandle();
 }, 200);
