@@ -17,7 +17,7 @@ const sizeConfig = {
     width: 160,
     height: 35,
   },
-  midRight: {
+  navRight: {
     width: 260,
   },
 };

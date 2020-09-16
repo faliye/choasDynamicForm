@@ -15,6 +15,6 @@ const data =   [[{"tag":"td","insertType":"col","colSpan":1,"rowSpan":1,"locatio
 setTimeout(()=>{
   dynamicForm.getTableData(data);
   // dynamicForm.previewHandle();
-}, 2000);
+}, 200);
 
 dynamicForm.getDataList([]);

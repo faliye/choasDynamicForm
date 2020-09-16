@@ -9,13 +9,13 @@ const leftNavWidth = sizeConfig.leftNav.width;
 const midTopHeight = sizeConfig.midTop.height;
 const midLeftPaddingLeft = sizeConfig.midLeft.paddingLeft;
 const midLeftPaddingTop = sizeConfig.midLeft.paddingTop;
-const midRightWidth = sizeConfig.midRight.width;
+const navRightWidth = sizeConfig.navRight.width;
 const tablePaddingTop = sizeConfig.table.paddingTop;
 const tablePaddingLeft = sizeConfig.table.paddingLeft;
 
 
 function mountMidBox(mountDOM, themeConfig = {}) {
-  const midBoxWidth = getWidth(mountDOM) - leftNavWidth - midRightWidth -20 - 1;
+  const midBoxWidth = getWidth(mountDOM) - leftNavWidth - navRightWidth -20 - 1;
   const topLeftBtnBoxWidth = midBoxWidth;
   const tableBoxWidth = topLeftBtnBoxWidth - midLeftPaddingLeft * 2 - 2;
   const tableBoxHeight = getHeight(mountDOM) - 60 - midLeftPaddingTop * 2 - 1;
@@ -170,7 +170,7 @@ function mountMidBox(mountDOM, themeConfig = {}) {
               h('div',
                   {
                     className: ['mid-box-top-right'],
-                    width: midRightWidth + 'px',
+                    width: navRightWidth + 'px',
                   },
                   [])
             ]),

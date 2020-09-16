@@ -199,20 +199,25 @@ export const getWidth = (ele) => {
  * @name deleteFn 删除元素
  * */
 
-export const deleteFn= (data, location)=>{
-  const targetData = data[location[0]][location[1]];
-  const {parentTdNode=[],childrenTdNode=[]} = targetData;
-  if(parentTdNode.length){
-    data[parentTdNode[0]][parentTdNode[1]].childrenTdNode = []
+export const deleteFn= (data,selectStart ,selectEnd)=>{
+  for (let j = selectStart[0];j<=selectEnd[0];++j){
+    for (let i= selectStart[1];i<=selectEnd[1];++i){
+      const targetData = data[j][i];
+      const {parentTdNode=[],childrenTdNode=[]} = targetData;
+      if(parentTdNode.length){
+        data[parentTdNode[0]][parentTdNode[1]].childrenTdNode = []
+      }
+      if(childrenTdNode.length){
+        deleteFn(data, childrenTdNode,childrenTdNode)
+      }
+      delete targetData.childrenProps;
+      targetData.childrenTdNode =[];
+      targetData.parentTdNode = [];
+      targetData.isEmpty = 1;
+      targetData.isError = false;
+    }
   }
-  if(childrenTdNode.length){
-    deleteFn(data, childrenTdNode)
-  }
-  delete targetData.childrenProps;
-  targetData.childrenTdNode =[];
-  targetData.parentTdNode = [];
-  targetData.isEmpty = 1;
-  targetData.isError = false;
+
 };
 
 /**

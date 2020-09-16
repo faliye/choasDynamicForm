@@ -6,7 +6,7 @@ import colorConfig from "../../config/color.config";
 import './index.scss'
 
 const midTopHeight = sizeConfig.midTop.height;
-const midRightWidth = sizeConfig.midRight.width;
+const navRightWidth = sizeConfig.navRight.width;
 
 
 function mountRightBox(mountDOM, themeConfig = {}) {
@@ -14,7 +14,7 @@ function mountRightBox(mountDOM, themeConfig = {}) {
       {
         className: ['right-box'],
         style: {
-          width: midRightWidth - 1 + 'px',
+          width: navRightWidth - 1 + 'px',
           height: 100 % +'px',
         }
       },

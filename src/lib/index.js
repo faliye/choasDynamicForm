@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import _ from 'lodash'
 import {
   addEvent,
   calcSelectHeight,
@@ -27,12 +28,11 @@ import {createDatepicker} from './layout/rightTab/datepickerBox';
 import './assets/iconFont/iconFont.scss';
 import './index.scss';
 import sizeConfig from './config/size.config';
-// const midTopHeight = sizeConfig.midTop.height;
-// const midLeftPaddingLeft = sizeConfig.midLeft.paddingLeft;
-// const midLeftPaddingTop = sizeConfig.midLeft.paddingTop;
-// const midRightWidth = sizeConfig.midRight.width;
+
 const tablePaddingTop = sizeConfig.table.paddingTop;
 const tablePaddingLeft = sizeConfig.table.paddingLeft;
+const leftNavWidth = sizeConfig.leftNav.width;
+const rightNaveWidth = sizeConfig.navRight.width;
 const tdWidth = sizeConfig.midLeftTd.width;
 const tdHeight = sizeConfig.midLeftTd.height;
 
@@ -64,6 +64,17 @@ class DynamicForm {
   // 向DOM节点添加事件
   addDOMEvent() {
     this.table = $('#edit-table');
+    $(document).on('keydown', (e) => {
+      if(e.key==='Shift' && !e.ctrlKey){
+        this.isSelectArea = true;
+        this.table.css({
+          cursor: 'cell'
+        });
+      }
+    }).on('keyup',()=>{
+      this.isSelectArea = false;
+      this.table.css({cursor: 'default'});
+    });
     this.table.on('mousedown', (e) => {
       if (e.which === 1) {
         this.isSelectArea = true;
@@ -230,7 +241,7 @@ class DynamicForm {
     // 未获取到表单数据时初始化空白表单
     let col = Math.floor(
         (this.table.width() - tablePaddingLeft * 2) / (tdWidth + 2)
-    );
+    ) + 5;
     let row = Math.floor(
         (this.table.height() - tablePaddingTop * 2) / (tdHeight + 2)
     );
@@ -307,8 +318,8 @@ class DynamicForm {
       left: left + tablePaddingLeft,
     });
     this.addSelectedArea.css({
-      top: top + tablePaddingTop+height-4,
-      left: left + tablePaddingLeft+width-4,
+      top: top + tablePaddingTop + height - 4,
+      left: left + tablePaddingLeft + width - 4,
     });
   }
 
@@ -502,8 +513,8 @@ class DynamicForm {
           className: ['iconfont', 'icon-shanchu', 'td-controllers', 'td-controllers-del'],
           on: {
             click: (e) => {
-              const {data} = eventBus.store;
-              deleteFn(data, location);
+              const {data, selectStart, selectEnd} = eventBus.store;
+              deleteFn(data, selectStart,selectEnd);
               eventBus.emit('dataChange', data);
               eventBus.emit('backupData', data);
               e.stopPropagation();
@@ -543,17 +554,23 @@ class DynamicForm {
                   cursor: 'cell'
                 });
                 eventBus.emit('selectEndChange', location);
-                const ele = $(td);
-                if($(this.mountDOM).width() - ele.offset().left<380){
-                  const midBoxBottom =$('.mid-box-bottom').eq(0);
-                  const scrollLeft = midBoxBottom.scrollLeft();
-                  midBoxBottom.scrollLeft(scrollLeft+50)
-                }
               } else {
                 // 显示图标
                 if (!isEmpty) {
                   deleteI.style.display = 'inline-block';
                 }
+              }
+            },
+            mousemove: () => {
+              const ele = $(td);
+              if (this.isSelectArea || this.isAddSelectedArea) {
+                _.debounce(() => {
+                  if (($(this.mountDOM).width() - leftNavWidth - rightNaveWidth) < ele.offset().left) {
+                    const midBoxBottom = $('.mid-box-bottom').eq(0);
+                    const scrollLeft = midBoxBottom.scrollLeft();
+                    midBoxBottom.scrollLeft(scrollLeft + ele.width() / 8)
+                  }
+                }, 10)()
               }
             },
             mouseleave: () => {
