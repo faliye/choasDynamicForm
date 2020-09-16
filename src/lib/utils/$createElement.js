@@ -16,7 +16,6 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
 
   switch (tag) {
     case 'TitleBox': {
-      console.log(proto)
       ele = new TitleBox(proto).$el;
       break;
     }

@@ -346,7 +346,7 @@ class DynamicForm {
           delete data[j][i].isHidden;
         } else {
           // 逐行移除数据
-          data[j][i].childrenProps = [];
+          data[j][i].childrenProps = {};
           data[j][i].isEmpty = 1;
           data[j][i].isError = 0;
           data[j][i].colSpan = 1;
