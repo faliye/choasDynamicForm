@@ -314,12 +314,12 @@ class DynamicForm {
     selectedArea.css({
       width,
       height,
-      top: top + tablePaddingTop,
-      left: left + tablePaddingLeft,
+      top: top,
+      left: left,
     });
     this.addSelectedArea.css({
-      top: top + tablePaddingTop + height - 4,
-      left: left + tablePaddingLeft + width - 4,
+      top: top + height - 4,
+      left: left+ width - 4,
     });
   }
 
@@ -514,7 +514,12 @@ class DynamicForm {
           on: {
             click: (e) => {
               const {data, selectStart, selectEnd} = eventBus.store;
-              deleteFn(data, selectStart,selectEnd);
+              // 目标在选区中 删除选区
+              if(_.inRange(location[0],selectStart[0]-1,selectEnd[0]+1) && _.inRange(location[1],selectStart[1]-1,selectEnd[1]+1)){
+                deleteFn(data, selectStart,selectEnd);
+              }else{
+                deleteFn(data, location,location);
+              }
               eventBus.emit('dataChange', data);
               eventBus.emit('backupData', data);
               e.stopPropagation();
@@ -542,6 +547,7 @@ class DynamicForm {
             height: rowSpan * tdHeight + (rowSpan - 1) * 2 + 'px',
             background: isError ? '#ff5e5c' : 'transparent',
             display: !isHidden ? 'table-cell' : 'none',
+            position: 'relative',
             padding: 0,
           },
           on: {
@@ -557,7 +563,10 @@ class DynamicForm {
               } else {
                 // 显示图标
                 if (!isEmpty) {
-                  deleteI.style.display = 'inline-block';
+                  // .style.display = 'inline-block';
+                  $(deleteI).css({
+                    display: 'inline-block'
+                  })
                 }
               }
             },
@@ -580,15 +589,8 @@ class DynamicForm {
           }
         },
         [
-          h('div',
-              {
-                className: ['component-wrap'],
-              },
-              [
-                deleteI,
-                tdChildren,
-              ]
-          )
+          deleteI,
+          tdChildren,
         ]
     );
     return td;

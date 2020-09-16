@@ -1,4 +1,3 @@
-import {$getEle} from '../../utils';
 import $ from 'jquery'
 import {$createElement as h} from '../../utils/$createElement';
 import eventBus from "../../mainEvent";

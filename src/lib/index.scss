@@ -154,80 +154,77 @@ button{
         white-space: nowrap;
         .td-div {
           // 首层外壳
-          padding: 0;
-          margin: 0;
-          .component-wrap{
-            width: 100%;
-            height: 100%;
-            position: relative;
-            & *::selection{
+          padding: 0 !important;
+          margin: 0 !important;
+
+          // 控制按钮
+          .td-controllers{
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            border-radius: 18px;
+            text-align: center;
+            line-height: 18px;
+            font-weight: bold;
+            top: -10px;
+            background: #fff;
+            box-shadow: 1px 1px 10px $darkFontColor;
+            display: none;
+            cursor: pointer;
+            z-index: 999;
+            &:nth-of-type(1){
+              color: $errorColor;
+              right: 5px;
+            }
+          }
+          .component-box{
+            flex: 1;
+            display: flex;
+            ::selection{
               background: none;
             }
-            // 控制按钮
-            .td-controllers{
-              position: absolute;
-              height: 18px;
-              width: 18px;
-              border-radius: 18px;
-              text-align: center;
-              line-height: 18px;
-              font-weight: bold;
-              top: -10px;
-              background: #fff;
-              box-shadow: 1px 1px 10px $darkFontColor;
-              display: none;
-              cursor: pointer;
-              &:nth-of-type(1){
-                color: $errorColor;
-                right: 5px;
-              }
-            }
-            // 组件盒子
-            .component-box{
-              width: 100%;
-              height: 100%;
-              &.radio-box{
-                word-break: break-all;
-                white-space: normal;
+
+            &.radio-box{
+              word-break: break-all;
+              white-space: normal;
+              &>span{
+                display: inline-block;
+                height: 18px;
+                line-height: 18px;
+                font-size: 14px;
+                padding: 2px 4px;
+                &>input{
+                  width: 16px;
+                  height: 16px;
+                  vertical-align: middle;
+                }
                 &>span{
-                  display: inline-block;
-                  height: 18px;
-                  line-height: 18px;
-                  font-size: 14px;
-                  padding: 2px 4px;
-                  &>input{
-                    width: 16px;
-                    height: 16px;
-                    vertical-align: middle;
-                  }
-                  &>span{
-                    vertical-align: middle;
-                  }
+                  vertical-align: middle;
                 }
               }
-              input, select, textarea{
-                width: 100%;
-                height: 100%;
-                padding: 0;
-                margin: 0;
-                display: inline-block;
-                resize: none;
-              }
-              input, textarea{
-                border: 1px solid #ccc;
-              }
-              input, select, textarea{
-                background: transparent;
-                outline: none;
-              }
-              &-item-row{
-                width: 120px;
-                height: 100%;
-              }
-              &-item-col{
-                width: 100%;
-                height: 35px;
-              }
+            }
+            input, select, textarea{
+              width: 100%;
+              line-height: 35px;
+              padding: 0;
+              margin: 0;
+              display: block;
+              resize: none;
+            }
+            input, textarea{
+              border: none;
+            }
+            input, select, textarea{
+              background: transparent;
+              outline: none;
+            }
+            &-item-row{
+              width: 120px;
+              height: 100%;
+            }
+            &-item-col{
+              width: 100%;
+              height: 35px;
             }
           }
         }

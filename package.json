@@ -16,7 +16,7 @@
     "choas-dynamic-form"
   ],
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.11.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.1",

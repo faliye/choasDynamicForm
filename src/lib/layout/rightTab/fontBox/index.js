@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
 
@@ -18,13 +19,16 @@ const fontConfig = [
     className: 'text-align-box'
   },
   {
-    key: 'verticalAlign',
+    key: 'alignItems',
     name: '竖直对齐',
     className: 'vertical-align-box'
   },
 ];
 
 export const createFontSizeBox = (data) => {
+  const textAlign = _.get(data,'childrenProps.style.textAlign','');
+  const alignItems = _.get(data,'childrenProps.style.alignItems','');
+
   return h('div',
       {
         className: ['border-box']
@@ -56,7 +60,7 @@ export const createFontSizeBox = (data) => {
                               },
                               on: {
                                 change: (e) => {
-                                  data.style[item.key] = e.target.value + 'px';
+                                  data.childrenProps.style[item.key] = e.target.value + 'px';
                                   mainEvent.emit('dataChange', mainEvent.store.data);
                                 }
                               }
@@ -66,7 +70,7 @@ export const createFontSizeBox = (data) => {
                       ]
                   );
                 }
-                // 边线类型
+                // 居中
                 if (item.className === 'text-align-box') {
                   return h('div',
                       {
@@ -76,12 +80,9 @@ export const createFontSizeBox = (data) => {
                         h('span', {}, [item.name + ':']),
                         h('select',
                             {
-                              props: {
-                                value: 'left'
-                              },
                               on: {
                                 change: (e) => {
-                                  data.style[item.key] = e.target.value;
+                                  data.childrenProps.style[item.key] = e.target.value;
                                   mainEvent.emit('dataChange', mainEvent.store.data);
                                 }
                               }
@@ -89,7 +90,8 @@ export const createFontSizeBox = (data) => {
                             [
                               h('option',
                                   {
-                                    value: 'left'
+                                    value: 'left',
+                                    selected: textAlign === 'left'
                                   },
                                   [
                                     h('span', {
@@ -98,7 +100,9 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'center'
+                                    value: 'center',
+                                    selected: textAlign === 'center'
+
                                   },
                                   [
                                     h('span', {
@@ -107,7 +111,9 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'right'
+                                    value: 'right',
+                                    selected: textAlign === 'right'
+
                                   },
                                   [
                                     h('span', {
@@ -119,6 +125,7 @@ export const createFontSizeBox = (data) => {
                       ]
                   )
                 }
+                // 竖直对齐
                 if (item.className === 'vertical-align-box') {
                   return h('div',
                       {
@@ -128,12 +135,9 @@ export const createFontSizeBox = (data) => {
                         h('span', {}, [item.name + ':']),
                         h('select',
                             {
-                              props: {
-                                value: 'top'
-                              },
                               on: {
                                 change: (e) => {
-                                  data.style[item.key] = e.target.value;
+                                  data.childrenProps.style[item.key] = e.target.value;
                                   mainEvent.emit('dataChange', mainEvent.store.data);
                                 }
                               }
@@ -141,7 +145,8 @@ export const createFontSizeBox = (data) => {
                             [
                               h('option',
                                   {
-                                    value: 'top'
+                                    value: 'top',
+                                    selected: alignItems === 'top'
                                   },
                                   [
                                     h('span', {
@@ -150,7 +155,8 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'middle'
+                                    value: 'middle',
+                                    selected: alignItems === 'middle'
                                   },
                                   [
                                     h('span', {
@@ -159,7 +165,8 @@ export const createFontSizeBox = (data) => {
                               ),
                               h('option',
                                   {
-                                    value: 'bottom'
+                                    value: 'bottom',
+                                    selected: alignItems === 'bottom'
                                   },
                                   [
                                     h('span', {
@@ -182,7 +189,7 @@ export const createFontSizeBox = (data) => {
                               type: 'color',
                               on: {
                                 change: (e) => {
-                                  data.style[item.key] = e.target.value;
+                                  data.childrenProps.style[item.key] = e.target.value;
                                   mainEvent.emit('dataChange', mainEvent.store.data);
                                 }
                               }

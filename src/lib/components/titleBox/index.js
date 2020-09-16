@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import {$createElement as h} from '../../utils/$createElement'
 import mainEvent from "../../mainEvent";
 
@@ -10,7 +11,16 @@ export class TitleBox {
     this.contentBox = null;
     this.inputBox = null;
     this.props = props;
-    this.style = style;
+    this.style = {
+      flex: 1,
+      maxHeight: '35px',
+      width: '100%',
+      wordBreak: 'break-all',
+      whiteSpace: 'break-spaces',
+      alignItems: 'center',
+      textAlign: 'center',
+      ...props.style,
+    };
     this.render();
   }
 
@@ -19,23 +29,23 @@ export class TitleBox {
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
-          style: {
-            width: '100%',
-            height: '33px',
-            lineHeight: '33px',
-            display: 'inline-block',
-            ...this.style
-          },
+          style:this.style,
           on: {
             click: () => {
-              this.inputBox.style.display = 'inline-block';
-              this.inputBox.focus();
-              this.contentBox.style.display = 'none';
+              $(this.inputBox).css({
+                display: 'inline-block',
+              }).focus();
+              $(this.contentBox).css({
+                display: 'none',
+              });
             },
             blur: () => {
-              this.inputBox.style.display = 'none';
-              this.contentBox.style.display = 'inline-block';
-              this.contentBox.innerHTML = mainData.cnName;
+              $(this.inputBox).css({
+                display: 'none',
+              }).focus();
+              $(this.contentBox).css({
+                display: 'inline-block',
+              }).html(mainData.cnName);
             },
           }
         },
@@ -45,16 +55,20 @@ export class TitleBox {
         {
           className: ['table-edit-input-open'],
           placeholder: '请输入标题',
-          style:{
+          style: {
             display: 'none',
             width: '100%',
-            height: '100%',
+            height: '35px',
+            border: 'none'
           },
           on: {
             blur: (e) => {
-              this.inputBox.style.display = 'none';
-              this.contentBox.style.display = 'inline-block';
-              this.contentBox.innerHTML = e.target.value;
+              $(this.inputBox).css({
+                display: 'none',
+              });
+              $(this.contentBox).css({
+                display: 'block',
+              }).html(e.target.value);
               // 主存 修改value值 但不刷新页面
               mainData.cnName = e.target.value;
               mainEvent.emit('dataChange', mainEvent.store.data);
