@@ -1,12 +1,12 @@
 import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
-import '../index.scss'
+import './index.scss'
 
 export const selectSourceBox = (data) => {
   const {key= 'key', value='value'} = mainEvent.store.reflectKey || {};
   return h('div',
       {
-        className: ['border-box']
+        className: ['source-box']
       },
       [
         h('div',
@@ -23,13 +23,12 @@ export const selectSourceBox = (data) => {
             [
               h('div',
                   {
-                    className: ['public-category-item', 'key-name-box']
+                    className: ['source-box-item']
                   },
                   [
                     h('span', {}, ['可选分类:']),
                     h('select',
                         {
-                          className: ['public-category-select'],
                           props:{
                             value: data.childrenProps.dataListId,
                           },
@@ -45,7 +44,7 @@ export const selectSourceBox = (data) => {
                                 {
                                   props:{
                                     value: item[value],
-                                    selected: item.value === data.childrenProps.dataListId
+                                    selected: item[value] === data.childrenProps.dataListId
                                   }
                                 },
                                 [item[key]]
@@ -58,7 +57,7 @@ export const selectSourceBox = (data) => {
         ),
         h('div',
             {
-              className: ['public-category-item']
+              className: ['source-box-item']
             }, [
               h('span', {}, ['是否多选:']),
               h('input',

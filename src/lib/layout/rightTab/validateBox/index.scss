@@ -24,12 +24,14 @@
       margin: 5px 0;
       input[type='text'] {
         width: 60px;
+        height: 28px;
         border: none;
         outline: none;
         text-align: center;
         border-bottom: 1px solid #606266;
       }
       select{
+        height: 28px;
         width: 80px;
 
       }
@@ -52,6 +54,7 @@
       select{
         width: 150px;
         overflow: hidden;
+        height: 28px;
       }
     }
   }

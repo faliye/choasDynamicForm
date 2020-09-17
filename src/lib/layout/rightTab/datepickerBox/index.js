@@ -1,12 +1,12 @@
 import {$createElement as h} from "../../../utils/$createElement";
-import '../index.scss'
+import './index.scss'
 import {Datepicker} from "../../../components/datepicker";
 import mainEvent from "../../../mainEvent";
 
 export const createDatepicker = (data) => {
   return h('div',
       {
-        className: ['border-box']
+        className: ['datepicker-tab-box']
       },
       [
         h('div',
@@ -23,24 +23,32 @@ export const createDatepicker = (data) => {
             [
               ...data.childrenProps.timeValidate.map(item => {
                 if (item.key === 'defaultValue') {
+                  let value = '';
+                  for (let i = 0; i < (data.childrenProps.timeValidate || []).length; ++i) {
+                    if (data.childrenProps.timeValidate[i].key === 'defaultValue') {
+                      value = data.childrenProps.timeValidate[i].value;
+                    }
+                  }
+                  const confirmHandle = (value) => {
+                    for (let i = 0; i < (data.childrenProps.timeValidate || []).length; ++i) {
+                      if (data.childrenProps.timeValidate[i].key === 'defaultValue') {
+                        data.childrenProps.timeValidate[i].value = value;
+                      }
+                    }
+                    mainEvent.emit('dataChange', mainEvent.store.data);
+                  };
                   return h('div',
                       {
-                        className: ['date-validate-box'],
+                        className: ['datepicker-box-item'],
                       }, [
                         h('span', {}, [item.name + ':']),
-                        h('input',
-                            {
-                              props: {
-                                value: item.value,
-                              },
-                              on: {
-                                change: (e) => {
-                                  item.value = e.target.value;
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                },
-                              },
-                            },
-                        )
+                        new Datepicker({
+                          props: {
+                            ...data.childrenProps,
+                            value,
+                            right: true
+                          }, confirmHandle
+                        }).$el,
                       ]
                   );
                 }
@@ -48,7 +56,7 @@ export const createDatepicker = (data) => {
                   let value = '';
                   for (let i = 0; i < (data.childrenProps.timeValidate || []).length; ++i) {
                     if (data.childrenProps.timeValidate[i].key === 'startTime') {
-                      value =data.childrenProps.timeValidate[i].value;
+                      value = data.childrenProps.timeValidate[i].value;
                     }
                   }
                   const confirmHandle = (value) => {
@@ -61,13 +69,16 @@ export const createDatepicker = (data) => {
                   };
                   return h('div',
                       {
-                        className: ['date-validate-box'],
+                        className: ['datepicker-box-item'],
                       }, [
                         h('span', {}, [item.name + ':']),
-                        new Datepicker({props: {
+                        new Datepicker({
+                          props: {
                             ...data.childrenProps,
                             value,
-                          }, confirmHandle}).$el,
+                            right: true
+                          }, confirmHandle
+                        }).$el,
                       ]
                   );
                 }
@@ -75,7 +86,7 @@ export const createDatepicker = (data) => {
                   let value = '';
                   for (let i = 0; i < (data.childrenProps.timeValidate || []).length; ++i) {
                     if (data.childrenProps.timeValidate[i].key === 'endTime') {
-                      value =data.childrenProps.timeValidate[i].value;
+                      value = data.childrenProps.timeValidate[i].value;
                     }
                   }
                   const confirmHandle = (value) => {
@@ -88,13 +99,16 @@ export const createDatepicker = (data) => {
                   };
                   return h('div',
                       {
-                        className: ['date-validate-box'],
+                        className: ['datepicker-box-item'],
                       }, [
                         h('span', {}, [item.name + ':']),
-                        new Datepicker({props: {
+                        new Datepicker({
+                          props: {
                             ...data.childrenProps,
                             value,
-                          }, confirmHandle}).$el,
+                            right: true
+                          }, confirmHandle
+                        }).$el,
                       ]
                   );
                 }

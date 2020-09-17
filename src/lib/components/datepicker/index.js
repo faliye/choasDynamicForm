@@ -166,9 +166,14 @@ export class Datepicker {
         },
         ['取消']
     );
+    let style={}
+    if(this.props.right){
+      style.right = 0
+    }
     this.dropdownBox = h('div',
         {
           className: ['datepicker-drop-box'],
+          style
         },
         [
           this.titleBox,

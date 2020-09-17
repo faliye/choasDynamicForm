@@ -12,25 +12,22 @@ export class TextArea {
     this.$el = null;
     this.parentNodes = null;
     this.props = props;
-    this.style = {
-      ...props.style,
-    };
     this.eventBus = new EventBus({...this.proto});
     this.render(this.eventBus.store);
   }
 
   render() {
-    const {style} =  this.props;
+    const {insertType} = this.props;
     this.$el = h('div',
         {
           className: ['component-box'],
         }, [
           h('textarea',
               {
-                style,
-                placeholder: '多行文本框',
-                on: {
+                style:{
+                  height: insertType==='col'?'35px':'100%',
                 },
+                placeholder: '多行文本框',
                 value: this.props.value
               }
           )

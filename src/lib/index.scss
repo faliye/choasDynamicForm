@@ -187,10 +187,10 @@ button{
             }
 
             &.radio-box{
-              word-break: break-all;
-              white-space: normal;
+              display: flex;
+              flex-wrap: wrap;
               &>span{
-                display: inline-block;
+                display: flex;
                 height: 18px;
                 line-height: 18px;
                 font-size: 14px;

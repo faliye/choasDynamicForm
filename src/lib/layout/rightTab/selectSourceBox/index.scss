@@ -1,0 +1,11 @@
+.source-box{
+  .source-box-item{
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    >select{
+      height: 28px;
+    }
+  }
+}

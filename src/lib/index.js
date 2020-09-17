@@ -307,6 +307,8 @@ class DynamicForm {
     }
     const startEle = $('#td-' + selectStart.join('-'));
     let {left, top} = startEle.position();
+    let borderTopWidth = parseInt(startEle.css('borderTopWidth'), 10);
+    let borderLeftWidth= parseInt(startEle.css('borderLeftWidth'), 10);
     let width = calcSelectWidth(selectStart, selectEnd);
     let height = calcSelectHeight(selectStart, selectEnd);
     const selectedArea = $('.selected-div').eq(0);
@@ -314,12 +316,12 @@ class DynamicForm {
     selectedArea.css({
       width,
       height,
-      top: top,
-      left: left,
+      top: top-borderTopWidth,
+      left: left-borderLeftWidth,
     });
     this.addSelectedArea.css({
-      top: top + height - 4,
-      left: left + width - 4,
+      top: top + height - borderTopWidth-4,
+      left: left + width - borderLeftWidth-4,
     });
   }
 
@@ -492,6 +494,7 @@ class DynamicForm {
   // 渲染td
   renderTd(tdData) {
     const {
+      insertType,
       rowSpan,
       colSpan,
       location = [],
@@ -505,7 +508,7 @@ class DynamicForm {
     } = tdData;
     let tdChildren = '';
     if (!isEmpty) {
-      tdChildren = h(childrenProps.tagName, {props: {parentTdNode, location, childrenTdNode, ...childrenProps}});
+      tdChildren = h(childrenProps.tagName, {props: {parentTdNode, location, childrenTdNode,insertType, ...childrenProps}});
     }
     const deleteI = h('i',
         {
@@ -627,7 +630,7 @@ class DynamicForm {
         if (targetData.childrenTdNode.length) {
           virDOM.push(createKeyBox(targetData))
         }
-        virDOM.push(createFontSizeBox(targetData), createBorderBox(targetData))
+        virDOM.push(createFontSizeBox(targetData))
       }
     }
     if (index === 1) {
@@ -646,9 +649,10 @@ class DynamicForm {
             virDOM.push(createValidateBox(targetData))
           }
         }
-
       }
     }
+    virDOM.push(createBorderBox(targetData))
+
     virDOM.forEach((item) => {
       this.tabBox.appendChild(item);
     });

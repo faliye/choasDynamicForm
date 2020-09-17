@@ -13,7 +13,6 @@ import {Datepicker} from "../components/datepicker";
  * */
 export const $createElement = (tag, proto = {}, childDOMs = []) => {
   let ele = null;
-
   switch (tag) {
     case 'TitleBox': {
       ele = new TitleBox(proto).$el;

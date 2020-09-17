@@ -26,6 +26,7 @@ const borderConfig = [
 ];
 
 export const createBorderBox = (data) => {
+  console.log(data.childrenProps)
   return h('div',
       {
         className: ['border-box']
@@ -118,7 +119,7 @@ export const createBorderBox = (data) => {
                           h('input', {
                                 type: 'color',
                                 props: {
-                                  value: data.childrenProps.style[item.key + 'Color']
+                                  value: _.get(data, `childrenProps.style.${item.key + 'Color'}`, '#000')
                                 },
                                 on: {
                                   change: (e) => {
