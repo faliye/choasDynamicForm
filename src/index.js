@@ -12,4 +12,4 @@ const dynamicForm = new DynamicForm('app', save1, save2);
 
 
 dynamicForm.getTableData(mockData);
-dynamicForm.previewHandle();
+// dynamicForm.previewHandle();

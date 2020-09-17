@@ -4,6 +4,7 @@
     justify-content: space-between;
     font-size: 14px;
     margin: 5px 0;
+
     &:last-of-type{
       margin: 10px 0;
       justify-content: flex-end;
@@ -22,12 +23,13 @@
     >div{
       display: flex;
       margin: 5px 0;
+      align-items: center;
       input[type='text'] {
         width: 60px;
         height: 28px;
         border: none;
         outline: none;
-        text-align: center;
+        text-align: left;
         border-bottom: 1px solid #606266;
       }
       select{
