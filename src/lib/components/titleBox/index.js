@@ -12,9 +12,6 @@ export class TitleBox {
     this.contentBox = null;
     this.inputBox = null;
     this.props = props;
-    this.style = {
-      ...props.style,
-    };
     this.render();
   }
 
@@ -83,7 +80,7 @@ export class TitleBox {
     this.$el = h('div',
         {
           className: ['component-box'],
-          style:createContentBoxStyle(this.style)
+          style:createContentBoxStyle(this.props.style)
         }, [
           this.contentBox,
           this.inputBox,

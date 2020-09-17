@@ -434,7 +434,8 @@ class DynamicForm {
         });
         eventBus.store.col++;
       }
-    } else {
+    }
+    if(type === 'col'){
       if (storeData[selectEnd[0] + 1 + rowSpan] && storeData[selectEnd[0] + 1 + rowSpan][selectEnd[1]].isHidden) {
         const modal = new Modal('警告', '下方单元格被合并,不可添加!');
         modal.show();
@@ -515,7 +516,7 @@ class DynamicForm {
             click: (e) => {
               const {data, selectStart, selectEnd} = eventBus.store;
               // 目标在选区中 删除选区
-              if (_.inRange(location[0], selectStart[0] - 1, selectEnd[0] + 1) && _.inRange(location[1], selectStart[1] - 1, selectEnd[1] + 1)) {
+              if (_.inRange(location[0], selectStart[0], selectEnd[0] + 1) && _.inRange(location[1], selectStart[1], selectEnd[1] + 1)) {
                 deleteFn(data, selectStart, selectEnd);
               } else {
                 deleteFn(data, location, location);
@@ -734,7 +735,7 @@ class DynamicForm {
     let line = 0;
     for (let i = res.length - 1; i >= 0; --i) {
       const item = res[i];
-      if (item.some(it => !it.isEmpty)) {
+      if (item.some(it => !it.isEmpty || it.isHidden)) {
         line = i + 1;
         break;
       }

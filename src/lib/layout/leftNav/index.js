@@ -79,7 +79,11 @@ const createLeftNav = (mountDOM, themeConfig) => {
                               click: ()=>{
                                 const childrenArr = $('.type-check-box');
                                 childrenArr[index].style.display = 'none';
-                                eventBus.emit('addElement',{componentName: leftNav.componentName, type: 'row'})
+                                let type= 'row';
+                                if(leftNav.componentName === 'TitleBox'){
+                                  type = '';
+                                }
+                                eventBus.emit('addElement',{componentName: leftNav.componentName, type})
                               }
                             }
                           },
@@ -92,7 +96,11 @@ const createLeftNav = (mountDOM, themeConfig) => {
                               click: ()=>{
                                 const childrenArr = $('.type-check-box');
                                 childrenArr[index].style.display = 'none';
-                                eventBus.emit('addElement',{componentName: leftNav.componentName, type: 'col'})
+                                let type= 'col';
+                                if(leftNav.componentName === 'TitleBox'){
+                                  type = '';
+                                }
+                                eventBus.emit('addElement',{componentName: leftNav.componentName, type})
 
                               }
                             }
