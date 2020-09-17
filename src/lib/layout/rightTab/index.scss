@@ -8,18 +8,12 @@
   margin: 10px 0;
   font-weight: bold;
 }
-
-.validate-add-box{
-  text-align: right;
-  .validate-add-btn{
-    font-size: 10px;
-    padding: 6px 8px;
-    background: rgb(23, 128, 227);
-    color: #fff;
-    i{
-      font-size: 10px;
-    }
-  }
+.require-notice{
+  color: #ff5e5c;
+  font-size: 14px;
+  width: 5px;
+  display: inline-block;
+  text-align: center;
 }
 
 

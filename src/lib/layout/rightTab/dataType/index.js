@@ -1,6 +1,6 @@
 import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
-import '../index.scss'
+import './index.scss'
 
 const optionsSetting = [
   {
@@ -24,7 +24,7 @@ const optionsSetting = [
 export const createDataType = (data) => {
   return h('div',
       {
-        className: ['border-box']
+        className: ['datatype-box']
       },
       [
         h('div',
@@ -41,7 +41,7 @@ export const createDataType = (data) => {
             [
               h('div',
                   {
-                    className: ['public-category-item', 'key-name-box']
+                    className: ['public-category-item']
                   },
                   [
                     h('span', {}, ['数据类型:']),

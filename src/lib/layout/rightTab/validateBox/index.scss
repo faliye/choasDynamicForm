@@ -1,0 +1,69 @@
+.validate-box {
+  .validate-box-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 5px 0;
+    &:last-of-type{
+      margin: 10px 0;
+      justify-content: flex-end;
+      button{
+        color: #fff;
+        border-radius: 4px;
+        &:nth-of-type(1){
+          background: #1780E3;
+          margin-right: 10px;
+        }
+        &:nth-of-type(2){
+          background: #ff5e5c;
+        }
+      }
+    }
+    >div{
+      display: flex;
+      margin: 5px 0;
+      input[type='text'] {
+        width: 60px;
+        border: none;
+        outline: none;
+        text-align: center;
+        border-bottom: 1px solid #606266;
+      }
+      select{
+        width: 80px;
+
+      }
+    }
+
+  }
+
+  .validate-add-box {
+    display: flex;
+    justify-content: flex-end;
+    .validate-box-item {
+      input[type='text'] {
+        width: 150px;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #606266;
+        padding: 0;
+        text-align: left;
+      }
+      select{
+        width: 150px;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .validate-add-btn {
+    font-size: 10px;
+    padding: 6px 8px;
+    background: rgb(23, 128, 227);
+    color: #fff;
+
+    i {
+      font-size: 10px;
+    }
+  }
+}

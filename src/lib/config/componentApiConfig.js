@@ -56,8 +56,8 @@ export class ChildrenProps {
         placeholder = '',
         dataListId = '',
         isMultiple = 0,
-        validate = [],
-        timeValidate = [],
+        validate = null,
+        timeValidate = null,
         style = {}
       }
   ) {
@@ -90,8 +90,31 @@ export class ChildrenProps {
     this.dataListId = dataListId;
     this.dataType = dataType;
     this.isMultiple = isMultiple;
-    this.validate = validate;
-    this.timeValidate = timeValidate;
+    this.validate = validate || [
+      {
+        key: 'isRequire',
+        value: 0,
+        name: '是否必选'
+      },
+      {
+        key: 'max',
+        value: '',
+        name: '最大长度',
+      },
+      {
+        key: 'min',
+        value: '',
+        name: '最小长度',
+      },
+      {
+        key: 'event',
+        value: 'blur',
+        name: '验证时间',
+      },
+    ];
+    this.timeValidate = timeValidate || [
+
+    ];
     if (this.tagName === 'Datepicker') {
       delete this.validate;
     } else {
@@ -101,6 +124,10 @@ export class ChildrenProps {
       delete this.keyName;
       delete this.cnName;
       delete this.isSearch;
+    }
+    if (this.tagName === 'TitleBox') {
+      delete this.validate;
+      delete this.timeValidate;
     }
     if (!['Radio', 'Checkbox', 'Select'].includes(this.tagName)) {
       delete this.dataListId;
@@ -119,7 +146,6 @@ export class TdBoxClass {
    * @param isHidden 是否隐藏
    * @param isEmpty 是否为空
    * @param isError 是否报错
-   * @param style 插入样式
    * @param parentTdNode 父td坐标
    * @param childrenTdNode 子td坐标
    * @param childrenProps 子节点属性

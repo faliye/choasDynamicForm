@@ -65,13 +65,13 @@ class DynamicForm {
   addDOMEvent() {
     this.table = $('#edit-table');
     $(document).on('keydown', (e) => {
-      if(e.key==='Shift' && !e.ctrlKey){
+      if (e.key === 'Shift' && !e.ctrlKey) {
         this.isSelectArea = true;
         this.table.css({
           cursor: 'cell'
         });
       }
-    }).on('keyup',()=>{
+    }).on('keyup', () => {
       this.isSelectArea = false;
       this.table.css({cursor: 'default'});
     });
@@ -319,7 +319,7 @@ class DynamicForm {
     });
     this.addSelectedArea.css({
       top: top + height - 4,
-      left: left+ width - 4,
+      left: left + width - 4,
     });
   }
 
@@ -514,10 +514,10 @@ class DynamicForm {
             click: (e) => {
               const {data, selectStart, selectEnd} = eventBus.store;
               // 目标在选区中 删除选区
-              if(_.inRange(location[0],selectStart[0]-1,selectEnd[0]+1) && _.inRange(location[1],selectStart[1]-1,selectEnd[1]+1)){
-                deleteFn(data, selectStart,selectEnd);
-              }else{
-                deleteFn(data, location,location);
+              if (_.inRange(location[0], selectStart[0] - 1, selectEnd[0] + 1) && _.inRange(location[1], selectStart[1] - 1, selectEnd[1] + 1)) {
+                deleteFn(data, selectStart, selectEnd);
+              } else {
+                deleteFn(data, location, location);
               }
               eventBus.emit('dataChange', data);
               eventBus.emit('backupData', data);
@@ -533,20 +533,26 @@ class DynamicForm {
           }
         }
     );
-    const background = _.get(childrenProps,'style.background','transparent');
-    const borderTopWidth= _.get(childrenProps,'style.borderTopWidth','1');
-    const borderTopStyle= _.get(childrenProps,'style.borderTopStyle','solid');
-    const borderTopColor= _.get(childrenProps,'style.borderTopColor','#000');
-    const borderRightWidth= _.get(childrenProps,'style.borderRightWidth','1');
-    const borderRightStyle= _.get(childrenProps,'style.borderRightStyle','solid');
-    const borderRightColor= _.get(childrenProps,'style.borderRightColor','#000');
-    const borderBottomWidth= _.get(childrenProps,'style.borderBottomWidth','1');
-    const borderBottomStyle= _.get(childrenProps,'style.borderBottomStyle','solid');
-    const borderBottomColor= _.get(childrenProps,'style.borderBottomColor','#000');
-    const borderLeftWidth= _.get(childrenProps,'style.borderLeftWidth','1');
-    const borderLeftStyle= _.get(childrenProps,'style.borderLeftStyle','solid');
-    const borderLeftColor= _.get(childrenProps,'style.borderLeftColor','#000');
-    const style={
+    const background = _.get(childrenProps, 'style.background', 'transparent');
+    const borderTopWidth = _.get(childrenProps, 'style.borderTopWidth', '1');
+    const borderTopStyle = _.get(childrenProps, 'style.borderTopStyle', 'solid');
+    const borderTopColor = _.get(childrenProps, 'style.borderTopColor', '#000');
+    const borderRightWidth = _.get(childrenProps, 'style.borderRightWidth', '1');
+    const borderRightStyle = _.get(childrenProps, 'style.borderRightStyle', 'solid');
+    const borderRightColor = _.get(childrenProps, 'style.borderRightColor', '#000');
+    const borderBottomWidth = _.get(childrenProps, 'style.borderBottomWidth', '1');
+    const borderBottomStyle = _.get(childrenProps, 'style.borderBottomStyle', 'solid');
+    const borderBottomColor = _.get(childrenProps, 'style.borderBottomColor', '#000');
+    const borderLeftWidth = _.get(childrenProps, 'style.borderLeftWidth', '1');
+    const borderLeftStyle = _.get(childrenProps, 'style.borderLeftStyle', 'solid');
+    const borderLeftColor = _.get(childrenProps, 'style.borderLeftColor', '#000');
+    const tdStyle = {
+      display: !isHidden ? 'table-cell' : 'none',
+      position: 'relative',
+      background: isError ? '#ff5e5c' : background,
+      width: colSpan * tdWidth + (colSpan - 1) * 2 + parseInt(borderLeftWidth, 10) + parseInt(borderRightWidth, 10) + 'px',
+      height: rowSpan * tdHeight + (rowSpan - 1) * 2 + parseInt(borderTopWidth, 10) + parseInt(borderBottomWidth, 10) + 'px',
+      padding: 0,
       borderTop: `${borderTopWidth}px ${borderTopStyle} ${borderTopColor}`,
       borderRight: `${borderRightWidth}px ${borderRightStyle} ${borderRightColor}`,
       borderBottom: `${borderBottomWidth}px ${borderBottomStyle} ${borderBottomColor}`,
@@ -560,15 +566,7 @@ class DynamicForm {
           colSpan,
           isHidden,
           props,
-          style: {
-            width: colSpan * tdWidth + (colSpan - 1) * 2 + 'px',
-            height: rowSpan * tdHeight + (rowSpan - 1) * 2 + 'px',
-            background: isError ? '#ff5e5c' : background,
-            display: !isHidden ? 'table-cell' : 'none',
-            position: 'relative',
-            padding: 0,
-            ...style
-          },
+          style: tdStyle,
           on: {
             mousedown: () => {
               eventBus.emit('selectStartChange', location);

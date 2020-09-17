@@ -1,16 +1,18 @@
 import {$createElement as h} from "../../../utils/$createElement";
 import {Modal} from "../../../components/modal";
 import mainEvent from "../../../mainEvent";
+import './index.scss';
 
 export const createValidateBox = (data) => {
-  let validate ={
+  let validate = {
     key: 'regexp',
   };
   let addBox, addBtnBox;
   addBox = h('div',
       {
+        className: ['validate-add-box'],
         style: {
-          display: 'none'
+          display: 'none',
         }
       },
       [
@@ -19,12 +21,14 @@ export const createValidateBox = (data) => {
         }, ['新增验证']),
         h('div',
             {
-              className: ['key-name-box'],
+              className: ['validate-box-item'],
             }, [
               h('span', {}, ['验证规则:']),
               h('input',
                   {
-                    props: {},
+                    props: {
+                      type: 'text'
+                    },
                     on: {
                       change: (e) => {
                         validate.value = e.target.value;
@@ -36,12 +40,14 @@ export const createValidateBox = (data) => {
         ),
         h('div',
             {
-              className: ['key-name-box'],
+              className: ['validate-box-item'],
             }, [
-              h('span', {}, ['中文说明:']),
+              h('span', {}, ['验证名称:']),
               h('input',
                   {
-                    props: {},
+                    props: {
+                      type: 'text'
+                    },
                     on: {
                       change: (e) => {
                         validate.name = e.target.value;
@@ -53,33 +59,14 @@ export const createValidateBox = (data) => {
         ),
         h('div',
             {
-              className: ['key-name-box'],
-            },
-            [
-              h('span',
-                  {},
-                  ['触发事件:']
-              ),
-              h('input',
-                  {
-                    props: {},
-                    on: {
-                      change: (e) => {
-                        validate.event = e.target.value;
-                      },
-                    },
-                  },
-              )
-            ]
-        ),
-        h('div',
-            {
-              className: ['key-name-box'],
+              className: ['validate-box-item'],
             }, [
               h('span', {}, ['提示语句:']),
               h('input',
                   {
-                    props: {},
+                    props: {
+                      type: 'text'
+                    },
                     on: {
                       change: (e) => {
                         validate.msg = e.target.value;
@@ -91,36 +78,78 @@ export const createValidateBox = (data) => {
         ),
         h('div',
             {
-              className: ['key-name-box'],
-              style:{
-                textAlign:'center'
+              className: ['validate-box-item'],
+            },
+            [
+              h('span',
+                  {},
+                  ['验证时间:']
+              ),
+              h('select',
+                  {
+                    props: {},
+                    on: {
+                      change: (e) => {
+                        validate.event = e.target.value;
+                      },
+                    },
+                  },
+                  [
+                    h('option',
+                        {
+                          value: 'input',
+                        },
+                        ['输入时']
+                    ),
+                    h('option',
+                        {
+                          value: 'focus',
+                        },
+                        ['获取焦点']
+                    ),
+                    h('option',
+                        {
+                          value: 'blur',
+                        },
+                        ['失去焦点']
+                    ),
+                    h('option',
+                        {
+                          value: 'change',
+                        },
+                        ['值发生改变']
+                    ),
+
+                  ]
+              )
+            ]
+        ),
+        h('div',
+            {
+              className: ['validate-box-item'],
+              style: {
+                textAlign: 'center'
               }
             },
             [
               h('button',
                   {
-                    style: {
-                      background: '#1780E3',
-                      color: '#fff',
-                      marginRight: '10px',
-                      borderRadius: '4px',
-                    },
-                    on:{
-                      click:()=>{
-                        if(!validate.value){
+                    on: {
+                      click: () => {
+                        if (!validate.value) {
                           return new Modal('请注意!', '验证规则不能为空!').show();
                         }
-                        if(!validate.name){
+                        if (!validate.name) {
                           return new Modal('请注意!', '说明不能为空!').show();
                         }
-                        if(!validate.msg){
+                        if (!validate.msg) {
                           return new Modal('请注意!', '提示语不能为空!').show();
                         }
-                        if(!validate.event){
+                        if (!validate.event) {
                           return new Modal('请注意!', '触发事件不能为空!').show();
                         }
                         data.childrenProps.validate.push(validate);
-                        validate ={
+                        validate = {
                           key: 'regexp',
                         };
                         addBox.style.display = 'none';
@@ -134,14 +163,8 @@ export const createValidateBox = (data) => {
               ),
               h('button',
                   {
-                    style: {
-                      background: '#ff5e5c',
-                      color: '#fff',
-                      marginRight: '10px',
-                      borderRadius: '4px',
-                    },
-                    on:{
-                      click: ()=>{
+                    on: {
+                      click: () => {
                         validate = {};
                         addBox.style.display = 'none';
                         addBtnBox.style.display = 'block';
@@ -181,7 +204,7 @@ export const createValidateBox = (data) => {
   );
   return h('div',
       {
-        className: ['border-box']
+        className: ['validate-box']
       },
       [
         h('div',
@@ -200,43 +223,163 @@ export const createValidateBox = (data) => {
                 if (item.key === 'isRequire') {
                   return h('div',
                       {
-                        className: ['key-name-box'],
+                        className: ['validate-box-item'],
                       }, [
-                        h('span', {}, [item.name + ':']),
-                        h('input',
+                        h('div',
                             {
-                              props: {
-                                checked: item.value,
-                                type: 'checkbox',
-                              },
-                              on: {
-                                change: (e) => {
-                                  item.value = Number(e.target.value);
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                },
+                              style:{
+                                width: '146px',
                               },
                             },
+                            [
+                              h('span', {}, [item.name + ':']),
+                              h('input',
+                                  {
+                                    props: {
+                                      checked: item.value,
+                                      type: 'checkbox',
+                                    },
+                                    on: {
+                                      change: (e) => {
+                                        item.value = Number(e.target.value);
+                                        mainEvent.emit('dataChange', mainEvent.store.data);
+                                      },
+                                    },
+                                  },
+                              ),
+                            ]
+                        ),
+                        h('div',
+                            {},
+                            [
+                              h('select',
+                                  {
+                                    props: {},
+                                    on: {
+                                      change: (e) => {
+                                        item.event = e.target.value;
+                                        mainEvent.emit('dataChange', mainEvent.store.data);
+                                      },
+                                    },
+                                  },
+                                  [
+                                    h('option',
+                                        {
+                                          value: 'input',
+                                          selected: item.event === 'input',
+                                        },
+                                        ['输入时']
+                                    ),
+                                    h('option',
+                                        {
+                                          value: 'focus',
+                                          selected: item.event === 'focus',
+                                        },
+                                        ['获得焦点']
+                                    ),
+                                    h('option',
+                                        {
+                                          value: 'blur',
+                                          selected: item.event === 'blur',
+                                        },
+                                        ['失去焦点']
+                                    ),
+                                    h('option',
+                                        {
+                                          value: 'change',
+                                          selected: item.event === 'change',
+                                        },
+                                        ['值改变']
+                                    ),
+
+                                  ]
+                              ),
+                              h('span',
+                                  {},
+                                  ['验证']
+                              ),
+                            ]
                         )
                       ]
                   );
                 }
                 return h('div',
                     {
-                      className: ['key-name-box'],
+                      className: ['validate-box-item'],
                     }, [
-                      h('span', {}, [item.name + ':']),
-                      h('input',
+                      h('div',
                           {
-                            props: {
-                              value: item.value,
-                            },
-                            on: {
-                              change: (e) => {
-                                item.value = e.target.value;
-                                mainEvent.emit('dataChange', mainEvent.store.data);
-                              },
+                            style:{
+                              width: '146px',
                             },
                           },
+                          [
+                            h('span', {}, [item.name + ':']),
+                            h('input',
+                                {
+                                  props: {
+                                    value: item.value,
+                                    type: 'text'
+                                  },
+                                  on: {
+                                    change: (e) => {
+                                      item.value = e.target.value;
+                                      mainEvent.emit('dataChange', mainEvent.store.data);
+                                    },
+                                  },
+                                },
+                            ),
+                          ]
+                      ),
+                      h('div',
+                          {},
+                          [
+                            h('select',
+                                {
+                                  props: {},
+                                  on: {
+                                    change: (e) => {
+                                      item.event = e.target.value;
+                                      mainEvent.emit('dataChange', mainEvent.store.data);
+                                    },
+                                  },
+                                },
+                                [
+                                  h('option',
+                                      {
+                                        value: 'input',
+                                        selected: item.event === 'input',
+                                      },
+                                      ['输入时']
+                                  ),
+                                  h('option',
+                                      {
+                                        value: 'focus',
+                                        selected: item.event === 'focus',
+                                      },
+                                      ['获得焦点']
+                                  ),
+                                  h('option',
+                                      {
+                                        value: 'blur',
+                                        selected: item.event === 'blur',
+                                      },
+                                      ['失去焦点']
+                                  ),
+                                  h('option',
+                                      {
+                                        value: 'change',
+                                        selected: item.event === 'change',
+                                      },
+                                      ['值改变']
+                                  ),
+                                ]
+                            ),
+                            h('span',
+                                {},
+                                ['验证']
+                            ),
+                          ]
                       )
                     ]
                 );
