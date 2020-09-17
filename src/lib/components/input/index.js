@@ -25,6 +25,7 @@ export class Input {
           h('input',
               {
                 placeholder: '单行文本输入框',
+                type: 'text',
                 on: {
                 }
               }

@@ -1,5 +1,6 @@
 import {$createElement as h} from '../../utils/$createElement';
-import {deepClone} from "../../utils";
+import $ from 'jquery'
+import _ from 'lodash'
 import {fakeSearchBox} from "./fakeSearchBox";
 import {fakeTableBox} from "./fakeTableBox";
 import {fakePagination} from "./fakePagination";
@@ -67,7 +68,7 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
   ]);
   mountDOM.appendChild(modal);
 
-  const data = deepClone(storeData);
+  const data = _.cloneDeep(storeData);
   const searchData = [];
   for (let j=0; j<(data || []).length;++j){
     for (let i=0;i<(data[j] || []).length;++i){
@@ -86,7 +87,7 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
     }
   }
   box.appendChild(fakeSearchBox(searchData));
-  box.appendChild(fakeTableBox(data));
+  $(box).append(fakeTableBox(data));
   box.appendChild(fakePagination(data));
 };
 

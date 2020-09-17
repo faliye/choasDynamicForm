@@ -11,10 +11,5 @@ const save2 = (data) => {
 const dynamicForm = new DynamicForm('app', save1, save2);
 
 
-// 获取值后设置值
-setTimeout(() => {
-  dynamicForm.getTableData(mockData);
-  // dynamicForm.previewHandle();
-}, 200);
-
-dynamicForm.getDataList([]);
+dynamicForm.getTableData(mockData);
+dynamicForm.previewHandle();

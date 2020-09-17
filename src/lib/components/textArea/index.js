@@ -25,7 +25,7 @@ export class TextArea {
           h('textarea',
               {
                 style:{
-                  height: insertType==='col'?'35px':'100%',
+                  height: '100%',
                 },
                 placeholder: '多行文本框',
                 value: this.props.value

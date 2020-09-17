@@ -43,40 +43,6 @@ export function judgeDataType(target) {
 }
 
 /**
- * @name     deepClone             深拷贝
- * @param    target     any        数据源
- * @param    sign       boolean    是否使用JSON实现，默认为true
- * */
-export function deepClone(target, sign) {
-  const temp = sign || false;
-  if (temp) {
-    const t = judgeDataType(target);
-    let o;
-    if (t === 'array') {
-      o = [];
-    } else if (t === 'object') {
-      o = {};
-    } else {
-      return target;
-    }
-    if (t === 'array') {
-      for (let i = 0; i < target.length; i++) {
-        o.push(deepClone(target[i]), temp);
-      }
-    } else if (t === 'object') {
-      for (let i of target) {
-        o[i] = deepClone(target[i], temp);
-      }
-    }
-    return o;
-  } else {
-    if (typeof JSON.stringify === 'function') {
-      return JSON.parse(JSON.stringify(target));
-    }
-  }
-}
-
-/**
  * @name     assign     实现object.assign()浅拷贝
  * @param    target     object     合并至对象
  * @param    source     object     合并对象

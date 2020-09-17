@@ -87,7 +87,7 @@ export class ChildrenProps {
       ...style,
     };
     this.placeholder = placeholder;
-    this.dataListId = dataListId;
+    this.dataListId = 'dataListId';
     this.dataType = dataType;
     this.isMultiple = isMultiple;
     this.validate = validate || [

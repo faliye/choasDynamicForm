@@ -11,6 +11,9 @@
     tr{
       border-bottom: 1px solid $lineColor;
       &>td{
+        .radio-box{
+          font-size: 12px !important;
+        }
         &>.component-box{
           width: 100%;
           height: 100%;

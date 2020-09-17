@@ -51,6 +51,7 @@ export class TitleBox {
         {
           className: ['table-edit-input-open'],
           placeholder: '请输入标题',
+          type: 'text',
           style: {
             display: 'none',
             width: '100%',

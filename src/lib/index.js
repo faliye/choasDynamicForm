@@ -4,7 +4,6 @@ import {
   addEvent,
   calcSelectHeight,
   calcSelectWidth,
-  deepClone,
   deleteFn,
   judgeDataType
 } from './utils';
@@ -110,7 +109,7 @@ class DynamicForm {
       if (eventBus.store.backupData.length > 10) {
         eventBus.store.backupData.shift();
       }
-      eventBus.store.backupData.push(deepClone(data));
+      eventBus.store.backupData.push(_.cloneDeep(data));
       eventBus.store.backupDataStep = eventBus.store.backupData.length - 1;
     });
     // 表单起点选定
@@ -152,7 +151,7 @@ class DynamicForm {
       }
       if (data !== backupDataStep) {
         eventBus.store.backupDataStep = data;
-        eventBus.emit('dataChange', deepClone(backupData[data]));
+        eventBus.emit('dataChange', _.cloneDeep(backupData[data]));
       }
     });
     // 行变化
@@ -241,7 +240,7 @@ class DynamicForm {
     // 未获取到表单数据时初始化空白表单
     let col = Math.floor(
         (this.table.width() - tablePaddingLeft * 2) / (tdWidth + 2)
-    ) + 5;
+    );
     let row = Math.floor(
         (this.table.height() - tablePaddingTop * 2) / (tdHeight + 2)
     );
@@ -318,8 +317,8 @@ class DynamicForm {
       left: left,
     });
     this.addSelectedArea.css({
-      top: top + height -4,
-      left: left + width -4,
+      top: top + height - 4,
+      left: left + width - 4,
     });
   }
 
@@ -435,7 +434,7 @@ class DynamicForm {
         eventBus.store.col++;
       }
     }
-    if(type === 'col'){
+    if (type === 'col') {
       if (storeData[selectEnd[0] + 1 + rowSpan] && storeData[selectEnd[0] + 1 + rowSpan][selectEnd[1]].isHidden) {
         const modal = new Modal('警告', '下方单元格被合并,不可添加!');
         modal.show();
@@ -507,7 +506,14 @@ class DynamicForm {
     } = tdData;
     let tdChildren = '';
     if (!isEmpty) {
-      tdChildren = h(childrenProps.tagName, {props: {parentTdNode, location, childrenTdNode,insertType, ...childrenProps}});
+      tdChildren = h(childrenProps.tagName, {
+        props: {
+          parentTdNode,
+          location,
+          childrenTdNode,
+          insertType, ...childrenProps
+        }
+      });
     }
     const deleteI = h('i',
         {
@@ -652,10 +658,7 @@ class DynamicForm {
         }
       }
       virDOM.push(createBorderBox(targetData));
-
     }
-
-
     virDOM.forEach((item) => {
       this.tabBox.appendChild(item);
     });
@@ -682,7 +685,8 @@ class DynamicForm {
             eventBus.emit('dataChange', storeData);
             eventBus.emit('selectStartChange', targetData.location);
             return false;
-          } else if (!targetData.childrenProps.cnName) {
+          }
+          if (!targetData.childrenProps.cnName) {
             targetData.isError = 1;
             new Modal('请注意!', '字段标题不能为空!').show();
             eventBus.emit('dataChange', storeData);
@@ -690,16 +694,18 @@ class DynamicForm {
             return false;
           }
           const childrenData = data[targetData.childrenTdNode[0]][targetData.childrenTdNode[1]];
-          childrenData.isError = 1;
-          if (['Select', 'Radio', 'Checkbox'].includes(childrenData.childrenProps.tagName)) {
+          // console.log(targetData,childrenData,data)
+          const childrenPropsTagName = _.get(childrenData.childrenProps, 'tagName', '');
+          if (['Select', 'Radio', 'Checkbox'].includes(childrenPropsTagName)) {
             if (!childrenData.childrenProps.dataListId) {
+              childrenData.isError = 1;
               new Modal('请注意!', '选列表不能为空!').show();
               eventBus.emit('dataChange', storeData);
               eventBus.emit('selectStartChange', targetData.location);
               return false;
             }
           }
-          if (['Input'].includes(childrenData.childrenProps.tagName)) {
+          if (['Input'].includes(childrenPropsTagName)) {
             if (!childrenData.childrenProps.dataType) {
               new Modal('请注意!', '未选择数据类型!').show();
               eventBus.emit('dataChange', storeData);
@@ -707,8 +713,6 @@ class DynamicForm {
               return false;
             }
           }
-          childrenData.isError = 0;
-          eventBus.emit('dataChange', storeData);
         }
         if (!targetData.isEmpty && !targetData.childrenTdNode.length && !targetData.parentTdNode.length) {
           if (!targetData.childrenProps.cnName) {
@@ -722,6 +726,7 @@ class DynamicForm {
         targetData.isError = 0;
         eventBus.emit('dataChange', storeData);
       }
+
     }
 
     return true
@@ -731,7 +736,7 @@ class DynamicForm {
   // 简化输出
   simpleData(storeData) {
     // 输出表单JSON
-    const res = JSON.parse(JSON.stringify(storeData));
+    const res = _.cloneDeep(storeData);
     let line = 0;
     for (let i = res.length - 1; i >= 0; --i) {
       const item = res[i];
@@ -741,6 +746,15 @@ class DynamicForm {
       }
     }
     res.splice(line);
+    let maxCol = 0;
+    for (let i = res.length - 1; i >= 0; --i) {
+      const item = res[i];
+      const index = item.findIndex(it => it.isEmpty && !it.isHidden && it.tag === 'td');
+      if (maxCol < index) {
+        maxCol = index
+      }
+    }
+    res.forEach(item => item.splice(maxCol + 1, item.length));
     return res.filter(Boolean);
   }
 
