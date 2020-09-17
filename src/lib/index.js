@@ -307,8 +307,6 @@ class DynamicForm {
     }
     const startEle = $('#td-' + selectStart.join('-'));
     let {left, top} = startEle.position();
-    let borderTopWidth = parseInt(startEle.css('borderTopWidth'), 10);
-    let borderLeftWidth= parseInt(startEle.css('borderLeftWidth'), 10);
     let width = calcSelectWidth(selectStart, selectEnd);
     let height = calcSelectHeight(selectStart, selectEnd);
     const selectedArea = $('.selected-div').eq(0);
@@ -316,12 +314,12 @@ class DynamicForm {
     selectedArea.css({
       width,
       height,
-      top: top-borderTopWidth,
-      left: left-borderLeftWidth,
+      top: top,
+      left: left,
     });
     this.addSelectedArea.css({
-      top: top + height - borderTopWidth-4,
-      left: left + width - borderLeftWidth-4,
+      top: top + height -4,
+      left: left + width -4,
     });
   }
 
@@ -632,6 +630,8 @@ class DynamicForm {
         }
         virDOM.push(createFontSizeBox(targetData))
       }
+      virDOM.push(createBorderBox(targetData));
+
     }
     if (index === 1) {
       // 显示组件
@@ -650,8 +650,10 @@ class DynamicForm {
           }
         }
       }
+      virDOM.push(createBorderBox(targetData));
+
     }
-    virDOM.push(createBorderBox(targetData))
+
 
     virDOM.forEach((item) => {
       this.tabBox.appendChild(item);

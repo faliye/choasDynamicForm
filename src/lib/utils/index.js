@@ -241,27 +241,30 @@ export const calcSelectWidth=(start,end)=>{
     const ele = $('#td-' + end[0] + '-' + i);
     if(ele.attr('colSpan')>1){
       hasCollapsed = true;
+      break;
     }
   }
+
   for (let i = start[1]; i <= end[1]; ++i) {
     const ele = $('#td-' + end[0] + '-' + i);
-    // let borderLeftWidth= parseInt(ele.css('borderLeftWidth'), 10);
-    // let borderRightWidth= parseInt(ele.css('borderRightWidth'), 10);
-    let itemWidth = parseInt(ele.innerWidth(), 10);
+    let borderLeftWidth = parseInt(ele.css('borderLeftWidth'), 10);
+    let borderRightWidth = parseInt(ele.css('borderRightWidth'), 10);
+    let itemWidth = parseInt(ele.innerWidth(), 10)+borderLeftWidth+borderRightWidth;
     if(hasCollapsed){
       if (ele.css('display')!=='none') {
         width += itemWidth;
-      }else{
-        displayCount++;
       }
     }else{
+      if(ele.css('display')==='none'){
+        displayCount+=(borderLeftWidth+borderRightWidth);
+      }
       width += itemWidth;
     }
   }
   if(hasCollapsed) {
-    return width - end[1] + start[1] + displayCount * 2;
+    return width;
   }
-  return width - end[1] + start[1] + 2;
+  return width-displayCount;
 };
 
 
@@ -277,32 +280,27 @@ export const calcSelectHeight=(start,end)=>{
     const ele = $('#td-' + i + '-' + end[1]);
     if(ele.attr('rowSpan')>1){
       hasCollapsed = true;
+      break;
     }
   }
   for (let i = start[0]; i <= end[0]; ++i) {
     const ele = $('#td-' + i + '-' + end[1]);
-    // let borderTopWidth = parseInt(ele.css('borderTopWidth'), 10);
-    // let borderBottomTop = parseInt(ele.css('borderBottomWidth'), 10);
-
-    let itemHeight = parseInt(ele.outerHeight(), 10);
+    let borderTopWidth = parseInt(ele.css('borderTopWidth'), 10);
+    let borderBottomTop = parseInt(ele.css('borderBottomWidth'), 10);
+    let itemHeight = parseInt(ele.innerHeight(), 10)+borderTopWidth+borderBottomTop;
     if(hasCollapsed){
       if (ele.css('display')!=='none') {
         height += itemHeight;
-      }else{
-        displayCount++;
       }
     }else{
       height += itemHeight;
     }
   }
-  if(hasCollapsed){
-    return height-end[0]+start[0] +displayCount*2;
-  }
-  return height-end[0]+start[0] + 2;
+  return height;
 };
 
 /**
- * @name createContentBoxStyle 计算选区高度
+ * @name createContentBoxStyle 计算选区样式
  * @param styleProps 样式属性
  * */
 

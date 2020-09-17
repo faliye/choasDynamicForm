@@ -26,7 +26,6 @@ const borderConfig = [
 ];
 
 export const createBorderBox = (data) => {
-  console.log(data.childrenProps)
   return h('div',
       {
         className: ['border-box']
@@ -105,8 +104,8 @@ export const createBorderBox = (data) => {
                                 ),
                                 h('option',
                                     {
-                                      value: 'dash',
-                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid')==='dash',
+                                      value: 'dashed',
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid')==='dashed',
                                     },
                                     [
                                       h('span', {
