@@ -26,7 +26,6 @@ const borderConfig = [
 ];
 
 export const createBorderBox = (data) => {
-  console.log(data)
   return h('div',
       {
         className: ['border-box']
@@ -64,7 +63,7 @@ export const createBorderBox = (data) => {
                                 },
                                 on: {
                                   change: (e) => {
-                                    data.childrenProps.style[item.key + 'Width'] = e.target.value + 'px';
+                                    data.childrenProps.style[item.key + 'Width'] = e.target.value;
                                     mainEvent.emit('dataChange', mainEvent.store.data);
                                   }
                                 }
@@ -84,7 +83,7 @@ export const createBorderBox = (data) => {
                                 h('option',
                                     {
                                       value: 'solid',
-                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid')==='solid',
                                     },
                                     [
                                       h('span', {
@@ -95,7 +94,7 @@ export const createBorderBox = (data) => {
                                 h('option',
                                     {
                                       value: 'dotted',
-                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid')==='dotted',
                                     },
                                     [
                                       h('span', {
@@ -106,7 +105,7 @@ export const createBorderBox = (data) => {
                                 h('option',
                                     {
                                       value: 'dash',
-                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid'),
+                                      selected: _.get(data, `childrenProps.style.${item.key + 'Style'}`, 'solid')==='dash',
                                     },
                                     [
                                       h('span', {

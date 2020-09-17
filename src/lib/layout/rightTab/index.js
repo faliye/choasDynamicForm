@@ -15,6 +15,7 @@ function mountRightBox(mountDOM, themeConfig = {}) {
         className: ['right-box'],
         style: {
           width: navRightWidth - 1 + 'px',
+          paddingLeft: 5+'px',
           height: 100 % +'px',
         }
       },

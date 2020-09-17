@@ -499,14 +499,13 @@ class DynamicForm {
       isEmpty = 1,
       isError = 0,
       props = {},
-      style = {},
       parentTdNode = [],
       childrenTdNode = [],
       childrenProps = {},
     } = tdData;
     let tdChildren = '';
     if (!isEmpty) {
-      tdChildren = h(childrenProps.tagName, {props: {parentTdNode, location, childrenTdNode, ...childrenProps}, style});
+      tdChildren = h(childrenProps.tagName, {props: {parentTdNode, location, childrenTdNode, ...childrenProps}});
     }
     const deleteI = h('i',
         {
@@ -534,6 +533,26 @@ class DynamicForm {
           }
         }
     );
+    const background = _.get(childrenProps,'style.background','transparent');
+    const borderTopWidth= _.get(childrenProps,'style.borderTopWidth','1');
+    const borderTopStyle= _.get(childrenProps,'style.borderTopStyle','solid');
+    const borderTopColor= _.get(childrenProps,'style.borderTopColor','#000');
+    const borderRightWidth= _.get(childrenProps,'style.borderRightWidth','1');
+    const borderRightStyle= _.get(childrenProps,'style.borderRightStyle','solid');
+    const borderRightColor= _.get(childrenProps,'style.borderRightColor','#000');
+    const borderBottomWidth= _.get(childrenProps,'style.borderBottomWidth','1');
+    const borderBottomStyle= _.get(childrenProps,'style.borderBottomStyle','solid');
+    const borderBottomColor= _.get(childrenProps,'style.borderBottomColor','#000');
+    const borderLeftWidth= _.get(childrenProps,'style.borderLeftWidth','1');
+    const borderLeftStyle= _.get(childrenProps,'style.borderLeftStyle','solid');
+    const borderLeftColor= _.get(childrenProps,'style.borderLeftColor','#000');
+    const style={
+      borderTop: `${borderTopWidth}px ${borderTopStyle} ${borderTopColor}`,
+      borderRight: `${borderRightWidth}px ${borderRightStyle} ${borderRightColor}`,
+      borderBottom: `${borderBottomWidth}px ${borderBottomStyle} ${borderBottomColor}`,
+      borderLeft: `${borderLeftWidth}px ${borderLeftStyle} ${borderLeftColor}`,
+    };
+
     const td = h('td',
         {
           id: 'td-' + location.join('-'),
@@ -542,13 +561,13 @@ class DynamicForm {
           isHidden,
           props,
           style: {
-            ...style,
             width: colSpan * tdWidth + (colSpan - 1) * 2 + 'px',
             height: rowSpan * tdHeight + (rowSpan - 1) * 2 + 'px',
-            background: isError ? '#ff5e5c' : 'transparent',
+            background: isError ? '#ff5e5c' : background,
             display: !isHidden ? 'table-cell' : 'none',
             position: 'relative',
             padding: 0,
+            ...style
           },
           on: {
             mousedown: () => {

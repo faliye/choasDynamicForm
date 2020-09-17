@@ -8,6 +8,7 @@ import mainEvent from "../../mainEvent";
  * */
 export class TitleBox {
   constructor({props}) {
+    console.log(props)
     this.$el = null;
     this.contentBox = null;
     this.inputBox = null;

@@ -1,36 +1,15 @@
 import _ from 'lodash'
 import {$createElement as h} from "../../../utils/$createElement";
 import mainEvent from "../../../mainEvent";
-
-const fontConfig = [
-  {
-    key: 'fontSize',
-    name: '大小',
-    className: 'font-size-box'
-  },
-  {
-    key: 'color',
-    name: '颜色',
-    className: 'font-color-box'
-  },
-  {
-    key: 'textAlign',
-    name: '水平对齐',
-    className: 'text-align-box'
-  },
-  {
-    key: 'alignItems',
-    name: '竖直对齐',
-    className: 'vertical-align-box'
-  },
-];
+import './index.scss'
 
 export const createFontSizeBox = (data) => {
-  const textAlign = _.get(data,'childrenProps.style.textAlign','');
-  const alignItems = _.get(data,'childrenProps.style.alignItems','');
+  const fontSize = _.get(data, 'childrenProps.style.fontSize', '14');
+  const textAlign = _.get(data, 'childrenProps.style.textAlign', '');
+  const alignItems = _.get(data, 'childrenProps.style.alignItems', '');
   return h('div',
       {
-        className: ['border-box']
+        className: ['font-box']
       },
       [
         h('div',
@@ -45,162 +24,168 @@ export const createFontSizeBox = (data) => {
               className: ['content-box']
             },
             [
-              ...fontConfig.map(item => {
-                if (item.className === 'font-size-box') {
-                  return h('div',
-                      {
-                        className: ['border-control-box']
-                      }, [
-                        h('span', {}, [item.name + ':']),
-                        h('input',
-                            {
-                              props: {
-                                value: '16'
+              h('div',
+                  {
+                    className: ['border-style-box']
+                  }, [
+                    h('span', {}, ['大小:']),
+                    h('span',
+                        {
+                          className: ['fontsize-box']
+
+                        },
+                        [
+                          h('input',
+                              {
+                                props: {
+                                  value: fontSize,
+                                },
+                                on: {
+                                  change: (e) => {
+                                    data.childrenProps.style['fontSize'] = e.target.value + 'px';
+                                    mainEvent.emit('dataChange', mainEvent.store.data);
+                                  }
+                                }
                               },
-                              on: {
-                                change: (e) => {
-                                  data.childrenProps.style[item.key] = e.target.value + 'px';
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                }
-                              }
-                            },
-                        ),
-                        h('span', {}, ['px']),
-                      ]
-                  );
-                }
-                // 居中
-                if (item.className === 'text-align-box') {
-                  return h('div',
-                      {
-                        className: ['border-style-box']
-                      },
-                      [
-                        h('span', {}, [item.name + ':']),
-                        h('select',
-                            {
-                              on: {
-                                change: (e) => {
-                                  data.childrenProps.style[item.key] = e.target.value;
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                }
-                              }
-                            },
-                            [
-                              h('option',
-                                  {
-                                    value: 'left',
-                                    selected: textAlign === 'left'
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['左对齐'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'center',
-                                    selected: textAlign === 'center'
-
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['居中'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'right',
-                                    selected: textAlign === 'right'
-
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['右对齐'])
-                                  ]
-                              )
-                            ]
-                        ),
-                      ]
-                  )
-                }
-                // 竖直对齐
-                if (item.className === 'vertical-align-box') {
-                  return h('div',
-                      {
-                        className: ['border-style-box']
-                      },
-                      [
-                        h('span', {}, [item.name + ':']),
-                        h('select',
-                            {
-                              on: {
-                                change: (e) => {
-                                  data.childrenProps.style[item.key] = e.target.value;
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                }
-                              }
-                            },
-                            [
-                              h('option',
-                                  {
-                                    value: 'flex-start',
-                                    selected: alignItems === 'flex-start'
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['顶对齐'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'center',
-                                    selected: alignItems === 'center'
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['居中'])
-                                  ]
-                              ),
-                              h('option',
-                                  {
-                                    value: 'flex-end',
-                                    selected: alignItems === 'flex-end'
-                                  },
-                                  [
-                                    h('span', {
-                                    }, ['底对齐'])
-                                  ]
-                              )
-                            ]
-                        ),
-                      ]
-                  )
-                }
-                if (item.className === 'font-color-box') {
-                  return h('div',
-                      {
-                        className: ['border-color-box']
-                      },
-                      [
-                        h('span', {}, [item.name + ':']),
-                        h('input', {
-                              type: 'color',
-                              on: {
-                                change: (e) => {
-                                  data.childrenProps.style[item.key] = e.target.value;
-                                  mainEvent.emit('dataChange', mainEvent.store.data);
-                                }
-                              }
+                          ),
+                          h('span', {}, ['px']),
+                        ]),
+                  ],
+              ),
+              h('div',
+                  {
+                    className: ['border-style-box']
+                  },
+                  [
+                    h('span', {}, ['水平对齐:']),
+                    h('select',
+                        {
+                          on: {
+                            change: (e) => {
+                              data.childrenProps.style['textAlign'] = e.target.value;
+                              mainEvent.emit('dataChange', mainEvent.store.data);
                             }
-                        ),
-                      ]
-                  )
-                }
-              })
+                          }
+                        },
+                        [
+                          h('option',
+                              {
+                                value: 'left',
+                                selected: textAlign === 'left'
+                              },
+                              [
+                                h('span', {}, ['左对齐'])
+                              ]
+                          ),
+                          h('option',
+                              {
+                                value: 'center',
+                                selected: textAlign === 'center'
+
+                              },
+                              [
+                                h('span', {}, ['居中'])
+                              ]
+                          ),
+                          h('option',
+                              {
+                                value: 'right',
+                                selected: textAlign === 'right'
+
+                              },
+                              [
+                                h('span', {}, ['右对齐'])
+                              ]
+                          )
+                        ]
+                    ),
+                  ]
+              ),
+              h('div',
+                  {
+                    className: ['border-style-box']
+                  },
+                  [
+                    h('span', {}, ['竖直对齐:']),
+                    h('select',
+                        {
+                          on: {
+                            change: (e) => {
+                              data.childrenProps.style['alignItems'] = e.target.value;
+                              mainEvent.emit('dataChange', mainEvent.store.data);
+                            }
+                          }
+                        },
+                        [
+                          h('option',
+                              {
+                                value: 'flex-start',
+                                selected: alignItems === 'flex-start'
+                              },
+                              [
+                                h('span', {}, ['顶对齐'])
+                              ]
+                          ),
+                          h('option',
+                              {
+                                value: 'center',
+                                selected: alignItems === 'center'
+                              },
+                              [
+                                h('span', {}, ['居中'])
+                              ]
+                          ),
+                          h('option',
+                              {
+                                value: 'flex-end',
+                                selected: alignItems === 'flex-end'
+                              },
+                              [
+                                h('span', {}, ['底对齐'])
+                              ]
+                          )
+                        ]
+                    ),
+                  ]
+              ),
+              h('div',
+                  {
+                    className: ['border-color-box']
+                  },
+                  [
+                    h('span', {}, ['字体颜色:']),
+                    h('input', {
+                          type: 'color',
+                          on: {
+                            change: (e) => {
+                              data.childrenProps.style['color'] = e.target.value;
+                              mainEvent.emit('dataChange', mainEvent.store.data);
+                            }
+                          }
+                        }
+                    ),
+                  ]
+              ),
+              h('div',
+                  {
+                    className: ['border-color-box']
+                  },
+                  [
+                    h('span', {}, ['背景颜色:']),
+                    h('input', {
+                          type: 'color',
+                          on: {
+                            change: (e) => {
+                              data.childrenProps.style['backgroundColor'] = e.target.value;
+                              mainEvent.emit('dataChange', mainEvent.store.data);
+                            }
+                          }
+                        }
+                    ),
+                  ]
+              )
             ]
         )
-
       ]
   )
 };

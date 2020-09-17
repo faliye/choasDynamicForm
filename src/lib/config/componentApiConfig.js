@@ -58,7 +58,7 @@ export class ChildrenProps {
         isMultiple = 0,
         validate = [],
         timeValidate = [],
-          style={}
+        style = {}
       }
   ) {
     this.tagName = tagName;
@@ -67,18 +67,24 @@ export class ChildrenProps {
     this.isSearch = isSearch;
     this.value = value;
     this.style = {
-      borderTopWidth:'1',
-      borderTopStyle:'solid',
-      borderTopColor:'#000',
-      borderRightWidth:'1',
-      borderRightStyle:'solid',
-      borderRightColor:'#000',
-      borderBottomWidth:'1',
-      borderBottomStyle:'solid',
-      borderBottomColor:'#000',
-      borderLeftWidth:'1',
-      borderLeftStyle:'solid',
-      borderLeftColor:'#000',
+      fontSize: '14',
+      color: '#000',
+      textAlign: 'center',
+      alignItems:'center',
+      backgroundColor: 'transparent',
+      borderLeftColor: '#000',
+      borderTopWidth: '1',
+      borderTopStyle: 'solid',
+      borderTopColor: '#000',
+      borderRightWidth: '1',
+      borderRightStyle: 'solid',
+      borderRightColor: '#000',
+      borderBottomWidth: '1',
+      borderBottomStyle: 'solid',
+      borderBottomColor: '#000',
+      borderLeftWidth: '1',
+      borderLeftStyle: 'solid',
+      ...style,
     };
     this.placeholder = placeholder;
     this.dataListId = dataListId;
@@ -91,7 +97,7 @@ export class ChildrenProps {
     } else {
       delete this.timeValidate;
     }
-    if(this.tagName!=='TitleBox'){
+    if (this.tagName !== 'TitleBox') {
       delete this.keyName;
       delete this.cnName;
       delete this.isSearch;
