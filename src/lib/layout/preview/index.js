@@ -12,8 +12,7 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
       {
         className: ['preview-modal-content']
       },
-      [
-      ]
+      []
   );
 
   const modal = h('div',
@@ -25,7 +24,14 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
           top: '0',
           left: '0',
           zIndex: '999',
-          background: 'rgba(0,0,0,0.4)'
+          background: 'rgba(0,0,0,0.4)',
+          cursor: 'pointer',
+        },
+        title:'点击关闭预览',
+        on:{
+          click: ()=>{
+            modal.remove();
+          }
         }
       },
       [
@@ -38,31 +44,9 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
               {
                 className: ['preview-modal-title']
               },
-              ['预览']
+              ['预览表单']
           ),
           box,
-          h('div',
-              {
-                className: ['preview-modal-footer']
-              },
-              [
-                h('button',
-                    {
-                      style: {
-                        background: '#1780E3',
-                        color: '#fff',
-                        padding: '6px 14px'
-                      },
-                      on: {
-                        click: () => {
-                          modal.remove()
-                        }
-                      }
-                    },
-                    ['关闭']
-                )
-              ]
-          ),
         ]
     )
   ]);
