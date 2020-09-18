@@ -32,6 +32,10 @@ export const selectSourceBox = (data) => {
                           props:{
                             value: data.childrenProps.dataListId,
                           },
+                          style:{
+                            width: '150px',
+                            overflow: 'hidden',
+                          },
                           on: {
                             change(e) {
                               data.childrenProps.dataListId = e.target.value;

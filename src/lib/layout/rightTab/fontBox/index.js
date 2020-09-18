@@ -156,6 +156,9 @@ export const createFontSizeBox = (data) => {
                     h('span', {}, ['字体颜色:']),
                     h('input', {
                           type: 'color',
+                          props: {
+                            value: _.get(data, `childrenProps.style.color`, '#000')
+                          },
                           on: {
                             change: (e) => {
                               data.childrenProps.style['color'] = e.target.value;
@@ -174,6 +177,9 @@ export const createFontSizeBox = (data) => {
                     h('span', {}, ['背景颜色:']),
                     h('input', {
                           type: 'color',
+                          props: {
+                            value: _.get(data, `childrenProps.style.backgroundColor`, '#000')
+                          },
                           on: {
                             change: (e) => {
                               data.childrenProps.style['backgroundColor'] = e.target.value;

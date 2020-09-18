@@ -17,7 +17,6 @@ export class TextArea {
   }
 
   render() {
-    const {insertType} = this.props;
     this.$el = h('div',
         {
           className: ['component-box'],

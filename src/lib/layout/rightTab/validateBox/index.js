@@ -228,7 +228,7 @@ export const createValidateBox = (data) => {
                         h('div',
                             {
                               style:{
-                                width: '146px',
+                                width: '130px',
                               },
                             },
                             [
@@ -310,7 +310,7 @@ export const createValidateBox = (data) => {
                       h('div',
                           {
                             style:{
-                              width: '146px',
+                              width: '130px',
                             },
                           },
                           [

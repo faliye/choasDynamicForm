@@ -7,6 +7,11 @@ button{
   background: #fff;
 }
 
+select,input,textarea{
+  margin: 0;
+  padding: 0;
+}
+
 
 
 .left-nav {
@@ -14,6 +19,7 @@ button{
   vertical-align: top;
   border-right: 1px solid $lineColor;
   height: 100%;
+  font-size: 14px;
   &-title {
     height: 36px;
     line-height: 36px;
@@ -80,6 +86,7 @@ button{
   vertical-align: top;
   height: 100%;
   overflow: hidden;
+  font-size: 14px;
   // 顶部按钮
   &-top {
     border-bottom: 1px solid $lineColor;
@@ -286,6 +293,7 @@ button{
   height: 100%;
   display: inline-block;
   border-left: 1px solid #E8E8E8;
+  font-size: 14px;
   .tab-btn-box {
     border-bottom: 1px solid $lineColor;
     & .right-tab-btn{
@@ -294,7 +302,7 @@ button{
       font-weight: bold;
       height: 30px;
       line-height: 30px;
-      margin-top: 10px;
+      margin-top: 8px;
       margin-left: 10px;
       font-size: 14px;
       padding: 0 10px;
