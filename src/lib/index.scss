@@ -91,54 +91,34 @@ select,input,textarea{
   &-top {
     border-bottom: 1px solid $lineColor;
     vertical-align: top;
-    &-left {
-      vertical-align: top;
-      display: inline-block;
-      height: 100%;
-      & button{
-        // 左侧按钮
-        &.left-left-btn{
-          height: 20px;
-          vertical-align: middle;
-          margin-top: 8px;
-          cursor: pointer;
-          &>i{
-            font-size: 20px;
-            &:hover{
-              color: $primaryColor;
-            }
-          }
-          &:nth-of-type(1){
-            margin-top: 6px;
-            &>i{
-              height: 32px;
-              font-size: 24px;
-            }
-          }
-          &:nth-of-type(2){
-            margin-top: 6px;
-            &>i{
-              height: 32px;
-              font-size: 24px;
-            }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & button{
+      // 左侧按钮
+      &.left-left-btn{
+        cursor: pointer;
+        &>i{
+          font-size: 20px;
+
+          &:hover{
+            color: $primaryColor;
           }
         }
-        // 右侧按钮
-        &.left-right-btn{
-          padding: 0 10px;
-          border-radius: 4px;
-          height: 26px;
-          line-height: 26px;
-          margin-top: 10px;
-          font-size: 12px;
-          font-weight: bold;
-          float: right;
-          margin-right: 15px;
-          cursor: pointer;
-          &>i{
-            font-size: 16px;
-            margin-right: 6px;
-          }
+      }
+      // 右侧按钮
+      &.left-right-btn{
+        padding: 0 10px;
+        border-radius: 4px;
+        line-height: 24px;
+        font-size: 12px;
+        font-weight: bold;
+        float: right;
+        margin-right: 15px;
+        cursor: pointer;
+        &>i{
+          font-size: 14px;
+          margin-right: 6px;
         }
       }
     }

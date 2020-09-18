@@ -15,7 +15,7 @@ const tablePaddingLeft = sizeConfig.table.paddingLeft;
 
 
 function mountMidBox(mountDOM, themeConfig = {}) {
-  const midBoxWidth = getWidth(mountDOM) - leftNavWidth - navRightWidth -20 - 1;
+  const midBoxWidth = getWidth(mountDOM) - leftNavWidth - navRightWidth - 20 - 1;
   const topLeftBtnBoxWidth = midBoxWidth;
   const tableBoxWidth = topLeftBtnBoxWidth - midLeftPaddingLeft * 2 - 2;
   const tableBoxHeight = getHeight(mountDOM) - 60 - midLeftPaddingTop * 2 - 1;
@@ -37,15 +37,10 @@ function mountMidBox(mountDOM, themeConfig = {}) {
               }
             },
             [
+              /* 合并单元格 */
               h('div',
-                  {
-                    className: ['mid-box-top-left'],
-                    style: {
-                      width: topLeftBtnBoxWidth + 'px',
-                    }
-                  },
+                  {},
                   [
-                    /* 合并单元格 */
                     h('button',
                         {
                           className: ['left-left-btn'],
@@ -108,6 +103,11 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                           h('i', {className: ["iconfont", "icon-qianjin"]})
                         ]
                     ),
+                  ]
+              ),
+              h('div',
+                  {},
+                  [
                     h('button',
                         {
                           className: ['left-right-btn'],
@@ -151,8 +151,8 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                             background: themeConfig.primaryColor || colorConfig.primaryColor,
                             color: themeConfig.darkBtnColor || colorConfig.darkBtnColor,
                           },
-                          on:{
-                            click: ()=>{
+                          on: {
+                            click: () => {
                               eventBus.emit('preview')
                             }
                           }
@@ -166,14 +166,10 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                           '预览'
                         ]
                     ),
-                  ]),
-              h('div',
-                  {
-                    className: ['mid-box-top-right'],
-                    width: navRightWidth + 'px',
-                  },
-                  [])
-            ]),
+                  ]
+              )
+            ]
+        ),
         h('div',
             {
               className: ['mid-box-bottom'],
@@ -196,7 +192,7 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                   [
                     h('table',
                         {
-                          id:'edit-table',
+                          id: 'edit-table',
                         },
                         []
                     ),
