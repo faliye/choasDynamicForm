@@ -186,6 +186,8 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                   {
                     className: ['mid-box-bottom-left-box'],
                     style: {
+                      // width: tableBoxWidth + 'px',
+                      // height: tableBoxHeight + 'px',
                       width: tableBoxWidth + 'px',
                       height: tableBoxHeight + 'px',
                       padding: tablePaddingTop + 'px ' + tablePaddingLeft + 'px',

@@ -286,7 +286,7 @@ class DynamicForm {
       height: row * (tdHeight + 2),
     });
     mid.style.width = col * (tdWidth + 2) + tablePaddingLeft + 'px';
-    mid.style.height = row * (tdHeight + 2) + tablePaddingTop + 'px';
+    mid.style.height = (row+1) * (tdHeight + 2) + tablePaddingTop + 'px';
     addCol.style.right = 0;
     addRow.style.bottom = 0;
     data.forEach((trData, j) => {
