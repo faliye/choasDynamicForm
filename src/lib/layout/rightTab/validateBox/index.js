@@ -153,7 +153,7 @@ export const createValidateBox = (data) => {
                           key: 'regexp',
                         };
                         addBox.style.display = 'none';
-                        addBtnBox.style.display = 'block';
+                        addBtnBox.style.display = 'flex';
                         mainEvent.emit('dataChange', mainEvent.store.data);
                         mainEvent.emit('selectStartChange', data.location)
                       }
@@ -167,7 +167,7 @@ export const createValidateBox = (data) => {
                       click: () => {
                         validate = {};
                         addBox.style.display = 'none';
-                        addBtnBox.style.display = 'block';
+                        addBtnBox.style.display = 'flex';
                       }
                     }
                   },
@@ -310,7 +310,7 @@ export const createValidateBox = (data) => {
                       h('div',
                           {
                             style:{
-                              width: '130px',
+                              width: '140px',
                             },
                           },
                           [
