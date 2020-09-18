@@ -166,7 +166,9 @@ export class Datepicker {
         },
         ['取消']
     );
-    let style={}
+    let style={
+      top: '100%',
+    };
     if(this.props.right){
       style.right = 0
     }
