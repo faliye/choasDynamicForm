@@ -1,7 +1,5 @@
 import {$createElement as h} from '../../utils/$createElement'
-import EventBus from "../../utils/eventBus";
-import mainEvent from "../../mainEvent";
-
+import $ from 'jquery'
 
 /**
  * Input组件
@@ -10,10 +8,18 @@ import mainEvent from "../../mainEvent";
 export class TextArea {
   constructor({props}) {
     this.$el = null;
-    this.parentNodes = null;
     this.props = props;
-    this.eventBus = new EventBus({...this.proto});
-    this.render(this.eventBus.store);
+    this.render();
+    this.setInnerEleSize();
+  }
+
+  setInnerEleSize(){
+    const {location} = this.props;
+    setTimeout(()=>{
+      $(this.$el).children('textarea').css({
+        height: $('#td-' + location[0] + '-' + location[1]).innerHeight()
+      })
+    })
   }
 
   render() {
@@ -24,7 +30,7 @@ export class TextArea {
           h('textarea',
               {
                 style:{
-                  height: '100%',
+                  height: '0',
                 },
                 placeholder: '多行文本框',
                 value: this.props.value

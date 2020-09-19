@@ -80,7 +80,5 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
       });
     }
   }
-
-
   return ele;
 };

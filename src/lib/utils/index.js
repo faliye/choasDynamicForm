@@ -199,38 +199,21 @@ export const addZero = (value) => {
  * @name calcSelectWidth 计算选区宽度
  * */
 export const calcSelectWidth=(start,end)=>{
-  let hasCollapsed = false;
   let width = 0;
-  let displayCount = 0;
-
-  for (let i = start[1]; i <= end[1]; ++i) {
+  for (let i = start[1], count = 0; i <= end[1]; ++i) {
     const ele = $('#td-' + end[0] + '-' + i);
-    if(ele.attr('colSpan')>1){
-      hasCollapsed = true;
-      break;
-    }
-  }
-
-  for (let i = start[1]; i <= end[1]; ++i) {
-    const ele = $('#td-' + end[0] + '-' + i);
-    let borderLeftWidth = parseInt(ele.css('borderLeftWidth'), 10);
-    let borderRightWidth = parseInt(ele.css('borderRightWidth'), 10);
-    let itemWidth = parseInt(ele.innerWidth(), 10)+borderLeftWidth+borderRightWidth;
-    if(hasCollapsed){
-      if (ele.css('display')!=='none') {
-        width += itemWidth;
-      }
+    const colSpan = ele.attr('colSpan');
+    if(colSpan>1){
+      count = i+ parseInt(colSpan, 10);
+      width+=parseInt(ele.outerWidth(), 10);
     }else{
-      if(ele.css('display')==='none'){
-        displayCount+=(borderLeftWidth+borderRightWidth);
+      if(i>=count){
+        count = 0;
+        width+=parseInt(ele.outerWidth(), 10);
       }
-      width += itemWidth;
     }
   }
-  if(hasCollapsed) {
-    return width;
-  }
-  return width-displayCount;
+  return width;
 };
 
 
@@ -238,28 +221,19 @@ export const calcSelectWidth=(start,end)=>{
  * @name calcSelectHeight 计算选区高度
  * */
 export const calcSelectHeight=(start,end)=>{
-  let hasCollapsed = false;
   let height = 0;
-  let displayCount = 0;
 
-  for (let i = start[0]; i <= end[0]; ++i) {
+  for (let i = start[0],count = 0; i <= end[0]; ++i) {
     const ele = $('#td-' + i + '-' + end[1]);
-    if(ele.attr('rowSpan')>1){
-      hasCollapsed = true;
-      break;
-    }
-  }
-  for (let i = start[0]; i <= end[0]; ++i) {
-    const ele = $('#td-' + i + '-' + end[1]);
-    let borderTopWidth = parseInt(ele.css('borderTopWidth'), 10);
-    let borderBottomTop = parseInt(ele.css('borderBottomWidth'), 10);
-    let itemHeight = parseInt(ele.innerHeight(), 10)+borderTopWidth+borderBottomTop;
-    if(hasCollapsed){
-      if (ele.css('display')!=='none') {
-        height += itemHeight;
-      }
+    let rowSpan = ele.attr('rowSpan');
+    if(rowSpan>1){
+      count = i+ parseInt(rowSpan, 10);
+      height+=parseInt(ele.outerHeight(), 10);
     }else{
-      height += itemHeight;
+      if(i>=count){
+        count = 0;
+        height+=parseInt(ele.parent('tr').outerHeight(), 10);
+      }
     }
   }
   return height;
