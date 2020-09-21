@@ -46,14 +46,16 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
     default : {
       ele = $(document.createElement(tag));
       const {style={},props,className=[], on={},...propsKey} = proto;
-      ele.css(style).attr({...props,...propsKey}).addClass(className);
-      Object.keys(on).forEach(eventName => {
-        ele.on(eventName, proto['on'][eventName])
+      ele.each((k,v)=>{
+        $(v).css(style).attr({...props,...propsKey}).addClass(className);
+        Object.keys(on).forEach(eventName => {
+          $(v).on(eventName, proto['on'][eventName])
+        });
+        if (tag === 'td') {
+          $(v).addClass(['td-div']);
+        }
       });
-      if (tag === 'td') {
-        ele.addClass(['td-div']);
-      }
-      ele.append(childDOMs)
+      ele.append(...childDOMs)
     }
   }
   return ele;

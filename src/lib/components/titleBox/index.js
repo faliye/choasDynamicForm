@@ -20,7 +20,7 @@ export class TitleBox {
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
-          style:{
+          style: {
             width: '100%',
             wordBreak: 'break-all',
             whiteSpace: 'break-spaces',
@@ -29,7 +29,7 @@ export class TitleBox {
             click: () => {
               $(this.inputBox).css({
                 display: 'inline-block',
-                height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
+                height: $('#td-' + location[0] + '-' + location[1]).innerHeight(),
               }).focus();
               $(this.contentBox).css({
                 display: 'none',
@@ -41,14 +41,14 @@ export class TitleBox {
               }).focus();
               $(this.contentBox).css({
                 display: 'inline-block',
-                height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
+                height: $('#td-' + location[0] + '-' + location[1]).innerHeight(),
               }).html(mainData.cnName);
             },
           }
         },
         [this.props.cnName || '暂无标题']
     );
-      this.inputBox = h('textarea',
+    this.inputBox = h('textarea',
         {
           className: ['table-edit-input-open'],
           placeholder: '请输入标题',
@@ -78,14 +78,9 @@ export class TitleBox {
           value: this.props.cnName
         }
     );
-    this.$el = h('div',
-        {
-          className: ['component-box'],
-          style:createContentBoxStyle(this.props.style)
-        }, [
-          this.contentBox,
-          this.inputBox,
-        ]
-    );
+    this.$el = [
+      this.contentBox,
+      this.inputBox,
+    ];
   }
 }

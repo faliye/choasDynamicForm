@@ -23,20 +23,16 @@ export class TextArea {
   }
 
   render() {
-    this.$el = h('div',
-        {
-          className: ['component-box'],
-        }, [
-          h('textarea',
-              {
-                style:{
-                  height: '0',
-                },
-                placeholder: '多行文本框',
-                value: this.props.value
-              }
-          )
-        ]
-    );
+    this.$el = [
+      h('textarea',
+          {
+            style:{
+              height: '0',
+            },
+            placeholder: '多行文本框',
+            value: this.props.value
+          }
+      )
+    ]
   }
 }

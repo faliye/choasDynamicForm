@@ -192,13 +192,10 @@ export class Datepicker {
         ]
     );
 
-    this.$el = h('div',
-        {
-          className: ['component-box', 'datepicker-box'],
-        }, [
-          this.input,
-          this.dropdownBox,
-        ]);
+    this.$el = [
+      this.input,
+      this.dropdownBox,
+    ]
   }
 
   createDayList() {

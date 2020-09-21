@@ -18,22 +18,16 @@ export class Input {
 
   render() {
     const {location} = this.props;
-    this.$el = h('div',
+    this.$el = h('input',
         {
-          className: ['component-box'],
-        }, [
-          h('input',
-              {
-                placeholder: '单行文本输入框',
-                type: 'text',
-                style:{
-                  height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
-                },
-                on: {
-                }
-              }
-          )
-        ]
+          placeholder: '单行文本输入框',
+          type: 'text',
+          style:{
+            height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
+          },
+          on: {
+          }
+        }
     );
   }
 }
