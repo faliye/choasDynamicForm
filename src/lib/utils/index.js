@@ -209,7 +209,17 @@ export const calcSelectWidth=(start,end)=>{
     }else{
       if(i>=count){
         count = 0;
-        width+=parseInt(ele.outerWidth(), 10);
+        let eleWidth = parseInt(ele.outerWidth(), 10);
+        if(ele.css('display')==='none'){
+          for(let j = end[0];j<100;++j){
+            const ele1 = $('#td-' + j + '-' + i);
+            if(ele1.css('display')!=='none' && ele1.attr('colSpan')==='1'){
+              eleWidth =ele1.outerWidth();
+              break;
+            }
+          }
+        }
+        width+=eleWidth
       }
     }
   }
