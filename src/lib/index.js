@@ -659,9 +659,7 @@ class DynamicForm {
       }
       virDOM.push(createBorderBox(targetData));
     }
-    virDOM.forEach((item) => {
-      this.tabBox.appendChild(item);
-    });
+    $(this.tabBox).append(virDOM);
   }
 
   // 添加图标元素

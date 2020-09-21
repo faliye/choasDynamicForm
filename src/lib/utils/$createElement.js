@@ -1,4 +1,5 @@
 import {addEvent} from "./index";
+import $ from 'jquery'
 
 import {TitleBox} from "../components/titleBox";
 import {Input} from "../components/input";
@@ -43,41 +44,16 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
       break;
     }
     default : {
-      ele = document.createElement(tag);
-      Object.keys(proto).forEach(key => {
-        if (key === 'style') {
-          // style属性
-          Object.keys(proto['style']).forEach(styleKey => {
-            ele['style'][styleKey] = proto['style'][styleKey]
-          })
-        } else if (key === 'props') {
-          // props属性
-          Object.keys(proto['props']).forEach(propsKey => {
-            ele[propsKey] = proto['props'][propsKey]
-          });
-        } else if (key === 'className') {
-          let classArr = proto['className'] || [];
-          ele.className = classArr.join(' ')
-        } else if (key === 'on') {
-          // 绑定事件
-          Object.keys(proto['on']).forEach(eventName => {
-            addEvent(ele, eventName, proto['on'][eventName])
-          })
-        }else {
-          ele[key] = proto[key];
-        }
+      ele = $(document.createElement(tag));
+      const {style={},props,className=[], on={},...propsKey} = proto;
+      ele.css(style).attr({...props,...propsKey}).addClass(className);
+      Object.keys(on).forEach(eventName => {
+        ele.on(eventName, proto['on'][eventName])
       });
-
       if (tag === 'td') {
-        ele.className += ' td-div'
+        ele.addClass(['td-div']);
       }
-      (childDOMs || []).forEach(childDOM => {
-        if (typeof childDOM !== 'object') {
-          ele.appendChild(document.createTextNode(childDOM));
-        } else {
-          ele.appendChild(childDOM)
-        }
-      });
+      ele.append(childDOMs)
     }
   }
   return ele;

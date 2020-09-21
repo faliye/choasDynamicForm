@@ -70,9 +70,7 @@ const previewModal = (mountDOM, storeData, themeConfig = {}) => {
       }
     }
   }
-  box.appendChild(fakeSearchBox(searchData));
-  $(box).append(fakeTableBox(data));
-  box.appendChild(fakePagination(data));
+  $(box).append(fakeSearchBox(searchData),fakeTableBox(data),fakePagination(data));
 };
 
 export default previewModal;

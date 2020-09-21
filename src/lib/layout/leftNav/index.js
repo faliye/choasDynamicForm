@@ -112,7 +112,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
               ])
         })
       ]);
-  mountDOM.appendChild(leftNav);
+  $(mountDOM).append(leftNav);
 };
 
 export default createLeftNav;

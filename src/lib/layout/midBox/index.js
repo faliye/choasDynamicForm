@@ -1,6 +1,6 @@
 import eventBus from "../../mainEvent";
+import $ from 'jquery'
 
-import {getHeight, getWidth} from "../../utils";
 import {$createElement as h} from "../../utils/$createElement";
 import sizeConfig from "../../config/size.config";
 import colorConfig from "../../config/color.config";
@@ -15,10 +15,9 @@ const tablePaddingLeft = sizeConfig.table.paddingLeft;
 
 
 function mountMidBox(mountDOM, themeConfig = {}) {
-  const midBoxWidth = getWidth(mountDOM) - leftNavWidth - navRightWidth - 20 - 1;
-  const topLeftBtnBoxWidth = midBoxWidth;
-  const tableBoxWidth = topLeftBtnBoxWidth - midLeftPaddingLeft * 2 - 2;
-  const tableBoxHeight = getHeight(mountDOM) - 60 - midLeftPaddingTop * 2 - 1;
+  const midBoxWidth = $(mountDOM).width()  - leftNavWidth - navRightWidth - 20 - 1;
+  const tableBoxWidth = midBoxWidth - midLeftPaddingLeft * 2 - 2;
+  const tableBoxHeight = $(mountDOM).width() - 60 - midLeftPaddingTop * 2 - 1;
 
   const midBox = h('div',
       {
@@ -174,7 +173,7 @@ function mountMidBox(mountDOM, themeConfig = {}) {
             {
               className: ['mid-box-bottom'],
               style: {
-                height: getHeight(mountDOM) - 40 - 1 + 'px',
+                height: $(mountDOM).height() - 40 - 1 + 'px',
               }
             },
             [
@@ -234,7 +233,7 @@ function mountMidBox(mountDOM, themeConfig = {}) {
         )
       ]
   );
-  mountDOM.appendChild(midBox);
+  $(mountDOM).append(midBox);
 }
 
 export default mountMidBox

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import eventBus from "../../mainEvent";
 import {$createElement as h} from "../../utils/$createElement";
 import sizeConfig from "../../config/size.config";
@@ -53,7 +54,7 @@ function mountRightBox(mountDOM, themeConfig = {}) {
         )
       ]
   );
-  mountDOM.appendChild(mountRightBox);
+  $(mountDOM).append(mountRightBox);
 }
 
 export default mountRightBox
