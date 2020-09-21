@@ -21,7 +21,6 @@ export class TitleBox {
     this.contentBox = h('div',
         {
           style:{
-            lineHeight: '35px',
             width: '100%',
             wordBreak: 'break-all',
             whiteSpace: 'break-spaces',
@@ -30,6 +29,7 @@ export class TitleBox {
             click: () => {
               $(this.inputBox).css({
                 display: 'inline-block',
+                height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
               }).focus();
               $(this.contentBox).css({
                 display: 'none',
@@ -41,22 +41,22 @@ export class TitleBox {
               }).focus();
               $(this.contentBox).css({
                 display: 'inline-block',
+                height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
               }).html(mainData.cnName);
             },
           }
         },
         [this.props.cnName || '暂无标题']
     );
-    this.inputBox = h('input',
+      this.inputBox = h('textarea',
         {
           className: ['table-edit-input-open'],
           placeholder: '请输入标题',
-          type: 'text',
           style: {
             display: 'none',
             width: '100%',
-            height: '35px',
-            border: 'none'
+            border: 'none',
+            overflow: 'visible'
           },
           on: {
             blur: (e) => {
