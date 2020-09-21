@@ -1,5 +1,6 @@
 import {$createElement as h} from '../../utils/$createElement'
 import mainEvent from "../../mainEvent";
+import $ from 'jquery';
 
 
 /**
@@ -25,10 +26,12 @@ export class Select {
         }, [
           h('select',
               {
+                style:{
+                  height: $('#td-'+location[0]+'-'+ location[1]).innerHeight() || 35 +'px',
+                },
                 on: {
                   change: (e) => {
                     mainData.value = e.target.value;
-
                   }
                 },
                 value: this.props.value

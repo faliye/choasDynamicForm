@@ -1,6 +1,5 @@
-import {$createElement as h} from '../../utils/$createElement'
-import EventBus from "../../utils/eventBus";
-import mainEvent from "../../mainEvent";
+import {$createElement as h} from '../../utils/$createElement';
+import $ from 'jquery';
 
 
 /**
@@ -18,6 +17,7 @@ export class Input {
   }
 
   render() {
+    const {location} = this.props;
     this.$el = h('div',
         {
           className: ['component-box'],
@@ -26,6 +26,9 @@ export class Input {
               {
                 placeholder: '单行文本输入框',
                 type: 'text',
+                style:{
+                  height: $('#td-'+location[0]+'-'+ location[1]).innerHeight(),
+                },
                 on: {
                 }
               }
