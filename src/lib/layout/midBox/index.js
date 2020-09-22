@@ -1,43 +1,28 @@
 import eventBus from "../../mainEvent";
 import $ from 'jquery'
-
 import {$createElement as h} from "../../utils/$createElement";
-import sizeConfig from "../../config/size.config";
-import colorConfig from "../../config/color.config";
-
-const leftNavWidth = sizeConfig.leftNav.width;
-const midTopHeight = sizeConfig.midTop.height;
-const midLeftPaddingLeft = sizeConfig.midLeft.paddingLeft;
-const midLeftPaddingTop = sizeConfig.midLeft.paddingTop;
-const navRightWidth = sizeConfig.navRight.width;
-const tablePaddingTop = sizeConfig.table.paddingTop;
-const tablePaddingLeft = sizeConfig.table.paddingLeft;
+import './index.scss';
 
 
-function mountMidBox(mountDOM, themeConfig = {}) {
-  const midBoxWidth = $(mountDOM).width()  - leftNavWidth - navRightWidth - 20 - 1;
-  const tableBoxWidth = midBoxWidth - midLeftPaddingLeft * 2 - 2;
-  const tableBoxHeight = $(mountDOM).width() - 60 - midLeftPaddingTop * 2 - 1;
-
+const createMidBox = (mountDOM, mode,themeConfig = {}) => {
+  const {mode: themeMode} = themeConfig;
+  const {fontColor, primary, borderColor } = themeConfig.colorConfig[themeMode];
   const midBox = h('div',
       {
         className: ['mid-box'],
-        style: {
-          width: midBoxWidth + 'px',
-        }
       },
       [
         h('div',
             {
               className: ['mid-box-top'],
               style: {
-                width: midBoxWidth + 'px',
-                height: midTopHeight + 'px',
+                height: themeConfig.sizeConfig.topBarHeight + 'px',
+                borderBottom: `1px solid ${borderColor}`
               }
             },
             [
               /* 合并单元格 */
-              h('div',
+              mode !=='design'? null:h('div',
                   {},
                   [
                     h('button',
@@ -104,15 +89,15 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                     ),
                   ]
               ),
-              h('div',
+              mode !=='design'? null:h('div',
                   {},
                   [
                     h('button',
                         {
                           className: ['left-right-btn'],
                           style: {
-                            background: themeConfig.primaryColor || colorConfig.primaryColor,
-                            color: themeConfig.darkBtnColor || colorConfig.darkBtnColor,
+                            background: primary,
+                            color: fontColor,
                           },
                           on: {
                             click: () => {
@@ -129,8 +114,8 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                         {
                           className: ['left-right-btn'],
                           style: {
-                            background: themeConfig.primaryColor || colorConfig.primaryColor,
-                            color: themeConfig.darkBtnColor || colorConfig.darkBtnColor,
+                            background: primary,
+                            color: fontColor,
                           },
                           on: {
                             click: () => {
@@ -147,8 +132,8 @@ function mountMidBox(mountDOM, themeConfig = {}) {
                         {
                           className: ['left-right-btn'],
                           style: {
-                            background: themeConfig.primaryColor || colorConfig.primaryColor,
-                            color: themeConfig.darkBtnColor || colorConfig.darkBtnColor,
+                            background: primary,
+                            color: fontColor,
                           },
                           on: {
                             click: () => {
@@ -173,67 +158,54 @@ function mountMidBox(mountDOM, themeConfig = {}) {
             {
               className: ['mid-box-bottom'],
               style: {
-                height: $(mountDOM).height() - 40 - 1 + 'px',
+                width: 'px',
+                padding: themeConfig.sizeConfig.tablePadding + 'px',
               }
             },
             [
-              h('div',
+              h('table',
                   {
-                    className: ['mid-box-bottom-left-box'],
-                    style: {
-                      // width: tableBoxWidth + 'px',
-                      // height: tableBoxHeight + 'px',
-                      width: tableBoxWidth + 'px',
-                      height: tableBoxHeight + 'px',
-                      padding: tablePaddingTop + 'px ' + tablePaddingLeft + 'px',
-                    }
+                    id: 'dynamic-table',
                   },
-                  [
-                    h('table',
-                        {
-                          id: 'edit-table',
-                        },
-                        []
-                    ),
-                    h('div',
-                        {
-                          className: ['selected-div'],
-                          style: {}
-                        }
-                    ),
-                    h('div',
-                        {
-                          className: ['add-selected-area'],
-                          style: {}
-                        }
-                    ),
-                    h('i',
-                        {
-                          className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-col'],
-                          on: {
-                            click: () => {
-                              eventBus.emit('rowChange', 1);
-                            }
-                          }
-                        }
-                    ),
-                    h('i',
-                        {
-                          className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-row'],
-                          on: {
-                            click: () => {
-                              eventBus.emit('colChange', 1)
-                            }
-                          }
-                        }
-                    )
-                  ]
+                  []
+              ),
+              mode !=='design'? null:h('div',
+                  {
+                    className: ['selected-div'],
+                    style: {}
+                  }
+              ),
+              mode !=='design'? null:h('div',
+                  {
+                    className: ['add-selected-area'],
+                    style: {}
+                  }
+              ),
+              mode !=='design'? null:h('i',
+                  {
+                    className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-col'],
+                    on: {
+                      click: () => {
+                        eventBus.emit('rowChange', 1);
+                      }
+                    }
+                  }
+              ),
+              mode !=='design'? null:h('i',
+                  {
+                    className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-row'],
+                    on: {
+                      click: () => {
+                        eventBus.emit('colChange', 1)
+                      }
+                    }
+                  }
               )
             ]
         )
       ]
   );
   $(mountDOM).append(midBox);
-}
+};
 
-export default mountMidBox
+export default createMidBox

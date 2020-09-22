@@ -1,6 +1,6 @@
 const store = {
-  formType:'row',
   col: 0,
+  maxInCol: 0,
   row: 0,
   data: [],
   backupData: [], // 十步撤销备份

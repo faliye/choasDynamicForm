@@ -1,19 +1,18 @@
-import {addEvent} from "./index";
 import $ from 'jquery'
 
-import {TitleBox} from "../components/titleBox";
-import {Input} from "../components/input";
-import {TextArea} from "../components/textArea";
-import {Select} from "../components/select";
-import {Radio} from "../components/radio";
-import {Checkbox} from "../components/checkbox";
-import {Datepicker} from "../components/datepicker";
+// import {TitleBox} from "../components/titleBox";
+// import {Input} from "../components/input";
+// import {TextArea} from "../components/textArea";
+// import {Select} from "../components/select";
+// import {Radio} from "../components/radio";
+// import {Checkbox} from "../components/checkbox";
+// import {Datepicker} from "../components/datepicker";
 
 /**
  * @name $createElement 创建元素
  * */
 export const $createElement = (tag, proto = {}, childDOMs = []) => {
-  let ele = null;
+  let ele;
   switch (tag) {
     case 'TitleBox': {
       ele = new TitleBox(proto).$el;

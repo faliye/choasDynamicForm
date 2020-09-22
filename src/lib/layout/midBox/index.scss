@@ -1,0 +1,31 @@
+.mid-box{
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  flex-direction: column;
+  &-top{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 10px;
+    button{
+      border: none;
+      outline: none;
+      background: #fff;
+      &.left-left-btn{
+        margin-right: 10px;
+      }
+      &.left-right-btn{
+        margin-left: 10px;
+      }
+    }
+
+  }
+  &-bottom{
+    flex: 1;
+    overflow: scroll;
+
+  }
+}

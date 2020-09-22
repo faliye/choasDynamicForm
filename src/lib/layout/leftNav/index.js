@@ -2,20 +2,32 @@ import $ from 'jquery'
 import {$createElement as h} from '../../utils/$createElement';
 import eventBus from "../../mainEvent";
 import leftNavConfig from "../../config/leftNavConfig";
-import sizeConfig from "../../config/size.config";
+import '../../assets/iconFont/iconFont.scss';
+import './index.scss';
 
 
-const createLeftNav = (mountDOM, themeConfig) => {
+const createLeftNav = (mountDOM,mode,themeConfig) => {
+  if(mode!=='design'){
+    return null
+  }
+  const {mode: themeMode} = themeConfig;
+  const { borderColor,shadowColor,fontColor, primary,hoverColor, } = themeConfig.colorConfig[themeMode];
+
   const leftNav = h('div', {
         className: ['left-nav'],
         style: {
-          width: sizeConfig.leftNav.width + 'px',
+          width: themeConfig.sizeConfig.leftWidth + 'px',
+          borderRight: `1px solid ${borderColor}`
         },
       },
       [
         h('div',
             {
               className: ['left-nav-title'],
+              style: {
+                border: `1px solid ${borderColor}`,
+                background: shadowColor,
+              },
             },
             [
                 h('i',
@@ -29,6 +41,9 @@ const createLeftNav = (mountDOM, themeConfig) => {
           return h('div',
               {
                 className: ['left-nav-item'],
+                style:{
+                  border: `1px solid ${borderColor}`,
+                },
                 on: {
                   mouseenter:()=>{
                     const childrenArr = $('.type-check-box');
@@ -70,11 +85,17 @@ const createLeftNav = (mountDOM, themeConfig) => {
                 h('div',
                     {
                       className: ['type-check-box'],
+                      style:{
+                        border: `1px solid ${borderColor}`,
+                      },
                     },
                     [
                       h('div',
                           {
                             className: ['type-rows'],
+                            style:{
+                              borderBottom: `1px solid ${borderColor}`,
+                            },
                             on:{
                               click: ()=>{
                                 const childrenArr = $('.type-check-box');
@@ -84,6 +105,18 @@ const createLeftNav = (mountDOM, themeConfig) => {
                                   type = '';
                                 }
                                 eventBus.emit('addElement',{componentName: leftNav.componentName, type})
+                              },
+                              mouseenter(){
+                                $(this).css({
+                                  background: primary,
+                                  color: hoverColor,
+                                })
+                              },
+                              mouseleave(){
+                                $(this).css({
+                                  background: background,
+                                  color:fontColor,
+                                })
                               }
                             }
                           },
@@ -101,7 +134,18 @@ const createLeftNav = (mountDOM, themeConfig) => {
                                   type = '';
                                 }
                                 eventBus.emit('addElement',{componentName: leftNav.componentName, type})
-
+                              },
+                              mouseenter(){
+                                $(this).css({
+                                  background: themeConfig.colorConfig[themeMode].primary,
+                                  color: themeConfig.colorConfig[themeMode].hoverColor,
+                                });
+                              },
+                              mouseleave(){
+                                $(this).css({
+                                  background: themeConfig.colorConfig[themeMode].background,
+                                  color:themeConfig.colorConfig[themeMode].fontColor,
+                                });
                               }
                             }
                           },
@@ -112,7 +156,7 @@ const createLeftNav = (mountDOM, themeConfig) => {
               ])
         })
       ]);
-  $(mountDOM).append(leftNav);
+  mountDOM.append(leftNav);
 };
 
 export default createLeftNav;
