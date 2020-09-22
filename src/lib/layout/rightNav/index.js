@@ -1,14 +1,14 @@
 import $ from 'jquery';
 import eventBus from "../../mainEvent";
-import {$createElement as h} from "../../utils/$createElement";
+import {$createElement as h} from "../../utils";
 import './index.scss'
 
-const createRightTable = (mountDOM, mode,themeConfig = {}) =>{
-  if(mode !=='design'){
+const createRightTable = (mountDOM, mode, themeConfig = {}) => {
+  if (mode !== 'design') {
     return null
   }
   const {mode: themeMode} = themeConfig;
-  const { borderColor,fontColor, primary,hoverColor } = themeConfig.colorConfig[themeMode];
+  const {borderColor, fontColor, primary, hoverColor} = themeConfig.colorConfig[themeMode];
   const mountRightBox = h('div',
       {
         className: ['right-box'],
@@ -16,7 +16,7 @@ const createRightTable = (mountDOM, mode,themeConfig = {}) =>{
           width: themeConfig.sizeConfig.rightWidth - 1 + 'px',
           height: 100 % +'px',
           borderLeft: `1px solid ${borderColor}`,
-}
+        }
       },
       [
         h('div',
@@ -25,22 +25,25 @@ const createRightTable = (mountDOM, mode,themeConfig = {}) =>{
               style: {
                 height: themeConfig.sizeConfig.topBarHeight + 'px',
                 borderBottom: `1px solid ${borderColor}`,
-}
+              }
             },
-            ['标题属性', '组件属性'].map((item,index) => {
+            ['标题属性', '组件属性'].map((item, index) => {
               return h('button',
                   {
                     className: ['right-tab-btn'],
                     style: {
-                      color: hoverColor,
-                      background: primary
+                      // color: hoverColor,
+                      background: hoverColor
                     },
                     on: {
-                      click(){
+                      click() {
                         eventBus.emit('toggleTab', index);
-                        $(this).css({
-                          borderBottom: `2px solid ${primary}`
-                        })
+                        $('.right-tab-btn')
+                            .css({borderBottom: 'none'})
+                            .eq(index)
+                            .css({
+                              borderBottom: `2px solid ${primary}`
+                            });
                       },
                     }
                   },
@@ -54,7 +57,7 @@ const createRightTable = (mountDOM, mode,themeConfig = {}) =>{
               className: ['tab-box'],
               style: {
                 color: fontColor,
-                paddingLeft: 5+'px',
+                paddingLeft: 5 + 'px',
               },
             },
             []

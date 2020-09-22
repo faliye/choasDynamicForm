@@ -1,18 +1,18 @@
 import eventBus from "../../mainEvent";
 import $ from 'jquery'
-import {$createElement as h} from "../../utils/$createElement";
+import {$createElement as h} from "../../utils";
 import './index.scss';
 
 
-const createMidBox = (mountDOM, mode,themeConfig = {}) => {
+const createMidBox = (mountDOM, mode, themeConfig = {}) => {
   const {mode: themeMode} = themeConfig;
-  const {fontColor, primary, borderColor } = themeConfig.colorConfig[themeMode];
+  const {primary, borderColor, background, hoverColor} = themeConfig.colorConfig[themeMode];
   const midBox = h('div',
       {
         className: ['mid-box'],
       },
       [
-        h('div',
+        mode !== 'design' ? null : h('div',
             {
               className: ['mid-box-top'],
               style: {
@@ -22,7 +22,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
             },
             [
               /* 合并单元格 */
-              mode !=='design'? null:h('div',
+              h('div',
                   {},
                   [
                     h('button',
@@ -89,7 +89,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                     ),
                   ]
               ),
-              mode !=='design'? null:h('div',
+              mode !== 'design' ? null : h('div',
                   {},
                   [
                     h('button',
@@ -97,7 +97,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                           className: ['left-right-btn'],
                           style: {
                             background: primary,
-                            color: fontColor,
+                            color: background,
                           },
                           on: {
                             click: () => {
@@ -107,7 +107,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                         },
                         [
                           h('i', {className: ["iconfont", "icon-baocun"]}),
-                          '保存'
+                          h('span', {}, ['保存'])
                         ]
                     ),
                     h('button',
@@ -115,7 +115,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                           className: ['left-right-btn'],
                           style: {
                             background: primary,
-                            color: fontColor,
+                            color: background,
                           },
                           on: {
                             click: () => {
@@ -125,7 +125,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                         },
                         [
                           h('i', {className: ["iconfont", "icon-wenjian"]}),
-                          '存草稿'
+                          h('span', {}, ['存草稿'])
                         ]
                     ),
                     h('button',
@@ -133,7 +133,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                           className: ['left-right-btn'],
                           style: {
                             background: primary,
-                            color: fontColor,
+                            color: background,
                           },
                           on: {
                             click: () => {
@@ -147,7 +147,7 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
                                 className: ["iconfont", "icon-yulan"]
                               }
                           ),
-                          '预览'
+                          h('span', {}, ['预览'])
                         ]
                     ),
                   ]
@@ -163,49 +163,64 @@ const createMidBox = (mountDOM, mode,themeConfig = {}) => {
               }
             },
             [
-              h('table',
-                  {
-                    id: 'dynamic-table',
-                  },
-                  []
+              h('div',
+                  {},
+                  [
+                    h('table',
+                        {
+                          id: 'dynamic-table',
+                        },
+                        []
+                    ),
+                    mode !== 'design' ? null : h('div',
+                        {
+                          className: ['selected-div'],
+                          style: {}
+                        }
+                    ),
+                    mode !== 'design' ? null : h('div',
+                        {
+                          className: ['add-selected-area'],
+                          style: {}
+                        }
+                    ),
+                    mode !== 'design' ? null : h('i',
+                        {
+                          className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-col'],
+                          style: {
+                            background: primary,
+                            color: hoverColor,
+                            marginTop: -(themeConfig.sizeConfig.tablePadding / 2).toFixed(0) + 'px',
+                          },
+                          on: {
+                            click: () => {
+                              eventBus.emit('rowChange', 1);
+                            }
+                          }
+                        }
+                    ),
+                    mode !== 'design' ? null : h('i',
+                        {
+                          className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-row'],
+                          style: {
+                            background: primary,
+                            color: hoverColor,
+                            marginLeft: -(themeConfig.sizeConfig.tablePadding / 2).toFixed(0) + 'px',
+                          },
+                          on: {
+                            click: () => {
+                              eventBus.emit('colChange', 1)
+                            }
+                          }
+                        }
+                    )
+                  ]
               ),
-              mode !=='design'? null:h('div',
-                  {
-                    className: ['selected-div'],
-                    style: {}
-                  }
-              ),
-              mode !=='design'? null:h('div',
-                  {
-                    className: ['add-selected-area'],
-                    style: {}
-                  }
-              ),
-              mode !=='design'? null:h('i',
-                  {
-                    className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-col'],
-                    on: {
-                      click: () => {
-                        eventBus.emit('rowChange', 1);
-                      }
-                    }
-                  }
-              ),
-              mode !=='design'? null:h('i',
-                  {
-                    className: ['iconfont', 'icon-tianjiajiahaowubiankuang', 'add-row'],
-                    on: {
-                      click: () => {
-                        eventBus.emit('colChange', 1)
-                      }
-                    }
-                  }
-              )
             ]
         )
       ]
   );
-  $(mountDOM).append(midBox);
+  mountDOM.append(midBox);
 };
 
 export default createMidBox

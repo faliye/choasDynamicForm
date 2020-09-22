@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import {$createElement as h} from '../../utils/$createElement';
+import {$createElement as h} from '../../utils';
 import eventBus from "../../mainEvent";
 import leftNavConfig from "../../config/leftNavConfig";
 import '../../assets/iconFont/iconFont.scss';
@@ -11,7 +11,7 @@ const createLeftNav = (mountDOM,mode,themeConfig) => {
     return null
   }
   const {mode: themeMode} = themeConfig;
-  const { borderColor,shadowColor,fontColor, primary,hoverColor, } = themeConfig.colorConfig[themeMode];
+  const { borderColor,shadowColor,fontColor, primary,hoverColor, background} = themeConfig.colorConfig[themeMode];
 
   const leftNav = h('div', {
         className: ['left-nav'],

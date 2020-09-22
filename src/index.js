@@ -9,6 +9,12 @@ const save2 = (data) => {
 };
 
 
-const dynamicForm = new DynamicForm({mountId: '#app', saveDraftHandle: save1, saveFileHandle: save2});
-// dynamicForm.getTableData(mockData);
+const dynamicForm = new DynamicForm({
+  mountId: '#app',
+  saveDraftHandle: save1,
+  saveFileHandle: save2
+});
+setTimeout(()=>{
+  dynamicForm.getTableData(mockData);
+},1000);
 // dynamicForm.previewHandle();
