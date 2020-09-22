@@ -85,7 +85,7 @@ EventBus.prototype.off = function (name, fn) {
 
 /**
  * 添加中间件
- * @param {function(string, object, ()=>{})} fn 中间件函数 fn(name, packet, next)
+ * @param fn 中间件函数 {function(string, object, ()=>{})} fn(name, packet, next)
  * @return {void}
  */
 EventBus.prototype.use = function (fn) {
