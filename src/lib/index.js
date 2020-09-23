@@ -165,10 +165,17 @@ class DynamicForm {
     const dataRow = (data || []).length || 0;
     const formData = data || [];
     let {col, row} = mainEvent.store;
-    if (col < dataCol) {
+    // 设计模式填充单元格
+    if(this.mode === 'design'){
+      if (col < dataCol) {
+        col = dataCol;
+      }
+      if (row < dataRow) {
+        row = dataRow;
+      }
+    }else{
+      // 编辑模式
       col = dataCol;
-    }
-    if (row < dataRow) {
       row = dataRow;
     }
     mainEvent.store.row = row;
