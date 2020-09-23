@@ -128,8 +128,11 @@ class DynamicForm {
               parentTdNode,
               location,
               childrenTdNode,
-              insertType, ...childrenProps
-            }
+              insertType,
+              ...childrenProps
+            },
+            themeConfig: this.themeConfig,
+            mode: this.mode,
           }),
           isEmpty ? null : deleteI
         ]
@@ -170,9 +173,10 @@ class DynamicForm {
     }
     mainEvent.store.row = row;
     mainEvent.store.col = col;
-    this.$table.css({
-    //   width:(col+1)*140,
-    //   height: row*35,
+    const { tdInitWidth, tdInitHeight } = this.themeConfig.sizeConfig;
+    this.$table.parent().css({
+      minWidth:(col+1)*(tdInitWidth+2),
+      minHeight: row*(tdInitHeight+2),
     });
     for (let j = 0; formData.length < row; ++j) {
       formData[j] = formData[j] || [];
@@ -224,10 +228,10 @@ class DynamicForm {
     const {tdInitWidth, tdInitHeight} = this.themeConfig.sizeConfig;
     const initWidth = this.$table.parent().width();
     const initHeight = this.$table.parent().height();
-    const col = (initWidth / tdInitWidth).toFixed(0);
-    const row = (initHeight / tdInitHeight).toFixed(0);
-    mainEvent.store.col = col;
-    mainEvent.store.row = row;
+    const col = (initWidth / (tdInitWidth+2)).toFixed(0);
+    const row = (initHeight / (tdInitHeight+2)).toFixed(0);
+    mainEvent.store.col = parseInt(col);
+    mainEvent.store.row = parseInt(row);
     this.$table.attr({
       border: 1,
       cellSpacing: 0,

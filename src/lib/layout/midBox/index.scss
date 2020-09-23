@@ -1,7 +1,6 @@
 .mid-box{
   display: flex;
   flex-wrap: wrap;
-  flex: 1;
   flex-direction: column;
   &-top{
     width: 100%;
@@ -39,21 +38,34 @@
   }
   &-bottom{
     flex: 1;
-    overflow: auto;
-    position: relative;
-    #dynamic-table{
-      .td-div{
-        box-sizing: content-box;
-        position: relative;
-        /* 删除按钮 */
-        .td-controllers{
-          position: absolute;
-          display: none;
-          &-del{
-            cursor: pointer;
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    &>div{
+      position: relative;
+      min-width: 100%;
+      min-height: 100%;
+      #dynamic-table{
+        .td-div{
+          box-sizing: content-box;
+          position: relative;
+          /* 删除按钮 */
+          .td-controllers{
+            position: absolute;
+            display: none;
+            &-del{
+              cursor: pointer;
+            }
           }
         }
       }
+    }
+    .selected-div{
+      position: absolute;
+    }
+    .add-selected-area{
+      position: absolute;
     }
 
     // 添加行
@@ -62,7 +74,7 @@
       width: 30px;
       height: 30px;
       position: absolute;
-      right:0;
+      right:5px;
       top: 50%;
       text-align: center;
       line-height: 30px;

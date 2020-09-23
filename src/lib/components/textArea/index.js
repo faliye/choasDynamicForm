@@ -10,29 +10,29 @@ export class TextArea {
     this.$el = null;
     this.props = props;
     this.render();
-    this.setInnerEleSize();
+    this.setStyle();
   }
 
-  setInnerEleSize(){
-    const {location} = this.props;
-    setTimeout(()=>{
-      $(this.$el).each((k,v)=>v.css({
-        height: $('#td-' + location[0] + '-' + location[1]).innerHeight(),
-      }))
+
+  setStyle() {
+    setTimeout(() => {
+      const {location} = this.props;
+      const ele = $(`#td-${location[0]}-${location[1]}`);
+      const width = ele.width();
+      const height = ele.height();
+      this.$el.css({
+        width,
+        height,
+      });
     })
   }
 
   render() {
-    this.$el = [
-      h('textarea',
-          {
-            style:{
-              height: '0',
-            },
-            placeholder: '多行文本框',
-            value: this.props.value
-          }
-      )
-    ]
+    this.$el = h('textarea',
+        {
+          placeholder: '多行文本框',
+          value: this.props.value
+        }
+    )
   }
 }

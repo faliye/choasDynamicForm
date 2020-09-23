@@ -1,0 +1,11 @@
+.radio-span-wrap{
+  word-break: keep-all;
+  white-space: nowrap;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  input{
+    margin: 0 2px;
+  }
+}

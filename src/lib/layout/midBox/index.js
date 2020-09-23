@@ -10,6 +10,9 @@ const createMidBox = (mountDOM, mode, themeConfig = {}) => {
   const midBox = h('div',
       {
         className: ['mid-box'],
+        style: {
+          width: mode !=='edit' ? `calc(100% - ${themeConfig.sizeConfig.rightWidth + themeConfig.sizeConfig.leftWidth}px)`: '100%',
+        }
       },
       [
         mode !== 'design' ? null : h('div',
@@ -157,14 +160,14 @@ const createMidBox = (mountDOM, mode, themeConfig = {}) => {
         h('div',
             {
               className: ['mid-box-bottom'],
-              style: {
-                width: 'px',
-                padding: themeConfig.sizeConfig.tablePadding + 'px',
-              }
             },
             [
               h('div',
-                  {},
+                  {
+                    style: {
+                      padding: themeConfig.sizeConfig.tablePadding + 'px',
+                    }
+                  },
                   [
                     h('table',
                         {
@@ -214,7 +217,7 @@ const createMidBox = (mountDOM, mode, themeConfig = {}) => {
                           }
                         }
                     )
-                  ]
+                  ],
               ),
             ]
         )

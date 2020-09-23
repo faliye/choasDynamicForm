@@ -1,22 +1,47 @@
-import {$createElement as h} from '../../utils'
+import {$createElement as h} from '../../utils';
+import './index.scss';
+
+const noticeArr = [
+  '选项1',
+  '比较长的一个选项2',
+  '选项3',
+  '选项4',
+];
 
 /**
  * Radio组件
  * */
 
 export class Radio {
-  constructor({props}) {
+  constructor({props, mode, themeConfig}) {
     this.$el = null;
     this.props = props;
-    this.style = props.style;
+    this.themeConfig = themeConfig;
+    this.mode = mode;
     this.render();
+    this.updateData()
+  }
+
+  updateData() {
+    if (this.mode !== 'edit') {
+      return null;
+    }
+    const {dataListId} = this.props;
+    console.log(dataListId);
   }
 
   render() {
     const name = 'radio-' + Math.random();
-    this.$el = [
-      h('span',
-          {},
+    const {sizeConfig: {tdInitHeight}} = this.themeConfig;
+    this.$el = noticeArr.map(item => {
+      return h('span',
+          {
+            className: ['radio-span-wrap'],
+            style: {
+              height: (tdInitHeight/2).toFixed() + 'px',
+              lineHeight: (tdInitHeight/2).toFixed() + 'px',
+            },
+          },
           [
             h('input',
                 {
@@ -24,33 +49,12 @@ export class Radio {
                   name,
                 }
             ),
-            h('span', {}, ['选项1'])
-          ]
-      ),
-      h('span',
-          {},
-          [
-            h('input',
-                {
-                  type: 'radio',
-                  name,
-                }
+            h('span',
+                {},
+                [item]
             ),
-            h('span', {}, ['选项2'])
-          ]
-      ),
-      h('span',
-          {},
-          [
-            h('input',
-                {
-                  type: 'radio',
-                  name,
-                }
-            ),
-            h('span', {}, ['选项3'])
           ]
       )
-    ];
+    })
   }
 }

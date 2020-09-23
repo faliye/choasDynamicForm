@@ -12,7 +12,8 @@ const save2 = (data) => {
 const dynamicForm = new DynamicForm({
   mountId: '#app',
   saveDraftHandle: save1,
-  saveFileHandle: save2
+  saveFileHandle: save2,
+  mode: 'edit'
 });
 setTimeout(()=>{
   dynamicForm.getTableData(mockData);

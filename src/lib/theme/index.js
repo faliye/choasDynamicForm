@@ -6,7 +6,7 @@ const theme ={
     topBarHeight: 40,
     tablePadding: 30,
     tdInitWidth: 140,
-    tdInitHeight: 35,
+    tdInitHeight: 36,
   },
   colorConfig:{
     light:{
