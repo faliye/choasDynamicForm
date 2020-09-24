@@ -1,5 +1,6 @@
-import {$createElement as h} from '../../utils'
-import $ from 'jquery'
+import {$createElement as h} from '../../utils';
+import $ from 'jquery';
+import './inde.scss';
 
 /**
  * Input组件
@@ -10,28 +11,14 @@ export class TextArea {
     this.$el = null;
     this.props = props;
     this.render();
-    this.setStyle();
-  }
-
-
-  setStyle() {
-    setTimeout(() => {
-      const {location} = this.props;
-      const ele = $(`#td-${location[0]}-${location[1]}`);
-      const width = ele.width();
-      const height = ele.height();
-      this.$el.css({
-        width,
-        height,
-      });
-    })
   }
 
   render() {
     this.$el = h('textarea',
         {
+          className: ['component-textarea-box'],
           placeholder: '多行文本框',
-          value: this.props.value
+          value: this.props.value,
         }
     )
   }

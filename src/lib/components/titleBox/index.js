@@ -18,16 +18,16 @@ export class TitleBox {
 
 
   setStyle() {
-    setTimeout(() => {
-      const {location} = this.props;
-      const ele = $(`#td-${location[0]}-${location[1]}`);
-      const width = ele.width();
-      const height = ele.height();
-      this.contentBox.add(this.inputBox).css({
-        width,
-        height,
-      });
-    })
+    // setTimeout(() => {
+    //   const {location} = this.props;
+    //   const ele = $(`#td-${location[0]}-${location[1]}`);
+    //   const width = ele.width();
+    //   const height = ele.height();
+    //   this.contentBox.add(this.inputBox).css({
+    //     width,
+    //     height,
+    //   });
+    // })
   }
 
   render() {
@@ -40,25 +40,21 @@ export class TitleBox {
             click: () => {
               this.inputBox
                   .css({
-                    display: 'inline-block',
-                    height: $('#td-' + location[0] + '-' + location[1]).innerHeight(),
+                    display: 'block',
                   })
                   .html(mainData.cnName)
                   .focus();
               this.contentBox
                   .css({
-                    display: 'none',
+                    width: 0,
+                    height: 0
                   });
             },
             blur: () => {
-              this.inputBox
-                  .css({
-                    display: 'none',
-                  });
+              this.inputBox.css({display: 'none',});
               this.contentBox
                   .css({
-                    display: 'inline-block',
-                    height: $('#td-' + location[0] + '-' + location[1]).innerHeight(),
+                    display: 'block',
                   })
                   .html(mainData.cnName);
             },

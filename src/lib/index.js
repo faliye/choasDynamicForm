@@ -16,6 +16,7 @@ class DynamicForm {
     this.setMountDOMCss();
     this.mode = mode;
     if (this.mode === 'design') {
+      this.isSelectArea = false; // table选区是否可拖动
       this.saveDraftHandle = saveDraftHandle;
       this.saveFileHandle = saveFileHandle;
     }
@@ -23,7 +24,7 @@ class DynamicForm {
     this.initTask();
   }
 
-  renderTabBox(){
+  renderTabBox() {
 
   }
 
@@ -54,7 +55,7 @@ class DynamicForm {
             fontSize: '18px',
             width: '24px',
             height: '24px',
-            top:'-12px',
+            top: '-12px',
             right: '5px',
             borderRadius: '100%',
           },
@@ -81,6 +82,7 @@ class DynamicForm {
           }
         }
     );
+    const style =computedTdStyle(tdData, this.themeConfig);
     const td = h('td',
         {
           id: 'td-' + location.join('-'),
@@ -89,14 +91,14 @@ class DynamicForm {
           colSpan,
           isHidden,
           props,
-          style: computedTdStyle(tdData, this.themeConfig),
+          style,
           on: {
             mousedown: () => {
               mainEvent.emit('selectStartChange', location);
             },
             mouseenter: () => {
               if (this.isSelectArea || this.isAddSelectedArea) {
-                this.table.css({
+                this.$table.css({
                   cursor: 'cell'
                 });
                 mainEvent.emit('selectEndChange', location);
@@ -111,7 +113,7 @@ class DynamicForm {
               const ele = $(td);
               if (this.isSelectArea || this.isAddSelectedArea) {
                 _.debounce(() => {
-                  if (($(this.mountDOM).width() - leftNavWidth - rightNaveWidth) < ele.offset().left) {
+                  if (($(this.mountDOM).width() - this.themeConfig.sizeConfig.leftWidth - this.themeConfig.sizeConfig.rightWidth) < ele.offset().left) {
                     const midBoxBottom = $('.mid-box-bottom').eq(0);
                     const scrollLeft = midBoxBottom.scrollLeft();
                     midBoxBottom.scrollLeft(scrollLeft + ele.width() / 8)
@@ -127,18 +129,29 @@ class DynamicForm {
           }
         },
         [
-          isEmpty ? null : h(childrenProps.tagName, {
-            props: {
-              parentTdNode,
-              location,
-              childrenTdNode,
-              insertType,
-              ...childrenProps
-            },
-            themeConfig: this.themeConfig,
-            mode: this.mode,
-          }),
-          isEmpty ? null : deleteI
+          h('div',
+              {
+                className: ['td-content-wrap'],
+                style:{
+                  width: style.width,
+                  height: style.height
+                }
+              },
+              [
+                isEmpty ? null : h(childrenProps.tagName, {
+                  props: {
+                    parentTdNode,
+                    location,
+                    childrenTdNode,
+                    insertType,
+                    ...childrenProps
+                  },
+                  themeConfig: this.themeConfig,
+                  mode: this.mode,
+                }),
+              ]
+          ),
+          isEmpty ? null : deleteI,
         ]
     );
     return td;
@@ -170,24 +183,24 @@ class DynamicForm {
     const formData = data || [];
     let {col, row} = mainEvent.store;
     // 设计模式填充单元格
-    if(this.mode === 'design'){
+    if (this.mode === 'design') {
       if (col < dataCol) {
         col = dataCol;
       }
       if (row < dataRow) {
         row = dataRow;
       }
-    }else{
+    } else {
       // 编辑模式
       col = dataCol;
       row = dataRow;
     }
     mainEvent.store.row = row;
     mainEvent.store.col = col;
-    const { tdInitWidth, tdInitHeight } = this.themeConfig.sizeConfig;
+    const {tdInitWidth, tdInitHeight} = this.themeConfig.sizeConfig;
     this.$table.parent().css({
-      minWidth:(col+1)*(tdInitWidth+2),
-      minHeight: row*(tdInitHeight+2),
+      minWidth: (col + 1) * (tdInitWidth + 2),
+      minHeight: row * (tdInitHeight + 2),
     });
     for (let j = 0; formData.length < row; ++j) {
       formData[j] = formData[j] || [];
@@ -241,7 +254,8 @@ class DynamicForm {
       mainEvent.store.backupDataStep = mainEvent.store.backupData.length - 1;
     });
     // 设计模式 记录选区 表单起点选定
-    if(this.mode === 'design'){
+    if (this.mode === 'design') {
+      // 选定单元格
       mainEvent.on('selectStartChange', (data) => {
         mainEvent.store.selectStart = data.map((item) => parseInt(item, 10));
         mainEvent.store.selectEnd = data.map((item) => parseInt(item, 10));
@@ -255,6 +269,11 @@ class DynamicForm {
           return this.renderTabBox(0);
         }
         this.renderTabBox(-1);
+      });
+      // 拖拽选区
+      mainEvent.on('selectEndChange', (data) => {
+        mainEvent.store.selectEnd = data.map((item) => parseInt(item, 10));
+        this.updateSelectedArea();
       });
     }
   }
@@ -277,16 +296,37 @@ class DynamicForm {
     const {tdInitWidth, tdInitHeight} = this.themeConfig.sizeConfig;
     const initWidth = this.$table.parent().width();
     const initHeight = this.$table.parent().height();
-    const col = (initWidth / (tdInitWidth+2)).toFixed(0);
-    const row = (initHeight / (tdInitHeight+2)).toFixed(0);
+    const col = (initWidth / (tdInitWidth + 2)).toFixed(0);
+    const row = (initHeight / (tdInitHeight + 2)).toFixed(0);
     mainEvent.store.col = parseInt(col);
     mainEvent.store.row = parseInt(row);
     this.$table.attr({
-      border: 1,
+      border: 0,
       cellSpacing: 0,
       cellPadding: 0,
       borderSpacing: 0,
     });
+    // 设计模式下拖动
+    if (this.mode === 'design') {
+      this.$table.on('mousedown', (e) => {
+        if (!e.button) {
+          this.isSelectArea = true;
+          this.$table.css({cursor: 'cell'});
+        }
+      }).on('mouseup mouseleave', () => {
+        this.isSelectArea = false;
+        this.$table.css({cursor: 'default'});
+      });
+      $(document).on('keydown', (e) => {
+        if (e.key === 'Shift' && !e.ctrlKey) {
+          this.isSelectArea = true;
+          this.$table.css({cursor: 'cell'});
+        }
+      }).on('keyup', () => {
+        this.isSelectArea = false;
+        this.$table.css({cursor: 'default'});
+      });
+    }
   }
 
   // 创建基础骨架

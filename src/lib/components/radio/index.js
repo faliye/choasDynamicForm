@@ -33,7 +33,11 @@ export class Radio {
   render() {
     const name = 'radio-' + Math.random();
     const {sizeConfig: {tdInitHeight}} = this.themeConfig;
-    this.$el = noticeArr.map(item => {
+    this.$el = h('div',
+        {
+          className: ['radio-component-box']
+        },
+        noticeArr.map(item => {
       return h('span',
           {
             className: ['radio-span-wrap'],
@@ -56,5 +60,6 @@ export class Radio {
           ]
       )
     })
+    )
   }
 }
