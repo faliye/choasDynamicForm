@@ -1,24 +1,34 @@
 import {$createElement as h} from '../../utils';
-import {judgeDataType} from "../../utils";
+import $ from 'jquery'
 import './index.scss';
 
 export class Modal {
-  constructor(title = '', content = '', confirmHandle, cancelHandle) {
+  constructor(title = '', content = '', themeConfig, confirmHandle, cancelHandle) {
     this.modal = null;
     this.title = title;
     this.content = content;
+    this.themeConfig = themeConfig;
     this.confirmHandle = confirmHandle;
     this.cancelHandle = cancelHandle;
     this.render();
   }
-  show(){
-    this.modal.style.display = 'block';
+
+  show() {
+    this.modal.css({
+      display: 'block',
+    });
   }
 
   render() {
+    const {mode : themeMode} = this.themeConfig;
+    const {primary, danger, borderColor,shadowColor} = this.themeConfig.colorConfig[themeMode];
     this.modal = h('div',
         {
-          className: ['modal-wrap']
+          className: ['modal-wrap'],
+          style:{
+            border: `1px solid ${borderColor}`,
+            boxShadow: `1px  1px 5px ${shadowColor}`
+          },
         },
         [
           h('div',
@@ -57,12 +67,15 @@ export class Modal {
               [
                 h('button',
                     {
+                      style:{
+                        background: primary,
+                      },
                       on: {
                         click: () => {
-                          if(judgeDataType(this.confirmHandle) === 'function') {
+                          if (_.isFunction(this.confirmHandle)) {
                             this.confirmHandle();
                           }
-                          setTimeout(()=>{
+                          setTimeout(() => {
                             this.modal.remove();
                           });
                         },
@@ -72,12 +85,15 @@ export class Modal {
                 ),
                 h('button',
                     {
+                      style:{
+                        background: danger
+                      },
                       on: {
                         click: () => {
-                          if(judgeDataType(this.cancelHandle) === 'function'){
+                          if (_.isFunction(this.cancelHandle)) {
                             this.cancelHandle();
                           }
-                          setTimeout(()=> {
+                          setTimeout(() => {
                             this.modal.remove();
                           });
                         }
@@ -89,6 +105,6 @@ export class Modal {
           )
         ]
     );
-    document.body.appendChild(this.modal)
+    $(document.body).append(this.modal);
   }
 }

@@ -58,51 +58,6 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
   return ele;
 };
 
-
-
-/**
- * @name     judgeDataType     判断数据类型
- * @param    target     any    数据源
- * */
-export function judgeDataType(target) {
-  if (arguments.length === 0) {
-    return '未传入需要判断的数据参数！';
-  }
-  if (typeof Object.prototype.toString.call == 'function') {
-    const str = Object.prototype.toString.call(target);
-    return str.split(' ')[1].slice(0, -1).toLowerCase();
-  }
-  if (typeof Array.isArray == 'function') {
-    if (Array.isArray(target)) {
-      return 'array';
-    }
-  }
-  let arr = [
-    'object',
-    'array',
-    'string',
-    'symbol',
-    'number',
-    'boolean',
-    'null',
-    'undefined',
-  ];
-  if (target === null && typeof target === 'object') {
-    return 'null';
-  }
-  let i = 0,
-      len = arr.length;
-  for (; i < len; i++) {
-    if (typeof target === arr[i] && typeof target !== 'object') {
-      return arr[i];
-    } else if (typeof target === arr[i] && typeof target == 'object') {
-      return target instanceof Array ? 'array' : 'object';
-    }
-  }
-  arr = null;
-  return '类型判断失败，或数据类型为非浏览器内置，请检查！';
-}
-
 /**
  * @name deleteFn 删除元素
  * */

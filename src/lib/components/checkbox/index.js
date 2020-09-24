@@ -1,4 +1,5 @@
 import {$createElement as h} from '../../utils';
+import './index.scss';
 
 
 const noticeArr = [
@@ -20,21 +21,28 @@ export class Checkbox {
   }
 
   render() {
-    this.$el =  noticeArr.map(item=>{
-      return h('span',
-          {},
-          [
-            h('input',
-                {
-                  type: 'checkbox',
-                  name,
-                }
-            ),
-            h('span',
-                {},
-                [item])
-          ]
-      )
-    });
+    this.$el = h('div',
+        {
+          className: ['checkbox-component-box'],
+        },
+        noticeArr.map(item => {
+          return h('span',
+              {
+                className: ['checkbox-span-wrap'],
+              },
+              [
+                h('input',
+                    {
+                      type: 'checkbox',
+                      name,
+                    }
+                ),
+                h('span',
+                    {},
+                    [item])
+              ]
+          )
+        })
+    );
   }
 }

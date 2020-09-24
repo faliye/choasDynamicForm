@@ -7,10 +7,11 @@ import './index.scss'
  * */
 
 export class Datepicker {
-  constructor({props, confirmHandle}) {
+  constructor({props, confirmHandle, themeConfig}) {
     this.$el = null;
     this.dropdownBox = null;
     this.titleBox = null;
+    this.themeConfig = themeConfig;
     this.selectedBox = null;
     this.confirmBtn = null;
     this.confirmHandle = confirmHandle;
@@ -26,6 +27,8 @@ export class Datepicker {
   }
 
   render() {
+    const {mode : themeMode} = this.themeConfig;
+    const {primary, danger, borderColor,shadowColor} = this.themeConfig.colorConfig[themeMode];
     this.input = h('input',
         {
           className: ['datepicker-input'],
@@ -36,11 +39,15 @@ export class Datepicker {
           style: {},
           on: {
             focus: () => {
-              this.dropdownBox.style.display = 'block';
+              this.dropdownBox.css({
+                display: 'block'
+              });
             },
             blur: () => {
               if (!this.confirmHandle) {
-                this.dropdownBox.style.display = 'none';
+                this.dropdownBox.css({
+                  display: 'none'
+                });
               }
             },
           }
@@ -63,7 +70,7 @@ export class Datepicker {
                       this.year--;
                     }
                     this.setDateValue(this.year, this.month, this.day);
-                    this.timeBox.innerHTML = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
+                    this.timeBox.html(this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day));
                     this.setDateBox();
                     e.stopPropagation();
                     e.preventDefault();
@@ -84,7 +91,7 @@ export class Datepicker {
                       this.year++;
                     }
                     this.setDateValue(this.year, this.month, this.day);
-                    this.timeBox.innerHTML = this.year + '-' + (this.month + 1) + '-' + addZero(this.day);
+                    this.timeBox.html(this.year + '-' + (this.month + 1) + '-' + addZero(this.day));
                     this.setDateBox();
                     e.stopPropagation();
                     e.preventDefault();
@@ -128,13 +135,18 @@ export class Datepicker {
     );
     this.confirmBtn = h('button',
         {
+          style:{
+            background: primary
+          },
           on: {
             click: (e) => {
               if (this.confirmHandle) {
                 this.input.value = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
                 this.confirmHandle(this.input.value)
               }
-              this.dropdownBox.style.display = 'none';
+              this.dropdownBox.css({
+                display: 'none'
+              });
               e.stopPropagation();
               e.preventDefault();
               return false;
@@ -150,9 +162,14 @@ export class Datepicker {
     );
     this.cancelBtn = h('button',
         {
+          style:{
+            background: danger,
+          },
           on: {
             click: (e) => {
-              this.dropdownBox.style.display = 'none';
+              this.dropdownBox.css({
+                display: 'none'
+              });
               e.stopPropagation();
               e.preventDefault();
               return false;
@@ -248,14 +265,14 @@ export class Datepicker {
     this.month = date.getMonth();
     this.day = date.getDate();
     this.inputValue =  (this.props.value || '').split('-').map(item=>addZero(item)).join('-');
-    this.timeBox.innerHTML = this.inputValue || this.year + '-' + addZero(this.month) + '-' + addZero(this.day);
+    this.timeBox.html(this.inputValue || this.year + '-' + addZero(this.month) + '-' + addZero(this.day));
   }
 
   setDateBox() {
     this.createDayList();
     const listDOM = this.createDayListItem();
-    this.dayBox.innerHTML = '';
-    this.dayBox.appendChild(listDOM);
+    this.dayBox.html('');
+    this.dayBox.append(listDOM);
   }
 
   createDayListItem() {
@@ -287,7 +304,7 @@ export class Datepicker {
                     }
                     this.day = item.value;
                     this.setDateValue(this.year, this.month, this.day);
-                    this.timeBox.innerHTML = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
+                    this.timeBox.html(this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day));
                     this.setDateBox();
                     e.stopPropagation();
                     e.preventDefault();

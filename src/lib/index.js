@@ -5,9 +5,18 @@ import createLeftNav from "./layout/leftNav";
 import createRightTable from "./layout/rightNav";
 import createMidBox from "./layout/midBox";
 import mainEvent from "./mainEvent";
-import {TdBoxClass} from "./config/componentApiConfig";
+import {TdBoxClass, ChildrenProps, defaultTimeValidate, defaultValidate} from "./config/componentApiConfig";
 import {$createElement as h, computedTdStyle, deleteFn, calcSelectHeight, calcSelectWidth} from "./utils";
-import {createFontSizeBox, createKeyBox, createBorderBox, createDataTypeBox,selectSourceBox,createValidateBox} from "./layout/rightNav/components";
+import {Modal} from "./components/modal";
+import {
+  createKeyBox,
+  createFontSizeBox,
+  createBorderBox,
+  createDataTypeBox,
+  selectSourceBox,
+  createValidateBox,
+  createDatepicker
+} from "./layout/rightNav/components";
 import './index.scss';
 
 class DynamicForm {
@@ -25,6 +34,185 @@ class DynamicForm {
     this.initTask();
   }
 
+  // 检测数据结构
+  checkData(data) {
+    const {data: storeData} = mainEvent.store;
+    for (let j = 0; j < data.length; j++) {
+      for (let i = 0; i < data[j].length; i++) {
+        const targetData = storeData[j][i];
+        if (targetData.childrenTdNode.length) {
+          if (!targetData.childrenProps.keyName) {
+            targetData.isError = 1;
+            new Modal('请注意!', '关联字段名只能为英文字母及下划线!').show();
+            mainEvent.emit('dataChange', storeData);
+            mainEvent.emit('selectStartChange', targetData.location);
+            return false;
+          }
+          if (!targetData.childrenProps.cnName) {
+            targetData.isError = 1;
+            new Modal('请注意!', '字段标题不能为空!').show();
+            mainEvent.emit('dataChange', storeData);
+            mainEvent.emit('selectStartChange', targetData.location);
+            return false;
+          }
+          const childrenData = data[targetData.childrenTdNode[0]][targetData.childrenTdNode[1]];
+          // console.log(targetData,childrenData,data)
+          const childrenPropsTagName = _.get(childrenData.childrenProps, 'tagName', '');
+          if (['Select', 'Radio', 'Checkbox'].includes(childrenPropsTagName)) {
+            if (!childrenData.childrenProps.dataListId) {
+              childrenData.isError = 1;
+              new Modal('请注意!', '选列表不能为空!').show();
+              mainEvent.emit('dataChange', storeData);
+              mainEvent.emit('selectStartChange', targetData.location);
+              return false;
+            }
+          }
+          if (['Input'].includes(childrenPropsTagName)) {
+            if (!childrenData.childrenProps.dataType) {
+              new Modal('请注意!', '未选择数据类型!').show();
+              mainEvent.emit('dataChange', storeData);
+              mainEvent.emit('selectStartChange', targetData.location);
+              return false;
+            }
+          }
+        }
+        if (!targetData.isEmpty && !targetData.childrenTdNode.length && !targetData.parentTdNode.length) {
+          if (!targetData.childrenProps.cnName) {
+            new Modal('请注意!', '标题不能为空!').show();
+            mainEvent.emit('dataChange', storeData);
+            mainEvent.emit('selectStartChange', targetData.location);
+            targetData.isError = 1;
+            return false;
+          }
+        }
+        targetData.isError = 0;
+        mainEvent.emit('dataChange', storeData);
+      }
+
+    }
+
+    return true
+  }
+
+  // 简化输出
+  simpleData(storeData) {
+    // 输出表单JSON
+    const res = _.cloneDeep(storeData);
+    let line = 0;
+    for (let i = res.length - 1; i >= 0; --i) {
+      const item = res[i];
+      if (item.some(it => !it.isEmpty || it.isHidden)) {
+        line = i + 1;
+        break;
+      }
+    }
+    res.splice(line);
+    let maxCol = 0;
+    for (let i = res.length - 1; i >= 0; --i) {
+      const item = res[i];
+      const index = item.findIndex(it => it.isEmpty && !it.isHidden && it.tag === 'td');
+      if (maxCol < index) {
+        maxCol = index
+      }
+    }
+    res.forEach(item => item.splice(maxCol + 1, item.length));
+    return res.filter(Boolean);
+  }
+
+  // 向表格中插入元素
+  insertTable(data) {
+    const {selectEnd, data: storeData, col} = mainEvent.store;
+    const {componentName: tag, type} = data;
+    // 在已有的元素上再次插入 视为创建子表 子表会扩展父表的跨行和跨列
+    const targetTd = storeData[selectEnd[0]][selectEnd[1]];
+
+    if (!targetTd.isEmpty) {
+      const modal = new Modal('警告', '该行已有元素，请删除后再添加!');
+      modal.show();
+      return
+    }
+    const colSpan = storeData[selectEnd[0]][selectEnd[1]].colSpan - 1;
+    const rowSpan = storeData[selectEnd[0]][selectEnd[1]].rowSpan - 1;
+    if (type === 'row') {
+      if (storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan] && storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan].isHidden) {
+        const modal = new Modal('警告', '右方单元格被合并,不可添加！');
+        modal.show();
+        return
+      }
+      if (storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan] && !storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan].isEmpty) {
+        const modal = new Modal('警告', '当前单元格下一行已有元素，请删除后再添加!');
+        modal.show();
+        return
+      }
+      // 如果添加点在尾行  自动向后延伸一列 添加
+      if (!storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan]) {
+        // 向后添加新的一列td
+        storeData.forEach((item, j) => {
+          for (let i = 0; i < 1; ++i) {
+            item.push(new TdBoxClass({
+              location: [j, selectEnd[1] + 1 + colSpan],
+            }));
+          }
+        });
+        mainEvent.store.col++;
+      }
+    }
+    if (type === 'col') {
+      if (storeData[selectEnd[0] + 1 + rowSpan] && storeData[selectEnd[0] + 1 + rowSpan][selectEnd[1]].isHidden) {
+        const modal = new Modal('警告', '下方单元格被合并,不可添加!');
+        modal.show();
+        return
+      }
+      if (storeData[selectEnd[0] + 1 + rowSpan] && !storeData[selectEnd[0] + 1 + rowSpan][selectEnd[1]].isEmpty) {
+        const modal = new Modal('警告', '当前单元格下一列已有元素,请删除后再添加!');
+        modal.show();
+        return
+      }
+      if (!storeData[selectEnd[0] + 1 + rowSpan]) {
+        // 向后添加新的一行td
+        storeData[selectEnd[0] + 1 + rowSpan] = [];
+        for (let i = 0; i < col; ++i) {
+          storeData[selectEnd[0] + 1 + rowSpan].push(new TdBoxClass({
+            location: [selectEnd[0] + 1 + rowSpan, i],
+          }));
+        }
+        mainEvent.store.row++;
+      }
+    }
+
+    targetTd.isEmpty = 0;
+    targetTd.insertType = type;
+    targetTd.childrenProps = new ChildrenProps({
+      tagName: 'TitleBox',
+    });
+    if (tag !== 'TitleBox') {
+      let nextTd = storeData[selectEnd[0]][selectEnd[1] + 1 + colSpan];
+      targetTd.childrenTdNode = [selectEnd[0], selectEnd[1] + 1 + colSpan];
+      if (type === 'col') {
+        nextTd = storeData[selectEnd[0] + 1 + rowSpan][selectEnd[1]];
+        targetTd.childrenTdNode = [selectEnd[0] + 1 + rowSpan, selectEnd[1]];
+      }
+      nextTd.isEmpty = 0;
+      nextTd.insertType = type;
+      nextTd.parentTdNode = selectEnd;
+      const params = {
+        tagName: tag,
+      };
+      if (tag === 'Datepicker') {
+        params.timeValidate = defaultTimeValidate;
+        params.value = new Date().toLocaleDateString().replace(/\//g, '-');
+      }
+      if (!['Select', 'Radio', 'Checkbox'].includes(tag)) {
+        params.validate = defaultValidate
+      }
+      nextTd.childrenProps = new ChildrenProps(params);
+    }
+    mainEvent.emit('selectStartChange', selectEnd);
+    mainEvent.emit('dataChange', storeData);
+    mainEvent.emit('backupData', storeData);
+  }
+
+  // 插入元素
   splitTableTd() {
     const {data} = this.splitFnc(mainEvent.store);
     mainEvent.emit('dataChange', data);
@@ -64,7 +252,7 @@ class DynamicForm {
     for (let i = 0; i < rightBtnLen; ++i) {
       rightBtn[i].className = 'right-tab-btn'
     }
-    this.tabBox.innerHTML = '';
+    this.tabBox.html('');
     const {selectEnd, data} = mainEvent.store;
     // 获得目标
     let targetData = data[selectEnd[0]][selectEnd[1]] || [];
@@ -74,7 +262,7 @@ class DynamicForm {
       // 子项
       if (!targetData.isEmpty) {
         if (targetData.childrenTdNode.length) {
-          virDOM.push(createKeyBox(targetData))
+          virDOM.push(createKeyBox(targetData, this.themeConfig))
         }
         virDOM.push(createFontSizeBox(targetData))
       }
@@ -100,7 +288,7 @@ class DynamicForm {
       }
       virDOM.push(createBorderBox(targetData));
     }
-    $(this.tabBox).append($(virDOM));
+    $(this.tabBox).append(...virDOM);
   }
 
   // 合并单元格
@@ -197,7 +385,7 @@ class DynamicForm {
           }
         }
     );
-    const style =computedTdStyle(tdData, this.themeConfig);
+    const style = computedTdStyle(tdData, this.themeConfig);
     const td = h('td',
         {
           id: 'td-' + location.join('-'),
@@ -205,9 +393,11 @@ class DynamicForm {
           rowSpan,
           colSpan,
           isHidden,
+          isError,
           props,
-          style:{
-            display: isHidden? 'none':  'cell'
+          style: {
+            display: isHidden ? 'none' : 'cell',
+            background: isError? danger: 'transparent',
           },
           on: {
             mousedown: () => {
@@ -249,7 +439,7 @@ class DynamicForm {
           h('div',
               {
                 className: ['td-content-wrap'],
-                style:{
+                style: {
                   width: style.width,
                   height: style.height
                 }
@@ -440,18 +630,18 @@ class DynamicForm {
         mainEvent.emit('dataChange', storeData);
       });
       // 切换列表
-      mainEvent.on('toggleTab', () => {
+      mainEvent.on('toggleTab', (index) => {
         const {selectEnd, data: storeData} = mainEvent.store;
         // 切换tab时
         const targetData = storeData[selectEnd[0]][selectEnd[1]];
         if (!targetData.isEmpty) {
           if (targetData.childrenTdNode.length) {
             mainEvent.emit('selectStartChange', targetData.childrenTdNode);
-            this.renderTabBox(1);
+            this.renderTabBox(index);
           }
           if (targetData.parentTdNode.length) {
             mainEvent.emit('selectStartChange', targetData.parentTdNode);
-            this.renderTabBox(0);
+            this.renderTabBox(index);
           }
         }
       });

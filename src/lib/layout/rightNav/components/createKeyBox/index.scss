@@ -1,0 +1,20 @@
+.key-box{
+  .key-name-box{
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    >span:not(.require-box){
+      display: flex;
+      align-items: center;
+    }
+    >input[type='text']{
+      border: none;
+      outline: none;
+      text-align: right;
+      width: 100px;
+
+    }
+  }
+}

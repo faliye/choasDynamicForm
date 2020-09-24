@@ -1,6 +1,7 @@
 import {$createElement as h} from '../../utils'
 import mainEvent from "../../mainEvent";
 import $ from 'jquery';
+import './index.scss';
 
 
 /**
@@ -8,23 +9,24 @@ import $ from 'jquery';
  * */
 
 export class Select {
-  constructor({props}) {
+  constructor({props, themeConfig}) {
     this.$el = null;
     this.props = props;
-    this.style = {
-      ...props.style,
-    };
+    this.themeConfig = themeConfig;
     this.render();
   }
 
   render() {
     const {location} = this.props;
+    const {sizeConfig: {tdInitHeight}} = this.themeConfig;
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.$el = [
       h('select',
           {
+            className: ['select-component-box'],
             style: {
-              height: $('#td-' + location[0] + '-' + location[1]).innerHeight() || 35 + 'px',
+              height: tdInitHeight + 'px',
+              width: '100%'
             },
             on: {
               change: (e) => {

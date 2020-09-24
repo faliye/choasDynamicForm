@@ -1,9 +1,18 @@
-import {createKeyBox} from "./createKeyBox";
-import {createFontSizeBox} from "./createFontSizeBox";
-import {createBorderBox} from "./createBorderBox";
-import {createDataTypeBox} from "./createDataTypeBox";
+import {createKeyBox} from "./createKeyBox/index.js";
+import {createFontSizeBox} from "./fontBox";
+import {createBorderBox} from "./borderBox";
+import {createDataTypeBox} from "./dataType";
 import {selectSourceBox} from "./selectSourceBox";
-import {createValidateBox} from "./createValidateBox";
+import {createValidateBox} from "./validateBox";
+import {createDatepicker} from "./datepickerBox";
 
 
-export {createFontSizeBox, createKeyBox, createBorderBox,createDataTypeBox,selectSourceBox,createValidateBox};
+export {
+  createKeyBox,
+  createFontSizeBox,
+  createBorderBox,
+  createDataTypeBox,
+  selectSourceBox,
+  createValidateBox,
+  createDatepicker
+};

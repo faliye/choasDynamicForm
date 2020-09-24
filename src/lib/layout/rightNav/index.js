@@ -57,7 +57,6 @@ const createRightTable = (mountDOM, mode, themeConfig = {}) => {
               className: ['tab-box'],
               style: {
                 color: fontColor,
-                paddingLeft: 5 + 'px',
               },
             },
             []
