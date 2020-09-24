@@ -8,7 +8,7 @@ import './index.scss'
  * */
 
 export class Datepicker {
-  constructor({props, confirmHandle, themeConfig}) {
+  constructor({props,propsStyle, confirmHandle, themeConfig}) {
     this.$el = null;
     this.dropdownBox = null;
     this.titleBox = null;
@@ -17,6 +17,7 @@ export class Datepicker {
     this.confirmHandle = confirmHandle;
     this.dayList = []; // 日期列表
     this.props = props;
+    this.propsStyle = propsStyle;
     this.timer = null;
     this.render();
     const time = this.props.value.split('-');
@@ -139,11 +140,11 @@ export class Datepicker {
     if(this.props.right){
       style.right = 0
     }
-
     this.$el = [
       h('div',
           {
             className: ['date-box-wrap'],
+            style:this.propsStyle,
           },
           [
             this.input,

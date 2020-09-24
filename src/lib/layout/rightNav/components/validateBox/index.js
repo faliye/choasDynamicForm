@@ -152,8 +152,12 @@ export const createValidateBox = (data) => {
                         validate = {
                           key: 'regexp',
                         };
-                        addBox.style.display = 'none';
-                        addBtnBox.style.display = 'flex';
+                        addBox.css({
+                          display : 'none'
+                        });
+                        addBtnBox.css({
+                          display : 'flex'
+                        });
                         mainEvent.emit('dataChange', mainEvent.store.data);
                         mainEvent.emit('selectStartChange', data.location)
                       }
@@ -166,8 +170,12 @@ export const createValidateBox = (data) => {
                     on: {
                       click: () => {
                         validate = {};
-                        addBox.style.display = 'none';
-                        addBtnBox.style.display = 'flex';
+                        addBox.css({
+                          display : 'none'
+                        });
+                        addBtnBox.css({
+                          display : 'flex'
+                        });
                       }
                     }
                   },
@@ -187,8 +195,12 @@ export const createValidateBox = (data) => {
               className: ['validate-add-btn'],
               on: {
                 click: () => {
-                  addBox.style.display = 'block';
-                  addBtnBox.style.display = 'none';
+                  addBox.css({
+                    display : 'block'
+                  });
+                  addBtnBox.css({
+                    display : 'none'
+                  });
                 }
               }
             },

@@ -2,6 +2,12 @@
   position: relative;
   height: 100%;
   width: 100%;
+  padding: 0;
+  margin: 0;
+  input{
+    border: none;
+    outline: none;
+  }
 }
 
 .datepicker-tab-box{
@@ -14,12 +20,7 @@
       width: 80px;
       text-align: right;
     }
-    input{
-      width: 100px !important;
-      height: 26px !important;
-      border: none;
-      outline: none;
-    }
+
     .datepicker-box{
       text-align: right;
       height: 30px !important;

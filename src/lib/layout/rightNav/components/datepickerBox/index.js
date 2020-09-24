@@ -48,7 +48,11 @@ export const createDatepicker = (data, themeConfig) => {
                           props: {
                             ...data.childrenProps,
                             value,
-                            right: true
+                            right: true,
+                          },
+                          propsStyle:{
+                            borderBottom: `1px solid ${borderColor}`,
+                            width: '80px'
                           },
                           themeConfig,
                           confirmHandle,
@@ -80,7 +84,11 @@ export const createDatepicker = (data, themeConfig) => {
                           props: {
                             ...data.childrenProps,
                             value,
-                            right: true
+                            right: true,
+                          },
+                          propsStyle:{
+                            borderBottom: `1px solid ${borderColor}`,
+                            width: '80px'
                           },
                           confirmHandle,
                           themeConfig,
@@ -112,10 +120,11 @@ export const createDatepicker = (data, themeConfig) => {
                           props: {
                             ...data.childrenProps,
                             value,
-                            style: {
-                              borderBottom: `1px solid ${borderColor}`,
-                            },
                             right: true
+                          },
+                          propsStyle: {
+                            borderBottom: `1px solid ${borderColor}`,
+                            width: '80px',
                           },
                           themeConfig,
                           confirmHandle

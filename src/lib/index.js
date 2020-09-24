@@ -254,17 +254,14 @@ class DynamicForm {
 
   renderTabBox(index) {
     const rightBtn = $('.right-tab-btn');
-    const rightBtnLen = rightBtn.length;
-    for (let i = 0; i < rightBtnLen; ++i) {
-      rightBtn[i].className = 'right-tab-btn'
-    }
+    rightBtn.removeClass('active');
     this.tabBox.html('');
     const {selectEnd, data} = mainEvent.store;
     // 获得目标
     let targetData = data[selectEnd[0]][selectEnd[1]] || [];
     let virDOM = [];
     if (index === 0) {
-      rightBtn[0].className = 'right-tab-btn active';
+      rightBtn.eq(index).addClass('active');
       // 子项
       if (!targetData.isEmpty) {
         if (targetData.childrenTdNode.length) {
@@ -276,7 +273,7 @@ class DynamicForm {
     }
     if (index === 1) {
       // 显示组件
-      rightBtn[1].className = 'right-tab-btn active';
+      rightBtn.eq(index).addClass('active');
       if (!targetData.isEmpty) {
         if (targetData.childrenProps.tagName === 'Input') {
           virDOM.push(createDataType(targetData, this.themeConfig))
@@ -476,7 +473,7 @@ class DynamicForm {
       const {data} = mainEvent.store;
       data.forEach((trData, j) => {
         const tr = $('<tr></tr>');
-        trData.forEach((tdData, i) => {
+        trData.forEach((tdData) => {
           tr.append(this.renderTd(tdData));
         });
         this.$table.append(tr);
@@ -510,8 +507,8 @@ class DynamicForm {
     mainEvent.store.col = col;
     const {tdInitWidth, tdInitHeight} = this.themeConfig.sizeConfig;
     this.$table.parent().css({
-      minWidth: (col + 1) * (tdInitWidth + 2),
-      minHeight: row * (tdInitHeight + 2),
+      minWidth: col * (tdInitWidth),
+      minHeight: row * (tdInitHeight),
     });
     for (let j = 0; formData.length < row; ++j) {
       formData[j] = formData[j] || [];
