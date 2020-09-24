@@ -43,8 +43,8 @@ export const fakeTableBox = (storeData, themeConfig) => {
         height: rowSpan * tdInitHeight + 'px',
       };
       const td = $('<td><div></div></td>');
-      td.attr({colSpan, rowSpan})
-          .css({});
+      td.attr({colSpan, rowSpan}).children('div')
+          .css({tdStyle});
       $(tdChildren).each((k,v)=>{
         td.append($(v));
       });
