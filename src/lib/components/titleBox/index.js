@@ -17,7 +17,7 @@ export class TitleBox {
   }
 
   render() {
-    const {location, mode} = this.props;
+    const {location} = this.props;
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
