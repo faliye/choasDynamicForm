@@ -1,5 +1,6 @@
 import {$createElement as h} from '../../utils'
 import {addZero} from "../../utils";
+import $ from 'jquery';
 import './index.scss'
 
 /**
@@ -13,12 +14,10 @@ export class Datepicker {
     this.titleBox = null;
     this.themeConfig = themeConfig;
     this.selectedBox = null;
-    this.confirmBtn = null;
     this.confirmHandle = confirmHandle;
-    this.cancelBtn = null;
     this.dayList = []; // 日期列表
     this.props = props;
-
+    this.timer = null;
     this.render();
     const time = this.props.value.split('-');
     this.setDateValue(time[0], time[1], time[2]);
@@ -27,8 +26,6 @@ export class Datepicker {
   }
 
   render() {
-    const {mode : themeMode} = this.themeConfig;
-    const {primary, danger, borderColor,shadowColor} = this.themeConfig.colorConfig[themeMode];
     this.input = h('input',
         {
           className: ['datepicker-input'],
@@ -38,18 +35,28 @@ export class Datepicker {
           },
           style: {},
           on: {
-            focus: () => {
+            focus: (e) => {
+              this.dropdownBox = this.createDrop(style);
+              const target = $(e.target);
+              const {left, top} = target.offset();
               this.dropdownBox.css({
-                display: 'block'
+                top: top+target.height(),
               });
-            },
-            blur: () => {
-              if (!this.confirmHandle) {
+              if((left+this.dropdownBox.width())>$(document.body).width()){
                 this.dropdownBox.css({
-                  display: 'none'
+                  right: 0,
+                });
+              }else{
+                this.dropdownBox.css({
+                  left: left,
                 });
               }
             },
+            blur: ()=>{
+              this.timer = setTimeout(()=>{
+                this.dropdownBox.remove();
+              })
+            }
           }
         }
     );
@@ -72,9 +79,6 @@ export class Datepicker {
                     this.setDateValue(this.year, this.month, this.day);
                     this.timeBox.html(this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day));
                     this.setDateBox();
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
                   }
                 }
               }
@@ -92,10 +96,6 @@ export class Datepicker {
                     }
                     this.setDateValue(this.year, this.month, this.day);
                     this.timeBox.html(this.year + '-' + (this.month + 1) + '-' + addZero(this.day));
-                    this.setDateBox();
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
                   }
                 }
               },
@@ -133,66 +133,36 @@ export class Datepicker {
           this.dayBox
         ]
     );
-    this.confirmBtn = h('button',
-        {
-          style:{
-            background: primary
-          },
-          on: {
-            click: (e) => {
-              if (this.confirmHandle) {
-                this.input.value = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
-                this.confirmHandle(this.input.value)
-              }
-              this.dropdownBox.css({
-                display: 'none'
-              });
-              e.stopPropagation();
-              e.preventDefault();
-              return false;
-            },
-            mousedown: (e)=>{
-              e.stopPropagation();
-              e.preventDefault();
-              return false;
-            }
-          }
-        },
-        ['确认']
-    );
-    this.cancelBtn = h('button',
-        {
-          style:{
-            background: danger,
-          },
-          on: {
-            click: (e) => {
-              this.dropdownBox.css({
-                display: 'none'
-              });
-              e.stopPropagation();
-              e.preventDefault();
-              return false;
-            },
-            mousedown: (e)=>{
-              e.stopPropagation();
-              e.preventDefault();
-              return false;
-            }
-          }
-        },
-        ['取消']
-    );
     let style={
       top: '100%',
     };
     if(this.props.right){
       style.right = 0
     }
-    this.dropdownBox = h('div',
+
+    this.$el = [
+      h('div',
+          {
+            className: ['date-box-wrap'],
+          },
+          [
+            this.input,
+          ]
+      )
+    ]
+  }
+  createDrop(style){
+    const {mode : themeMode} = this.themeConfig;
+    const {primary, danger} = this.themeConfig.colorConfig[themeMode];
+    this.dropdownBox =  h('div',
         {
           className: ['datepicker-drop-box'],
-          style
+          style,
+          on:{
+            click: ()=>{
+              clearTimeout(this.timer);
+            }
+          }
         },
         [
           this.titleBox,
@@ -202,17 +172,42 @@ export class Datepicker {
                 className: ['datepicker-control-box'],
               },
               [
-                this.cancelBtn,
-                this.confirmBtn,
+                h('button',
+                    {
+                      style:{
+                        background: danger,
+                      },
+                      on: {
+                        click: () => {
+                          this.dropdownBox.remove();
+                        }
+                      }
+                    },
+                    ['取消']
+                ),
+                h('button',
+                    {
+                      style:{
+                        background: primary
+                      },
+                      on: {
+                        click: () => {
+                          if (this.confirmHandle) {
+                            this.input.value = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
+                            this.confirmHandle(this.input.value)
+                          }
+                          this.dropdownBox.remove();
+                        }
+                      }
+                    },
+                    ['确认']
+                ),
               ]
           ),
         ]
     );
-
-    this.$el = [
-      this.input,
-      this.dropdownBox,
-    ]
+    $(document.body).append(this.dropdownBox);
+    return this.dropdownBox;
   }
 
   createDayList() {

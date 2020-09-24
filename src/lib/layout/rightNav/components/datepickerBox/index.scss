@@ -1,4 +1,8 @@
-@import "../../../../../src/lib/variable.scss";
+.date-box-wrap{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 
 .datepicker-tab-box{
   font-size: 14px;
@@ -15,7 +19,6 @@
       height: 26px !important;
       border: none;
       outline: none;
-      border-bottom: 1px solid $darkestFontColor;
     }
     .datepicker-box{
       text-align: right;

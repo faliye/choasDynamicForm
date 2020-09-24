@@ -11,13 +11,13 @@ import {Modal} from "./components/modal";
 import {
   createKeyBox,
   createFontSizeBox,
-  createBorderBox,
-  createDataTypeBox,
+  createDataType,
   selectSourceBox,
   createValidateBox,
   createDatepicker
 } from "./layout/rightNav/components";
 import './index.scss';
+import previewModal from "./layout/preview";
 
 class DynamicForm {
   constructor(initConfig = {}, themeConfig = {}) {
@@ -32,6 +32,12 @@ class DynamicForm {
     }
     this.themeConfig = _.merge(theme, themeConfig);
     this.initTask();
+  }
+
+
+  // 预览
+  previewHandle() {
+    mainEvent.emit('preview')
   }
 
   // 检测数据结构
@@ -264,9 +270,8 @@ class DynamicForm {
         if (targetData.childrenTdNode.length) {
           virDOM.push(createKeyBox(targetData, this.themeConfig))
         }
-        virDOM.push(createFontSizeBox(targetData))
+        virDOM.push(createFontSizeBox(targetData, this.themeConfig))
       }
-      virDOM.push(createBorderBox(targetData));
 
     }
     if (index === 1) {
@@ -274,19 +279,18 @@ class DynamicForm {
       rightBtn[1].className = 'right-tab-btn active';
       if (!targetData.isEmpty) {
         if (targetData.childrenProps.tagName === 'Input') {
-          virDOM.push(createDataTypeBox(targetData))
+          virDOM.push(createDataType(targetData, this.themeConfig))
         }
         if (['Select', 'Radio', 'Checkbox'].includes(targetData.childrenProps.tagName)) {
-          virDOM.push(selectSourceBox(targetData))
+          virDOM.push(selectSourceBox(targetData, this.themeConfig))
         } else {
           if (['Datepicker'].includes(targetData.childrenProps.tagName)) {
-            virDOM.push(createDatepicker(targetData))
+            virDOM.push(createDatepicker(targetData, this.themeConfig))
           } else {
-            virDOM.push(createValidateBox(targetData))
+            virDOM.push(createValidateBox(targetData, this.themeConfig))
           }
         }
       }
-      virDOM.push(createBorderBox(targetData));
     }
     $(this.tabBox).append(...virDOM);
   }
@@ -656,7 +660,7 @@ class DynamicForm {
         if (!this.checkData(data)) {
           return
         }
-        previewModal(this.mountDOM, data, this.themeConfig); // 右侧选项卡
+        previewModal(this.$mountDOM, data, this.themeConfig); // 右侧选项卡
       });
       // 保存
       mainEvent.on('saveFileHandle', () => {

@@ -3,7 +3,9 @@ import mainEvent from "../../../../mainEvent";
 import {Datepicker} from "../../../../components/datepicker";
 import './index.scss'
 
-export const createDatepicker = (data) => {
+export const createDatepicker = (data, themeConfig) => {
+  const {mode: themeMode} = themeConfig;
+  const {borderColor} = themeConfig.colorConfig[themeMode];
   return h('div',
       {
         className: ['datepicker-tab-box']
@@ -47,7 +49,9 @@ export const createDatepicker = (data) => {
                             ...data.childrenProps,
                             value,
                             right: true
-                          }, confirmHandle
+                          },
+                          themeConfig,
+                          confirmHandle,
                         }).$el,
                       ]
                   );
@@ -77,7 +81,9 @@ export const createDatepicker = (data) => {
                             ...data.childrenProps,
                             value,
                             right: true
-                          }, confirmHandle
+                          },
+                          confirmHandle,
+                          themeConfig,
                         }).$el,
                       ]
                   );
@@ -106,8 +112,13 @@ export const createDatepicker = (data) => {
                           props: {
                             ...data.childrenProps,
                             value,
+                            style: {
+                              borderBottom: `1px solid ${borderColor}`,
+                            },
                             right: true
-                          }, confirmHandle
+                          },
+                          themeConfig,
+                          confirmHandle
                         }).$el,
                       ]
                   );

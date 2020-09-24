@@ -16,5 +16,5 @@ const dynamicForm = new DynamicForm({
 });
 setTimeout(()=>{
   dynamicForm.getTableData(mockData);
+dynamicForm.previewHandle();
 },1000);
-// dynamicForm.previewHandle();
