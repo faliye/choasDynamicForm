@@ -1,5 +1,3 @@
-import store from "../store";
-
 /**
  * 发布-订阅模式
  * 自定义的事件总线

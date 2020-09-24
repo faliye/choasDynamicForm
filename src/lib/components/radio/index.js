@@ -19,6 +19,9 @@ export class Radio {
     this.themeConfig = themeConfig;
     this.mode = mode;
     this.render();
+    this.$el.on('focus',()=>{
+      this.$el.addClass('table-selection-active')
+    });
     this.updateData()
   }
 
@@ -28,6 +31,7 @@ export class Radio {
     }
     const {dataListId} = this.props;
     console.log(dataListId);
+
   }
 
   render() {

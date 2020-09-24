@@ -7,43 +7,29 @@ import './index.scss';
  * TitleBox
  * */
 export class TitleBox {
-  constructor({props}) {
+  constructor({props, mode}) {
     this.$el = null;
     this.contentBox = null;
     this.inputBox = null;
     this.props = props;
+    this.mode = mode;
     this.render();
-    this.setStyle();
-  }
-
-
-  setStyle() {
-    // setTimeout(() => {
-    //   const {location} = this.props;
-    //   const ele = $(`#td-${location[0]}-${location[1]}`);
-    //   const width = ele.width();
-    //   const height = ele.height();
-    //   this.contentBox.add(this.inputBox).css({
-    //     width,
-    //     height,
-    //   });
-    // })
   }
 
   render() {
-    const {location} = this.props;
+    const {location, mode} = this.props;
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
           className: ['title-content-box'],
-          on: {
+          on: this.mode === 'design' ? {
             click: () => {
               this.inputBox
                   .css({
                     display: 'block',
                   })
                   .html(mainData.cnName)
-                  .focus();
+                  .focus().addClass('table-selection-active');
               this.contentBox
                   .css({
                     width: 0,
@@ -58,7 +44,7 @@ export class TitleBox {
                   })
                   .html(mainData.cnName);
             },
-          }
+          } : {}
         },
         [
           h('span',
@@ -71,7 +57,7 @@ export class TitleBox {
         {
           className: ['title-content-textarea'],
           placeholder: '请输入标题',
-          on: {
+          on: this.mode === 'design' ? {
             blur: (e) => {
               $(this.inputBox).css({
                 display: 'none',
@@ -87,7 +73,7 @@ export class TitleBox {
               // 主存 修改value值 但不刷新页面
               mainData.cnName = e.target.value;
             }
-          },
+          } : {},
         }
     );
     this.$el = [

@@ -226,14 +226,10 @@ export const computedTdStyle=(tdData = {}, themeConfig)=>{
     isHidden = 0,
     isError = 0,
     props = {},
-    childrenProps = {},
   } = tdData;
   const style ={};
   if(isHidden){
     style.display = 'none';
-  }else if(_.isEmpty(childrenProps)){
-    style.width = themeConfig.sizeConfig.tdInitWidth;
-    style.height = themeConfig.sizeConfig.tdInitHeight;
   }else{
     style.width = themeConfig.sizeConfig.tdInitWidth*colSpan;
     style.height = themeConfig.sizeConfig.tdInitHeight*rowSpan;

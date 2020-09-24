@@ -7,6 +7,7 @@ import createMidBox from "./layout/midBox";
 import mainEvent from "./mainEvent";
 import {TdBoxClass} from "./config/componentApiConfig";
 import {$createElement as h, computedTdStyle, deleteFn, calcSelectHeight, calcSelectWidth} from "./utils";
+import {createFontSizeBox, createKeyBox, createBorderBox, createDataTypeBox,selectSourceBox,createValidateBox} from "./layout/rightNav/components";
 import './index.scss';
 
 class DynamicForm {
@@ -24,8 +25,122 @@ class DynamicForm {
     this.initTask();
   }
 
-  renderTabBox() {
+  splitTableTd() {
+    const {data} = this.splitFnc(mainEvent.store);
+    mainEvent.emit('dataChange', data);
+    mainEvent.emit('backupData', data);
+  }
 
+  // 公共拆分函数
+  splitFnc(store) {
+    const {data, selectStart, selectEnd} = store;
+    if (selectEnd[1] < selectStart[1] || selectEnd[0] < selectEnd[0]) {
+      return;
+    }
+    let sign = false;
+    for (let j = selectStart[0]; j <= selectEnd[0]; ++j) {
+      for (let i = selectStart[1]; i <= selectEnd[1]; ++i) {
+        if (data[j][i].colSpan > 1 || data[j][i].rowSpan > 1) {
+          // 记录折叠区信息
+          sign = true;
+          const y = j + data[j][i].rowSpan;
+          const x = i + data[j][i].colSpan;
+          for (let m = j; m < y; ++m) {
+            for (let n = i; n < x; ++n) {
+              data[m][n].colSpan = 1;
+              data[m][n].rowSpan = 1;
+              delete data[m][n].isHidden;
+            }
+          }
+        }
+      }
+    }
+    return {data, sign};
+  }
+
+  renderTabBox(index) {
+    const rightBtn = $('.right-tab-btn');
+    const rightBtnLen = rightBtn.length;
+    for (let i = 0; i < rightBtnLen; ++i) {
+      rightBtn[i].className = 'right-tab-btn'
+    }
+    this.tabBox.innerHTML = '';
+    const {selectEnd, data} = mainEvent.store;
+    // 获得目标
+    let targetData = data[selectEnd[0]][selectEnd[1]] || [];
+    let virDOM = [];
+    if (index === 0) {
+      rightBtn[0].className = 'right-tab-btn active';
+      // 子项
+      if (!targetData.isEmpty) {
+        if (targetData.childrenTdNode.length) {
+          virDOM.push(createKeyBox(targetData))
+        }
+        virDOM.push(createFontSizeBox(targetData))
+      }
+      virDOM.push(createBorderBox(targetData));
+
+    }
+    if (index === 1) {
+      // 显示组件
+      rightBtn[1].className = 'right-tab-btn active';
+      if (!targetData.isEmpty) {
+        if (targetData.childrenProps.tagName === 'Input') {
+          virDOM.push(createDataTypeBox(targetData))
+        }
+        if (['Select', 'Radio', 'Checkbox'].includes(targetData.childrenProps.tagName)) {
+          virDOM.push(selectSourceBox(targetData))
+        } else {
+          if (['Datepicker'].includes(targetData.childrenProps.tagName)) {
+            virDOM.push(createDatepicker(targetData))
+          } else {
+            virDOM.push(createValidateBox(targetData))
+          }
+        }
+      }
+      virDOM.push(createBorderBox(targetData));
+    }
+    $(this.tabBox).append($(virDOM));
+  }
+
+  // 合并单元格
+  mergeTableTd() {
+    const {selectStart, selectEnd} = mainEvent.store;
+    if (selectEnd[1] < selectStart[1] || selectEnd[0] < selectEnd[0]) {
+      return;
+    }
+    const {data, sign} = this.splitFnc(mainEvent.store);
+    if (sign) {
+      mainEvent.emit('dataChange', data);
+      mainEvent.emit('backupData', data);
+      return;
+    }
+    const mergeCol = selectEnd[1] - selectStart[1] + 1;
+    const mergeRow = selectEnd[0] - selectStart[0] + 1;
+    // 合并单元格
+    for (let j = selectStart[0]; j <= selectEnd[0]; ++j) {
+      for (let i = selectStart[1]; i <= selectEnd[1]; ++i) {
+        if (j === selectStart[0] && i === selectStart[1]) {
+          data[j][i].colSpan = mergeCol;
+          data[j][i].rowSpan = mergeRow;
+          delete data[j][i].isHidden;
+        } else {
+          // 逐行移除数据
+          data[j][i].childrenProps = {};
+          data[j][i].isEmpty = 1;
+          data[j][i].isError = 0;
+          data[j][i].colSpan = 0;
+          data[j][i].rowSpan = 0;
+          data[j][i].isHidden = 1;
+          data[j][i].parentTdNode = [];
+          data[j][i].childrenTdNode = [];
+        }
+      }
+    }
+    mainEvent.emit('dataChange', data);
+    mainEvent.emit('backupData', data);
+    mainEvent.emit('selectStartChange', selectStart);
+    mainEvent.emit('selectEndChange', selectStart);
   }
 
   // 渲染子节点
@@ -91,7 +206,9 @@ class DynamicForm {
           colSpan,
           isHidden,
           props,
-          style,
+          style:{
+            display: isHidden? 'none':  'cell'
+          },
           on: {
             mousedown: () => {
               mainEvent.emit('selectStartChange', location);
@@ -274,6 +391,104 @@ class DynamicForm {
       mainEvent.on('selectEndChange', (data) => {
         mainEvent.store.selectEnd = data.map((item) => parseInt(item, 10));
         this.updateSelectedArea();
+      });
+      // 合并表单
+      mainEvent.on('formMerge', () => {
+        this.mergeTableTd();
+      });
+      // 拆分表单
+      mainEvent.on('splitForm', () => {
+        this.splitTableTd();
+      });
+      // 撤销与恢复
+      mainEvent.on('backupDataStepChange', (data) => {
+        const {backupDataStep, backupData} = mainEvent.store;
+        if (data < 0) {
+          data = 0;
+        }
+        if (data > backupData.length - 1) {
+          data = backupData.length - 1;
+        }
+        if (data !== backupDataStep) {
+          mainEvent.store.backupDataStep = data;
+          mainEvent.emit('dataChange', _.cloneDeep(backupData[data]));
+        }
+      });
+      // 行变化
+      mainEvent.on('colChange', () => {
+        const {data: storeData, col, row} = mainEvent.store;
+        storeData[row] = [];
+        for (let i = 0; i < col; ++i) {
+          storeData[row].push(new TdBoxClass({
+            location: [row, i],
+          }));
+        }
+        mainEvent.store.row++;
+        mainEvent.emit('dataChange', storeData);
+      });
+      // 列变化
+      mainEvent.on('rowChange', (data) => {
+        const {data: storeData} = mainEvent.store;
+        storeData.forEach((item, j) => {
+          for (let i = 0; i < data; ++i) {
+            item.push(new TdBoxClass({
+              location: [j, item.length],
+            }));
+          }
+        });
+        mainEvent.store.col++;
+        mainEvent.emit('dataChange', storeData);
+      });
+      // 切换列表
+      mainEvent.on('toggleTab', () => {
+        const {selectEnd, data: storeData} = mainEvent.store;
+        // 切换tab时
+        const targetData = storeData[selectEnd[0]][selectEnd[1]];
+        if (!targetData.isEmpty) {
+          if (targetData.childrenTdNode.length) {
+            mainEvent.emit('selectStartChange', targetData.childrenTdNode);
+            this.renderTabBox(1);
+          }
+          if (targetData.parentTdNode.length) {
+            mainEvent.emit('selectStartChange', targetData.parentTdNode);
+            this.renderTabBox(0);
+          }
+        }
+      });
+      // 添加数据
+      mainEvent.on('addElement', (data) => {
+        this.insertTable(data)
+      });
+      // 预览
+      mainEvent.on('preview', () => {
+        const {data: storeData} = mainEvent.store;
+        const data = this.simpleData(storeData);
+        if (!this.checkData(data)) {
+          return
+        }
+        previewModal(this.mountDOM, data, this.themeConfig); // 右侧选项卡
+      });
+      // 保存
+      mainEvent.on('saveFileHandle', () => {
+        if (_.isFunction(this.saveFileHandle)) {
+          const {data: storeData} = mainEvent.store;
+          const data = this.simpleData(storeData);
+          if (!this.checkData(data)) {
+            return
+          }
+          this.saveFileHandle(JSON.stringify(data));
+        }
+      });
+      // 存草稿
+      mainEvent.on('saveDraftHandle', () => {
+        if (_.isFunction(this.saveDraftHandle)) {
+          const {data: storeData} = mainEvent.store;
+          const data = this.simpleData(storeData);
+          if (!this.checkData(data)) {
+            return
+          }
+          this.saveDraftHandle(JSON.stringify(data));
+        }
       });
     }
   }

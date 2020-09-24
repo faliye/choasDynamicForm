@@ -12,6 +12,9 @@ export class Input {
     this.$el = null;
     this.props = props;
     this.render();
+    this.$el.on('focus',()=>{
+      this.$el.addClass('table-selection-active')
+    });
   }
   render() {
     this.$el = h('input',

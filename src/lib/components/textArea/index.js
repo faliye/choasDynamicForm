@@ -11,6 +11,9 @@ export class TextArea {
     this.$el = null;
     this.props = props;
     this.render();
+    this.$el.on('focus',()=>{
+      this.$el.addClass('table-selection-active')
+    })
   }
 
   render() {

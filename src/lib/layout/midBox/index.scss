@@ -47,6 +47,9 @@
       min-width: 100%;
       min-height: 100%;
       #dynamic-table{
+        ::selection{
+          background: none;
+        }
         .td-div{
           box-sizing: content-box;
           position: relative;

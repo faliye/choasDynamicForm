@@ -5,3 +5,11 @@
   box-sizing: border-box;
   border: 1px solid #ccc;
 }
+
+
+.table-selection-active{
+  &::selection{
+    background:rgb(23, 128, 227) !important;
+    color: #fff;
+  }
+}
