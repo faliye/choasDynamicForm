@@ -6,7 +6,7 @@ import createRightTable from "./layout/rightNav";
 import createMidBox from "./layout/midBox";
 import mainEvent from "./mainEvent";
 import {TdBoxClass} from "./config/componentApiConfig";
-import {$createElement as h, computedTdStyle, deleteFn} from "./utils";
+import {$createElement as h, computedTdStyle, deleteFn, calcSelectHeight, calcSelectWidth} from "./utils";
 import './index.scss';
 
 class DynamicForm {
@@ -21,6 +21,10 @@ class DynamicForm {
     }
     this.themeConfig = _.merge(theme, themeConfig);
     this.initTask();
+  }
+
+  renderTabBox(){
+
   }
 
   // 渲染子节点
@@ -198,6 +202,29 @@ class DynamicForm {
     mainEvent.emit('selectStartChange', [0, 0]);
   }
 
+  updateSelectedArea() {
+    const {selectStart, selectEnd} = mainEvent.store;
+    if (selectEnd[1] < selectStart[1] || selectEnd[0] < selectEnd[0]) {
+      return;
+    }
+    const startEle = $('#td-' + selectStart.join('-'));
+    let {left, top} = startEle.position();
+    let width = calcSelectWidth(selectStart, selectEnd);
+    let height = calcSelectHeight(selectStart, selectEnd);
+    const selectedArea = $('.selected-div');
+    this.addSelectedArea = $('.add-selected-area');
+    selectedArea.css({
+      width,
+      height,
+      top: top,
+      left: left,
+    });
+    this.addSelectedArea.css({
+      top: top + height - 4,
+      left: left + width - 4,
+    });
+  }
+
 
   // 注册事件
   registerEvent() {
@@ -213,8 +240,23 @@ class DynamicForm {
       mainEvent.store.backupData.push(_.cloneDeep(data));
       mainEvent.store.backupDataStep = mainEvent.store.backupData.length - 1;
     });
-    mainEvent.on('selectStartChange', (data) => {
-    });
+    // 设计模式 记录选区 表单起点选定
+    if(this.mode === 'design'){
+      mainEvent.on('selectStartChange', (data) => {
+        mainEvent.store.selectStart = data.map((item) => parseInt(item, 10));
+        mainEvent.store.selectEnd = data.map((item) => parseInt(item, 10));
+        this.updateSelectedArea();
+        const targetData = mainEvent.store.data[data[0]][data[1]] || {};
+        const {parentTdNode = [], isEmpty = 1} = targetData;
+        if (parentTdNode.length) {
+          return this.renderTabBox(1);
+        }
+        if (!isEmpty) {
+          return this.renderTabBox(0);
+        }
+        this.renderTabBox(-1);
+      });
+    }
   }
 
   // 初始化表格

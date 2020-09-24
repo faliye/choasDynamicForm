@@ -6,7 +6,7 @@ import './index.scss';
 
 const createMidBox = (mountDOM, mode, themeConfig = {}) => {
   const {mode: themeMode} = themeConfig;
-  const {primary, borderColor, background, hoverColor} = themeConfig.colorConfig[themeMode];
+  const {primary, borderColor, background, hoverColor,selectedArea} = themeConfig.colorConfig[themeMode];
   const midBox = h('div',
       {
         className: ['mid-box'],
@@ -178,13 +178,18 @@ const createMidBox = (mountDOM, mode, themeConfig = {}) => {
                     mode !== 'design' ? null : h('div',
                         {
                           className: ['selected-div'],
-                          style: {}
+                          style: {
+                            background: selectedArea,
+                            borderColor: primary,
+                          }
                         }
                     ),
                     mode !== 'design' ? null : h('div',
                         {
                           className: ['add-selected-area'],
-                          style: {}
+                          style: {
+                            background: primary,
+                          }
                         }
                     ),
                     mode !== 'design' ? null : h('i',

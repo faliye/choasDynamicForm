@@ -50,6 +50,7 @@
         .td-div{
           box-sizing: content-box;
           position: relative;
+          padding: 0 !important;
           /* 删除按钮 */
           .td-controllers{
             position: absolute;
@@ -63,9 +64,14 @@
     }
     .selected-div{
       position: absolute;
+      z-index: -1;
+      box-sizing: border-box;
+      border: 2px solid transparent;
     }
     .add-selected-area{
       position: absolute;
+      width: 4px;
+      height: 4px;
     }
 
     // 添加行

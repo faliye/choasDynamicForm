@@ -1,4 +1,12 @@
-import {$createElement as h} from '../../utils'
+import {$createElement as h} from '../../utils';
+
+
+const noticeArr = [
+  '选项1',
+  '比较长的一个选项2',
+  '选项3',
+  '选项4',
+];
 
 /**
  * Input组件
@@ -12,8 +20,8 @@ export class Checkbox {
   }
 
   render() {
-    this.$el =  [
-      h('span',
+    this.$el =  noticeArr.map(item=>{
+      return h('span',
           {},
           [
             h('input',
@@ -22,33 +30,11 @@ export class Checkbox {
                   name,
                 }
             ),
-            h('span', {}, ['选项1'])
-          ]
-      ),
-      h('span',
-          {},
-          [
-            h('input',
-                {
-                  type: 'checkbox',
-                  name,
-                }
-            ),
-            h('span', {}, ['选项2'])
-          ]
-      ),
-      h('span',
-          {},
-          [
-            h('input',
-                {
-                  type: 'checkbox',
-                  name,
-                }
-            ),
-            h('span', {}, ['选项3'])
+            h('span',
+                {},
+                [item])
           ]
       )
-    ];
+    });
   }
 }
