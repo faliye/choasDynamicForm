@@ -37,7 +37,7 @@ const createRightTable = (mountDOM, mode, themeConfig = {}) => {
                     },
                     on: {
                       click() {
-                        eventBus.emit('toggleTab', index);
+                        eventBus.emit('toggleTab');
                         $('.right-tab-btn')
                             .css({borderBottom: 'none'})
                             .eq(index)

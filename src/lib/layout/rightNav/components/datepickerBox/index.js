@@ -35,6 +35,7 @@ export const createDatepicker = (data, themeConfig) => {
                     for (let i = 0; i < (data.childrenProps.timeValidate || []).length; ++i) {
                       if (data.childrenProps.timeValidate[i].key === 'defaultValue') {
                         data.childrenProps.timeValidate[i].value = value;
+                        console.log(value)
                       }
                     }
                     mainEvent.emit('dataChange', mainEvent.store.data);

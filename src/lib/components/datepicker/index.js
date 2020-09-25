@@ -1,19 +1,20 @@
-import {$createElement as h} from '../../utils'
+import {$createElement as h} from '../../utils';
 import {addZero} from "../../utils";
+import mainEvent from "../../mainEvent";
 import $ from 'jquery';
-import './index.scss'
+import _ from 'lodash';
+import './index.scss';
 
 /**
  * Datepicker组件
  * */
 
 export class Datepicker {
-  constructor({props,propsStyle, confirmHandle, themeConfig}) {
+  constructor({props, propsStyle, confirmHandle, themeConfig}) {
     this.$el = null;
     this.dropdownBox = null;
     this.titleBox = null;
     this.themeConfig = themeConfig;
-    this.selectedBox = null;
     this.confirmHandle = confirmHandle;
     this.dayList = []; // 日期列表
     this.props = props;
@@ -22,17 +23,28 @@ export class Datepicker {
     this.render();
     const time = this.props.value.split('-');
     this.setDateValue(time[0], time[1], time[2]);
-    this.input.value = this.inputValue;
+    const date =  new Date();
+    this.inputValue = props.value || date.getFullYear()+ '-' + addZero(date.getMonth()+1)+ '-'+ addZero(date.getDate());
+    if(this.inputValue){
+      this.input.val(this.inputValue);
+      this.timeBox.html(this.inputValue);
+    }
     this.setDateBox();
   }
 
   render() {
+    const {location = []} = this.props;
+    let mainData;
+    if (location.length) {
+      mainData = _.get(mainEvent.store.data[location[0]][location[1]], 'childrenProps', {});
+    }
+
     this.input = h('input',
         {
           className: ['datepicker-input'],
           props: {
             placeholder: '请选择日期',
-            value: this.inputValue,
+            value: _.get(mainData, 'value', this.inputValue),
           },
           style: {},
           on: {
@@ -41,13 +53,13 @@ export class Datepicker {
               const target = $(e.target);
               const {left, top} = target.offset();
               this.dropdownBox.css({
-                top: top+target.height(),
+                top: top + target.height(),
               });
-              if((left+this.dropdownBox.width())>$(document.body).width()){
+              if ((left + this.dropdownBox.width()) > $(document.body).width()) {
                 this.dropdownBox.css({
                   right: 0,
                 });
-              }else{
+              } else {
                 this.dropdownBox.css({
                   left: left,
                 });
@@ -56,13 +68,13 @@ export class Datepicker {
             blur: ()=>{
               this.timer = setTimeout(()=>{
                 this.dropdownBox.remove();
-              })
+              },400);
             }
           }
         }
     );
     // 时间显示框
-    this.timeBox = h('span', {}, [this.inputValue]);
+    this.timeBox = h('span', {}, []);
     this.titleBox = h('div',
         {
           className: ['datepicker-title-box'],
@@ -104,47 +116,17 @@ export class Datepicker {
           ),
         ]
     );
-    this.dayBox = h('div',
-        {
-          className: ['day-list-box']
-        },
-        [
-          this.createDayListItem()
-        ]
-    );
-    this.selectedBox = h('div',
-        {
-          className: ['datepicker-selected-box'],
-        },
-        [
-          h('div',
-              {
-                className: ['week-name']
-              },
-              ['日', '一', '二', '三', '四', '五', '六'].map((item, index) => {
-                return h('span',
-                    {
-                      className: !index || index === 6 ? ['selected-date-item', 'dark'] : ['selected-date-item']
-                    }
-                    ,
-                    [item]
-                );
-              })
-          ),
-          this.dayBox
-        ]
-    );
-    let style={
+    let style = {
       top: '100%',
     };
-    if(this.props.right){
+    if (this.props.right) {
       style.right = 0
     }
     this.$el = [
       h('div',
           {
             className: ['date-box-wrap'],
-            style:this.propsStyle,
+            style: this.propsStyle,
           },
           [
             this.input,
@@ -152,22 +134,51 @@ export class Datepicker {
       )
     ]
   }
-  createDrop(style){
-    const {mode : themeMode} = this.themeConfig;
+
+  createDrop(style) {
+    const {mode: themeMode} = this.themeConfig;
     const {primary, danger} = this.themeConfig.colorConfig[themeMode];
-    this.dropdownBox =  h('div',
+    this.dropdownBox = h('div',
         {
           className: ['datepicker-drop-box'],
           style,
-          on:{
-            click: ()=>{
+          on: {
+            click: () => {
               clearTimeout(this.timer);
             }
           }
         },
         [
           this.titleBox,
-          this.selectedBox,
+          h('div',
+              {
+                className: ['datepicker-selected-box'],
+              },
+              [
+                h('div',
+                    {
+                      className: ['week-name']
+                    },
+                    ['日', '一', '二', '三', '四', '五', '六'].map((item, index) => {
+                      return h('span',
+                          {
+                            className: !index || index === 6 ? ['selected-date-item', 'dark'] : ['selected-date-item']
+                          }
+                          ,
+                          [item]
+                      );
+                    })
+                ),
+                h('div',
+                    {
+                      className: ['day-list-box']
+                    },
+                    [
+                      this.createDayListItem()
+                    ]
+                )
+              ]
+          ),
           h('div',
               {
                 className: ['datepicker-control-box'],
@@ -175,7 +186,7 @@ export class Datepicker {
               [
                 h('button',
                     {
-                      style:{
+                      style: {
                         background: danger,
                       },
                       on: {
@@ -188,16 +199,17 @@ export class Datepicker {
                 ),
                 h('button',
                     {
-                      style:{
+                      style: {
                         background: primary
                       },
                       on: {
                         click: () => {
                           if (this.confirmHandle) {
-                            this.input.value = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
-                            this.confirmHandle(this.input.value)
+                            this.inputValue = this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day);
+                            this.confirmHandle(this.inputValue)
                           }
                           this.dropdownBox.remove();
+                          this.input.val(this.inputValue);
                         }
                       }
                     },
@@ -260,57 +272,42 @@ export class Datepicker {
     this.year = date.getFullYear();
     this.month = date.getMonth();
     this.day = date.getDate();
-    this.inputValue =  (this.props.value || '').split('-').map(item=>addZero(item)).join('-');
+    this.inputValue = (this.props.value || '').split('-').map(item => addZero(item)).join('-');
     this.timeBox.html(this.inputValue || this.year + '-' + addZero(this.month) + '-' + addZero(this.day));
   }
 
   setDateBox() {
     this.createDayList();
     const listDOM = this.createDayListItem();
-    this.dayBox.html('');
-    this.dayBox.append(listDOM);
+    $('.day-list-box').html('').html(listDOM);
   }
 
   createDayListItem() {
-    return h('div',
-        {},
-        this.dayList.map(item => {
-          return h('span',
-              {
-                className: item.type === 'preMonth' || item.type === 'nextMonth' ? ['selected-date-item', 'dark'] : ['selected-date-item'],
-                on: {
-                  mousedown: (e)=>{
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
-                  },
-                  click: (e) => {
-                    if (item.type === 'preMonth') {
-                      this.month--;
-                      if (this.month < 0) {
-                        this.month = 11;
-                        this.year--;
-                      }
-                    } else if (item.type === 'nextMonth') {
-                      this.month++;
-                      if (this.month > 11) {
-                        this.month = 0;
-                        this.year++;
-                      }
-                    }
-                    this.day = item.value;
-                    this.setDateValue(this.year, this.month, this.day);
-                    this.timeBox.html(this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day));
-                    this.setDateBox();
-                    e.stopPropagation();
-                    e.preventDefault();
-                    return false;
-                  },
-                }
-              },
-              [item.value]
-          );
-        })
-    )
+    const wrap = $('<div></div>');
+    this.dayList.forEach(item => {
+      const OSpan = $('<span></span>');
+      const className = item.type === 'preMonth' || item.type === 'nextMonth' ? ['selected-date-item', 'dark'] : ['selected-date-item']
+      OSpan.addClass(className).on('click', () => {
+        if (item.type === 'preMonth') {
+          this.month--;
+          if (this.month < 0) {
+            this.month = 11;
+            this.year--;
+          }
+        } else if (item.type === 'nextMonth') {
+          this.month++;
+          if (this.month > 11) {
+            this.month = 0;
+            this.year++;
+          }
+        }
+        this.day = item.value;
+        this.setDateValue(this.year, this.month, this.day);
+        this.timeBox.html(this.year + '-' + addZero(this.month + 1) + '-' + addZero(this.day));
+        this.setDateBox();
+      }).html(item.value);
+      wrap.append(OSpan)
+    });
+    return wrap;
   }
 }

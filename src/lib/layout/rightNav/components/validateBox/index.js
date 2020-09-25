@@ -239,9 +239,6 @@ export const createValidateBox = (data) => {
                       }, [
                         h('div',
                             {
-                              style:{
-                                width: '130px',
-                              },
                             },
                             [
                               h('span', {}, [item.name + ':']),
@@ -264,6 +261,10 @@ export const createValidateBox = (data) => {
                         h('div',
                             {},
                             [
+                              h('span',
+                                  {},
+                                  ['触发时机:']
+                              ),
                               h('select',
                                   {
                                     props: {},
@@ -306,10 +307,6 @@ export const createValidateBox = (data) => {
 
                                   ]
                               ),
-                              h('span',
-                                  {},
-                                  ['验证']
-                              ),
                             ]
                         )
                       ]
@@ -321,9 +318,6 @@ export const createValidateBox = (data) => {
                     }, [
                       h('div',
                           {
-                            style:{
-                              width: '140px',
-                            },
                           },
                           [
                             h('span', {}, [item.name + ':']),
@@ -346,6 +340,10 @@ export const createValidateBox = (data) => {
                       h('div',
                           {},
                           [
+                            h('span',
+                                {},
+                                ['触发时机:']
+                            ),
                             h('select',
                                 {
                                   props: {},
@@ -386,10 +384,6 @@ export const createValidateBox = (data) => {
                                       ['值改变']
                                   ),
                                 ]
-                            ),
-                            h('span',
-                                {},
-                                ['验证']
                             ),
                           ]
                       )

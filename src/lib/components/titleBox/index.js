@@ -71,7 +71,6 @@ export class TitleBox {
             },
             input: (e) => {
               // 主存 修改value值 但不刷新页面
-              console.log(e.target.value)
               mainData.cnName = e.target.value;
             }
           } : {},

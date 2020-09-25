@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import _ from 'lodash';
+import mainEvent from "../mainEvent";
 
 import {TitleBox} from "../components/titleBox";
 import {Input} from "../components/input";
@@ -32,7 +33,13 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
       break;
     }
     case 'Datepicker': {
-      ele = new Datepicker(proto).$el;
+      const {props: {location}} = proto;
+      const confirmHandle =(value)=>{
+        const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
+        mainData.value = value;
+        mainEvent.emit('dataChange', mainEvent.store.data);
+      };
+      ele = new Datepicker({...proto,confirmHandle}).$el;
       break;
     }
     case 'Radio': {
@@ -46,12 +53,16 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
     default : {
       ele = $(document.createElement(tag));
       const {style={},props,className=[], on={},...propsKey} = proto;
+      const {innerHTML, ...otherPropsKey} = propsKey;
       ele.each((k,v)=>{
-        $(v).css(style).attr({...props,...propsKey}).addClass(className);
+        $(v).css(style).attr({...props,...otherPropsKey}).addClass(className);
         Object.keys(on).forEach(eventName => {
           $(v).on(eventName, proto['on'][eventName])
         });
       });
+      if(innerHTML){
+        ele.html(innerHTML);
+      }
       ele.append(...childDOMs)
     }
   }
@@ -88,7 +99,7 @@ export const deleteFn= (data,selectStart ,selectEnd)=>{
  * */
 
 export const addZero = (value) => {
-  return value >9?value+'': '0'+value;
+  return value >9 ?value+'': '0'+parseInt(value, 10);
 };
 
 

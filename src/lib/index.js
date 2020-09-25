@@ -62,7 +62,6 @@ class DynamicForm {
             return false;
           }
           const childrenData = data[targetData.childrenTdNode[0]][targetData.childrenTdNode[1]];
-          // console.log(targetData,childrenData,data)
           const childrenPropsTagName = _.get(childrenData.childrenProps, 'tagName', '');
           if (['Select', 'Radio', 'Checkbox'].includes(childrenPropsTagName)) {
             if (!childrenData.childrenProps.dataListId) {
@@ -631,18 +630,18 @@ class DynamicForm {
         mainEvent.emit('dataChange', storeData);
       });
       // 切换列表
-      mainEvent.on('toggleTab', (index) => {
+      mainEvent.on('toggleTab', () => {
         const {selectEnd, data: storeData} = mainEvent.store;
         // 切换tab时
         const targetData = storeData[selectEnd[0]][selectEnd[1]];
         if (!targetData.isEmpty) {
           if (targetData.childrenTdNode.length) {
             mainEvent.emit('selectStartChange', targetData.childrenTdNode);
-            this.renderTabBox(index);
+            this.renderTabBox(1);
           }
           if (targetData.parentTdNode.length) {
             mainEvent.emit('selectStartChange', targetData.parentTdNode);
-            this.renderTabBox(index);
+            this.renderTabBox(0);
           }
         }
       });
