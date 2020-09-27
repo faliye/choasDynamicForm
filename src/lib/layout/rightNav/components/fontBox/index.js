@@ -5,7 +5,7 @@ import './index.scss'
 
 export const createFontSizeBox = (data) => {
   const fontSize = _.get(data, 'childrenProps.style.fontSize', '14');
-  const textAlign = _.get(data, 'childrenProps.style.textAlign', '');
+  const justifyContent = _.get(data, 'childrenProps.style.justifyContent', '');
   const alignItems = _.get(data, 'childrenProps.style.alignItems', '');
   return h('div',
       {
@@ -62,7 +62,7 @@ export const createFontSizeBox = (data) => {
                         {
                           on: {
                             change: (e) => {
-                              data.childrenProps.style['textAlign'] = e.target.value;
+                              data.childrenProps.style['justifyContent'] = e.target.value;
                               mainEvent.emit('dataChange', mainEvent.store.data);
                             }
                           }
@@ -70,8 +70,8 @@ export const createFontSizeBox = (data) => {
                         [
                           h('option',
                               {
-                                value: 'left',
-                                selected: textAlign === 'left'
+                                value: 'flex-start',
+                                selected: justifyContent === 'flex-start'
                               },
                               [
                                 h('span', {}, ['左对齐'])
@@ -80,7 +80,7 @@ export const createFontSizeBox = (data) => {
                           h('option',
                               {
                                 value: 'center',
-                                selected: textAlign === 'center'
+                                selected: justifyContent === 'center'
 
                               },
                               [
@@ -89,8 +89,8 @@ export const createFontSizeBox = (data) => {
                           ),
                           h('option',
                               {
-                                value: 'right',
-                                selected: textAlign === 'right'
+                                value: 'flex-end',
+                                selected: justifyContent === 'flex-end'
 
                               },
                               [

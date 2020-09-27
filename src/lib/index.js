@@ -6,7 +6,7 @@ import createRightTable from "./layout/rightNav";
 import createMidBox from "./layout/midBox";
 import mainEvent from "./mainEvent";
 import {TdBoxClass, ChildrenProps, defaultTimeValidate, defaultValidate} from "./config/componentApiConfig";
-import {$createElement as h, computedTdStyle, deleteFn, calcSelectHeight, calcSelectWidth} from "./utils";
+import {$createElement as h, deleteFn, calcSelectHeight, calcSelectWidth} from "./utils";
 import {Modal} from "./components/modal";
 import {
   createKeyBox,
@@ -21,7 +21,7 @@ import previewModal from "./layout/preview";
 
 class DynamicForm {
   constructor(initConfig = {}, themeConfig = {}) {
-    const {mountId, saveDraftHandle, saveFileHandle, mode = 'design'} = initConfig;
+    const {mountId, saveDraftHandle, saveFileHandle, api, mode = 'design'} = initConfig;
     this.$mountDOM = $(mountId);
     this.setMountDOMCss();
     this.mode = mode;
@@ -29,11 +29,20 @@ class DynamicForm {
       this.isSelectArea = false; // table选区是否可拖动
       this.saveDraftHandle = saveDraftHandle;
       this.saveFileHandle = saveFileHandle;
+    }else{
+      if(!api){
+        throw new Error('没有传入列表数据查询接口!');
+      }
+      this.api = api;
     }
     this.themeConfig = _.merge(theme, themeConfig);
     this.initTask();
   }
 
+  // 获取数据
+  getData(callback){
+    callback(JSON.stringify(mainEvent.store.data));
+  }
 
   // 预览
   previewHandle() {
@@ -120,7 +129,7 @@ class DynamicForm {
         maxCol = index
       }
     }
-    res.forEach(item => item.splice(maxCol + 1, item.length));
+    res.forEach(item => item.splice(maxCol, item.length));
     return res.filter(Boolean);
   }
 
@@ -348,7 +357,6 @@ class DynamicForm {
     } = tdData;
     const {mode: themeMode} = this.themeConfig;
     const {danger, background} = this.themeConfig.colorConfig[themeMode];
-
     const deleteI = h('i',
         {
           className: ['iconfont', 'icon-shanchu', 'td-controllers', 'td-controllers-del'],
@@ -385,7 +393,6 @@ class DynamicForm {
           }
         }
     );
-    const style = computedTdStyle(tdData, this.themeConfig);
     const td = h('td',
         {
           id: 'td-' + location.join('-'),
@@ -420,7 +427,7 @@ class DynamicForm {
               const ele = $(td);
               if (this.isSelectArea || this.isAddSelectedArea) {
                 _.debounce(() => {
-                  if (($(this.mountDOM).width() - this.themeConfig.sizeConfig.leftWidth - this.themeConfig.sizeConfig.rightWidth) < ele.offset().left) {
+                  if ((this.$mountDOM.width() - this.themeConfig.sizeConfig.leftWidth - this.themeConfig.sizeConfig.rightWidth) < ele.offset().left) {
                     const midBoxBottom = $('.mid-box-bottom').eq(0);
                     const scrollLeft = midBoxBottom.scrollLeft();
                     midBoxBottom.scrollLeft(scrollLeft + ele.width() / 8)
@@ -439,15 +446,16 @@ class DynamicForm {
           h('div',
               {
                 className: ['td-content-wrap'],
-                style: {
-                  width: style.width,
-                  height: style.height
-                }
+                style:{
+                  width: this.themeConfig.sizeConfig.tdInitWidth*colSpan,
+                  height: this.themeConfig.sizeConfig.tdInitHeight*rowSpan
+                },
               },
               [
                 isEmpty ? null : h(childrenProps.tagName, {
                   props: {
                     parentTdNode,
+                    api: this.api,
                     location,
                     childrenTdNode,
                     insertType,
@@ -458,7 +466,7 @@ class DynamicForm {
                 }),
               ]
           ),
-          isEmpty ? null : deleteI,
+          isEmpty || this.mode !== 'design' ? null : deleteI,
         ]
     );
     return td;
@@ -470,9 +478,9 @@ class DynamicForm {
     if (all) {
       this.$table.html('');
       const {data} = mainEvent.store;
-      data.forEach((trData, j) => {
+      data.forEach(trData => {
         const tr = $('<tr></tr>');
-        trData.forEach((tdData) => {
+        trData.forEach(tdData => {
           tr.append(this.renderTd(tdData));
         });
         this.$table.append(tr);

@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import _ from 'lodash';
 import mainEvent from "../mainEvent";
 
 import {TitleBox} from "../components/titleBox";
@@ -37,7 +36,6 @@ export const $createElement = (tag, proto = {}, childDOMs = []) => {
       const confirmHandle =(value)=>{
         const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
         mainData.value = value;
-        mainEvent.emit('dataChange', mainEvent.store.data);
       };
       ele = new Datepicker({...proto,confirmHandle}).$el;
       break;
@@ -177,29 +175,5 @@ export const createContentBoxStyle=(styleProps)=>{
     textAlign,
     background: backgroundColor,
   };
-};
-
-/**
- * @name computedTdStyle 计算选区样式
- * @param tdData 样式属性
- * @param themeConfig 样式属性
- * */
-
-export const computedTdStyle=(tdData = {}, themeConfig)=>{
-  const {
-    rowSpan,
-    colSpan,
-    isHidden = 0,
-    isError = 0,
-    props = {},
-  } = tdData;
-  const style ={};
-  if(isHidden){
-    style.display = 'none';
-  }else{
-    style.width = themeConfig.sizeConfig.tdInitWidth*colSpan;
-    style.height = themeConfig.sizeConfig.tdInitHeight*rowSpan;
-  }
-  return style;
 };
 

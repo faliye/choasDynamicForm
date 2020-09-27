@@ -17,11 +17,12 @@ export class TitleBox {
   }
 
   render() {
-    const {location} = this.props;
+    const {location, style} = this.props;
     const mainData = mainEvent.store.data[location[0]][location[1]].childrenProps;
     this.contentBox = h('div',
         {
           className: ['title-content-box'],
+          style,
           on: this.mode === 'design' ? {
             click: () => {
               this.inputBox

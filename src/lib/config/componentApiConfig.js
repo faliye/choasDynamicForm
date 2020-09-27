@@ -65,6 +65,7 @@ export class ChildrenProps {
     this.keyName = keyName;
     this.cnName = cnName;
     this.isSearch = isSearch;
+    this.dataListId=dataListId;
     this.value = value;
     this.style = {
       fontSize: '14',
@@ -72,18 +73,6 @@ export class ChildrenProps {
       textAlign: 'center',
       alignItems:'center',
       backgroundColor: 'transparent',
-      borderLeftColor: '#000',
-      borderTopWidth: '1',
-      borderTopStyle: 'solid',
-      borderTopColor: '#000',
-      borderRightWidth: '1',
-      borderRightStyle: 'solid',
-      borderRightColor: '#000',
-      borderBottomWidth: '1',
-      borderBottomStyle: 'solid',
-      borderBottomColor: '#000',
-      borderLeftWidth: '1',
-      borderLeftStyle: 'solid',
       ...style,
     };
     this.placeholder = placeholder;
@@ -132,6 +121,7 @@ export class ChildrenProps {
     if (!['Radio', 'Checkbox', 'Select'].includes(this.tagName)) {
       delete this.dataListId;
       delete this.isMultiple;
+      this.value = value || [];
     }
   }
 }
